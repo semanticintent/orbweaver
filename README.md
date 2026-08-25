@@ -36,10 +36,19 @@ npm run examples:serve
 # http://127.0.0.1:4173
 ```
 
-## Intended API
+## Quick start
+
+Create a semantic graph, validate it, and render an accessible SVG. Orbweaver
+derives all coordinates and paths—the graph contains meaning only.
 
 ```ts
-import { createGraph, renderGraph, validateGraph } from '@semanticintent/orbweaver'
+import { writeFile } from 'node:fs/promises'
+import {
+  createGraph,
+  darkTheme,
+  renderGraph,
+  validateGraph,
+} from '@semanticintent/orbweaver'
 
 const graph = createGraph({
   id: 'checkout',
@@ -55,11 +64,22 @@ const graph = createGraph({
   ],
 })
 
-const result = validateGraph(graph)
+const validation = validateGraph(graph)
+if (!validation.valid) {
+  throw new Error(JSON.stringify(validation.errors, null, 2))
+}
+
 const svg = await renderGraph(graph, {
   layout: { direction: 'LR' },
+  render: { theme: darkTheme },
 })
+
+await writeFile('checkout.svg', svg)
 ```
+
+Run the example as an ES module with Node.js 20 or newer, then open
+`checkout.svg` in a browser. For separate layout and rendering stages, custom
+themes, semantic queries, and interaction, see the [Public API](docs/api.md).
 
 ## Development
 
