@@ -22,7 +22,7 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "examples:generate": "npm run build && node examples/generate-showcase.mjs",
+    "examples:generate": "npm run build && node examples/generate-showcase.mjs && node scripts/build-gallery-runtime.mjs",
     "examples:serve": "node scripts/serve-examples.mjs",
     "browser:check": "node scripts/check-browser-bundle.mjs",
     "check": "npm run typecheck && npm test && npm run build && npm run browser:check"

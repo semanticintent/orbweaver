@@ -49,11 +49,6 @@ const html = `<!doctype html><html lang="en"><head>
   <nav><div>${rendered.map((item) => `<a href="#${item.slug}">${escapeHtml(item.kicker)}</a>`).join('')}</div></nav>
   <main>${cards}</main>
   <aside class="inspector" aria-live="polite"><p class="eyebrow">Semantic inspector</p><h3 id="inspect-title">Select an entity</h3><p class="hint" id="inspect-hint">Click a node, edge, or group. Keyboard users can select focused nodes with Enter or Space.</p><dl id="inspect-fields"></dl></aside>
-  <script type="module">
-    import { mountSvgInteraction } from '../../dist/index.js'
-    const title=document.querySelector('#inspect-title'),hint=document.querySelector('#inspect-hint'),fields=document.querySelector('#inspect-fields')
-    function show(inspection){fields.replaceChildren();if(!inspection){title.textContent='Select an entity';hint.hidden=false;return}title.textContent=inspection.label||inspection.id;hint.hidden=true;const values={Kind:inspection.kind,Type:inspection.type,Status:inspection.status,From:inspection.from,To:inspection.to,Neighbors:inspection.relationships?.neighborNodeIds?.join(', '),Members:inspection.memberNodeIds?.join(', '),Source:inspection.source?.file,Line:inspection.source?.line};for(const [key,value] of Object.entries(values)){if(value===undefined||value==='')continue;const term=document.createElement('dt'),detail=document.createElement('dd');term.textContent=key;detail.textContent=String(value);fields.append(term,detail)}}
-    for(const panel of document.querySelectorAll('[data-showcase]')){const slug=panel.dataset.showcase,graph=JSON.parse(document.querySelector('[data-graph="'+slug+'"]').textContent),svg=panel.querySelector('svg');mountSvgInteraction(svg,graph,{onSelectionChange:show})}
-  </script></body></html>`
+  <script type="module" src="orbweaver-gallery.js"></script></body></html>`
 
 writeFileSync(join(output, 'index.html'), html)
