@@ -19,11 +19,27 @@ export function normalizeGraph(input: Graph): NormalizedGraph {
 
   const graph = cloneGraph(input)
   const direction = defaultDirection(graph)
-  const edges: NormalizedEdge[] = graph.edges.map((edge, index) => ({
-    ...edge,
-    id: edge.id ?? generatedEdgeId(graph, index),
-    direction: edge.direction ?? direction,
-  }))
+  const usedEdgeIds = new Set(
+    graph.edges.flatMap((edge) => edge.id === undefined ? [] : [edge.id]),
+  )
+  const edges: NormalizedEdge[] = graph.edges.map((edge, index) => {
+    let id = edge.id
+    if (id === undefined) {
+      const base = generatedEdgeId(graph, index)
+      id = base
+      let collision = 1
+      while (usedEdgeIds.has(id)) {
+        id = `${base}:${collision}`
+        collision += 1
+      }
+      usedEdgeIds.add(id)
+    }
+    return {
+      ...edge,
+      id,
+      direction: edge.direction ?? direction,
+    }
+  })
 
   return {
     ...graph,

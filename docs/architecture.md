@@ -17,6 +17,11 @@ SVG
 which defaults and generated identities have been resolved. `Scene` adds only
 derived geometry and retains a reference to normalized semantic entities.
 
+The initial layout implementation translates `NormalizedGraph` into a private
+ELK layered graph, then converts the result into renderer-independent scene
+nodes, edges, groups, and points. Nested ELK coordinates are flattened into
+absolute scene coordinates; renderers never consume ELK objects.
+
 ## Architectural invariants
 
 1. Semantic nodes do not contain coordinates or dimensions.

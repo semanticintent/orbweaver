@@ -45,4 +45,18 @@ describe('normalizeGraph', () => {
     const graph = normalizeGraph({ ...fixture, options: { directed: false } })
     expect(graph.edges[0]?.direction).toBe('none')
   })
+
+  it('avoids collisions between explicit and generated edge IDs', () => {
+    const graph = normalizeGraph({
+      ...fixture,
+      edges: [
+        { from: 'cart', to: 'payment', type: 'flow' },
+        { id: 'edge:cart->payment:flow:0', from: 'payment', to: 'cart' },
+      ],
+    })
+    expect(graph.edges.map((edge) => edge.id)).toEqual([
+      'edge:cart->payment:flow:0:1',
+      'edge:cart->payment:flow:0',
+    ])
+  })
 })

@@ -31,12 +31,12 @@ renderer-specific fields, and `npm run check` succeeds.
 
 ## Phase 2 — Layout proof
 
-**Status:** Not started
+**Status:** Complete
 
-- [ ] Evaluate ELK against real fixtures.
-- [ ] Define the Orbweaver `Scene` contract.
-- [ ] Implement LR and TB hierarchical layout behind an adapter.
-- [ ] Verify deterministic output and input immutability.
+- [x] Evaluate ELK against real fixtures.
+- [x] Define the Orbweaver `Scene` contract.
+- [x] Implement LR and TB hierarchical layout behind an adapter.
+- [x] Verify deterministic output and input immutability.
 
 **Gate:** All fixtures receive finite, readable geometry without leaking layout
 engine types into the public API.

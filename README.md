@@ -13,15 +13,15 @@ SVG rendering, provenance preservation, and a small interaction model.
 
 ## Current status
 
-Phases 0 and 1 are complete. The semantic graph, validation, normalization,
-tests, build, and public repository foundation are in place. Layout-engine
-evaluation is next. See [the implementation roadmap](docs/roadmap.md) for live
-status.
+Phases 0–2 are complete. The semantic graph, validation, normalization, ELK
+layered layout, renderer-independent scene model, tests, build, and public
+repository foundation are in place. The visual language and SVG renderer are
+next. See [the implementation roadmap](docs/roadmap.md) for live status.
 
 ## Intended API
 
 ```ts
-import { createGraph, validateGraph } from '@semanticintent/orbweaver'
+import { createGraph, layoutGraph, validateGraph } from '@semanticintent/orbweaver'
 
 const graph = createGraph({
   id: 'checkout',
@@ -38,10 +38,11 @@ const graph = createGraph({
 })
 
 const result = validateGraph(graph)
+const scene = await layoutGraph(graph, { direction: 'LR' })
 ```
 
-Layout and SVG rendering APIs shown in the project specification are planned,
-not yet implemented.
+SVG rendering shown in the project specification is planned, not yet
+implemented.
 
 ## Development
 

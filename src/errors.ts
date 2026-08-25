@@ -11,3 +11,11 @@ export class GraphValidationError extends OrbweaverError {
     super(issues.map((entry) => entry.message).join('\n'))
   }
 }
+
+export class LayoutError extends OrbweaverError {
+  override readonly name = 'LayoutError'
+
+  constructor(message: string, options?: ErrorOptions) {
+    super(message, options)
+  }
+}
