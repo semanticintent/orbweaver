@@ -13,10 +13,11 @@ SVG rendering, provenance preservation, and a small interaction model.
 
 ## Current status
 
-Phases 0–3 are complete. The semantic graph, validation, normalization, ELK
+Phases 0–4 are complete. The semantic graph, validation, normalization, ELK
 layered layout, renderer-independent scene model, accessible SVG renderer,
-light and dark themes, tests, build, and public repository foundation are in
-place. Semantic inspection is next. See [the implementation roadmap](docs/roadmap.md)
+light and dark themes, semantic graph queries, provenance-aware inspection,
+keyboard/pointer interaction, tests, build, and public repository foundation
+are in place. The v0.1 showcase is next. See [the implementation roadmap](docs/roadmap.md)
 for live status.
 
 ![Orbweaver dark-theme dependency map](examples/generated/commerce-platform-dark.svg)
@@ -76,6 +77,7 @@ or layout-engine-specific objects.
 
 - [Architecture](docs/architecture.md)
 - [Visual language](docs/visual-language.md)
+- [Interaction and inspection](docs/interaction.md)
 - [Implementation roadmap](docs/roadmap.md)
 - [Original prototype specification](ORBWEAVER_SPEC.md)
 - [Project philosophy and biomimicry](ORBWEAVER_BIOMIMICRY.md)

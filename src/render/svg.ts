@@ -58,6 +58,7 @@ function stylesheet(prefix: string): string {
 .ow-group-label-bg{fill:var(--ow-canvas)}
 .ow-group-label{fill:var(--ow-text-muted);font-family:var(--ow-font-mono);font-size:10px;font-weight:600;letter-spacing:1.1px;text-transform:uppercase}
 .ow-edge-path{fill:none;stroke:var(--ow-edge);stroke-width:var(--ow-edge-width);stroke-linecap:round;stroke-linejoin:round}
+.ow-edge{cursor:pointer}
 .ow-edge[data-edge-type="error"] .ow-edge-path{stroke:var(--ow-danger)}
 .ow-edge[data-edge-type="event"] .ow-edge-path{stroke-dasharray:5 5}
 .ow-edge-label-bg{fill:var(--ow-canvas);stroke:var(--ow-border);stroke-width:1}
@@ -66,6 +67,12 @@ function stylesheet(prefix: string): string {
 .ow-node-surface{fill:var(--ow-surface-raised);stroke:var(--ow-border-strong);stroke-width:1.25;filter:url(#${prefix}-shadow)}
 .ow-node:hover .ow-node-surface{stroke:var(--ow-accent)}
 .ow-node:focus-visible .ow-node-surface{stroke:var(--ow-focus);stroke-width:2.5}
+.ow-node[data-selected] .ow-node-surface{stroke:var(--ow-selection);stroke-width:2.75}
+.ow-edge[data-selected] .ow-edge-path{stroke:var(--ow-selection);stroke-width:3}
+.ow-node[data-related] .ow-node-surface{stroke:var(--ow-accent)}
+.ow-edge[data-related] .ow-edge-path{stroke:var(--ow-accent);stroke-width:2.25}
+.ow-group[data-selected] .ow-group-surface{stroke:var(--ow-selection);stroke-width:2}
+.ow-has-selection [data-muted]{opacity:.18}
 .ow-node-accent{fill:var(--ow-accent)}
 .ow-node-label{fill:var(--ow-text);font-weight:var(--ow-label-weight);text-anchor:middle;dominant-baseline:middle}
 .ow-node-type{fill:var(--ow-text-muted);font-family:var(--ow-font-mono);font-size:9px;font-weight:600;letter-spacing:.9px;text-anchor:middle;text-transform:uppercase}
@@ -180,7 +187,7 @@ function renderGroupSurface(scene: Scene, index: number): string {
   const entry = sceneGroup(scene, index)
   if (entry === undefined) return ''
   const { group, groupShape } = entry
-  return `<g class="ow-group" data-group-id="${escapeXml(group.id)}"><rect class="ow-group-surface" x="${groupShape.x}" y="${groupShape.y}" width="${groupShape.width}" height="${groupShape.height}" rx="var(--ow-group-radius)"/></g>`
+  return `<g class="ow-group" data-group-id="${escapeXml(group.id)}" tabindex="0" role="group" aria-label="${escapeXml(group.label)}"><rect class="ow-group-surface" x="${groupShape.x}" y="${groupShape.y}" width="${groupShape.width}" height="${groupShape.height}" rx="var(--ow-group-radius)"/></g>`
 }
 
 function renderGroupLabel(scene: Scene, index: number): string {
@@ -188,7 +195,7 @@ function renderGroupLabel(scene: Scene, index: number): string {
   if (entry === undefined) return ''
   const { group, groupShape } = entry
   const labelWidth = Math.max(72, group.label.length * 7 + 20)
-  return `<g class="ow-group-label-wrap"><rect class="ow-group-label-bg" x="${groupShape.x + 16}" y="${groupShape.y - 1}" width="${labelWidth}" height="22" rx="7"/><text class="ow-group-label" x="${groupShape.x + 26}" y="${groupShape.y + 14}">${escapeXml(group.label)}</text></g>`
+  return `<g class="ow-group-label-wrap" data-group-id="${escapeXml(group.id)}"><rect class="ow-group-label-bg" x="${groupShape.x + 16}" y="${groupShape.y - 1}" width="${labelWidth}" height="22" rx="7"/><text class="ow-group-label" x="${groupShape.x + 26}" y="${groupShape.y + 14}">${escapeXml(group.label)}</text></g>`
 }
 
 function definitions(prefix: string): string {

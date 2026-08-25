@@ -1,5 +1,21 @@
 export { GraphValidationError, LayoutError, OrbweaverError } from './errors.js'
 export { summarizeGraph } from './accessibility/summarize.js'
+export {
+  getGroupNodes,
+  getIncidentEdges,
+  getIncomingEdges,
+  getNeighbors,
+  getOutgoingEdges,
+} from './graph/queries.js'
+export { mountSvgInteraction } from './interaction/controller.js'
+export type { SvgInteractionController, SvgInteractionOptions } from './interaction/controller.js'
+export { inspectEntity } from './interaction/inspection.js'
+export type {
+  EntityRef,
+  InspectableEntityKind,
+  Inspection,
+  InspectionRelationships,
+} from './interaction/inspection.js'
 export { ElkLayoutEngine } from './layout/elk.js'
 export { layoutGraph } from './layout/layout.js'
 export { estimateNodeSize } from './layout/sizing.js'

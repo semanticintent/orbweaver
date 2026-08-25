@@ -54,12 +54,12 @@ engine types into the public API.
 
 ## Phase 4 — Semantic inspection
 
-**Status:** Not started
+**Status:** Complete
 
-- [ ] Add neighborhood and direction queries.
-- [ ] Add keyboard and pointer selection helpers.
-- [ ] Expose inspection payloads with provenance.
-- [ ] Validate textual summaries and focus behavior.
+- [x] Add neighborhood and direction queries.
+- [x] Add keyboard and pointer selection helpers.
+- [x] Expose inspection payloads with provenance.
+- [x] Validate textual summaries and focus behavior.
 
 **Gate:** A selected entity reveals relationships and origin without semantics
 being reconstructed from SVG.
