@@ -16,6 +16,14 @@ export interface SceneNode {
 export interface SceneEdge {
   edgeId: string
   points: Point[]
+  label?: SceneEdgeLabel
+}
+
+export interface SceneEdgeLabel {
+  x: number
+  y: number
+  width: number
+  height: number
 }
 
 export interface SceneGroup {

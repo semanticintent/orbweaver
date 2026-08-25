@@ -115,9 +115,13 @@ function renderEdge(sceneEdge: SceneEdge, graph: NormalizedGraph, prefix: string
   const path = polylinePath(sceneEdge.points)
   let label = ''
   if (edge.label !== undefined && edge.label.trim() !== '') {
-    const midpoint = longestSegmentMidpoint(sceneEdge.points)
-    const width = Math.max(32, edge.label.length * 7 + 16)
-    label = `<g class="ow-edge-label-wrap" transform="translate(${midpoint.x} ${midpoint.y})"><rect class="ow-edge-label-bg" x="${-width / 2}" y="-11" width="${width}" height="22" rx="7"/><text class="ow-edge-label" text-anchor="middle" dominant-baseline="middle">${escapeXml(edge.label)}</text></g>`
+    const fallback = longestSegmentMidpoint(sceneEdge.points)
+    const width = sceneEdge.label?.width ?? Math.max(32, edge.label.length * 7 + 16)
+    const height = sceneEdge.label?.height ?? 22
+    const midpoint = sceneEdge.label === undefined
+      ? fallback
+      : { x: sceneEdge.label.x + width / 2, y: sceneEdge.label.y + height / 2 }
+    label = `<g class="ow-edge-label-wrap" transform="translate(${midpoint.x} ${midpoint.y})"><rect class="ow-edge-label-bg" x="${-width / 2}" y="${-height / 2}" width="${width}" height="${height}" rx="7"/><text class="ow-edge-label" text-anchor="middle" dominant-baseline="middle">${escapeXml(edge.label)}</text></g>`
   }
   return `<g class="ow-edge" data-edge-id="${escapeXml(edge.id)}" data-edge-type="${escapeXml(type)}"><path class="ow-edge-path" d="${path}"${markerAttributes(edge, prefix)}/>${label}</g>`
 }

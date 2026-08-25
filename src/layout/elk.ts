@@ -8,7 +8,7 @@ import ELKModule, {
 } from 'elkjs/lib/elk.bundled.js'
 import { LayoutError } from '../errors.js'
 import type { Group, LayoutDirection, Node, NormalizedGraph } from '../model/types.js'
-import type { Point, Scene, SceneEdge, SceneGroup, SceneNode } from '../scene/types.js'
+import type { Point, Scene, SceneEdge, SceneEdgeLabel, SceneGroup, SceneNode } from '../scene/types.js'
 import { estimateNodeSize } from './sizing.js'
 import type { LayoutEngine, LayoutOptions } from './types.js'
 
@@ -81,11 +81,17 @@ function toElkGraph(graph: NormalizedGraph, options: LayoutOptions): ElkNode {
   const layerSpacing = options.layerSpacing ?? DEFAULT_LAYER_SPACING
   const padding = options.padding ?? DEFAULT_PADDING
 
-  const edges: ElkExtendedEdge[] = graph.edges.map((edge) => ({
-    id: edge.id,
-    sources: [edge.from],
-    targets: [edge.to],
-  }))
+  const edges: ElkExtendedEdge[] = graph.edges.map((edge) => {
+    const label = edge.label?.trim()
+    return {
+      id: edge.id,
+      sources: [edge.from],
+      targets: [edge.to],
+      ...(label === undefined || label === '' ? {} : {
+        labels: [{ text: label, width: Math.max(32, label.length * 7 + 16), height: 22 }],
+      }),
+    }
+  })
 
   return {
     id: graph.id,
@@ -152,14 +158,39 @@ function flattenShapes(
 
 function flattenEdges(root: ElkNode): SceneEdge[] {
   const result: SceneEdge[] = []
+  const offsets = new Map<string, Point>([[root.id, { x: 0, y: 0 }]])
+
+  const collectOffsets = (container: ElkNode, parentX: number, parentY: number): void => {
+    const x = parentX + (container.x ?? 0)
+    const y = parentY + (container.y ?? 0)
+    offsets.set(container.id, { x, y })
+    for (const child of container.children ?? []) collectOffsets(child, x, y)
+  }
+  for (const child of root.children ?? []) collectOffsets(child, 0, 0)
 
   const visit = (container: ElkNode, parentX: number, parentY: number): void => {
     const containerX = parentX + (container.x ?? 0)
     const containerY = parentY + (container.y ?? 0)
     for (const edge of container.edges ?? []) {
-      const points = (edge.sections ?? []).flatMap((section) => sectionPoints(section, containerX, containerY))
+      const declaredContainer = edge.container === undefined ? undefined : offsets.get(edge.container)
+      const offsetX = declaredContainer?.x ?? containerX
+      const offsetY = declaredContainer?.y ?? containerY
+      const points = (edge.sections ?? []).flatMap((section) => sectionPoints(section, offsetX, offsetY))
       if (points.length < 2) throw new LayoutError(`ELK returned no route for edge "${edge.id}".`)
-      result.push({ edgeId: edge.id, points })
+      const elkLabel = edge.labels?.[0]
+      let label: SceneEdgeLabel | undefined
+      if (
+        elkLabel?.x !== undefined && elkLabel.y !== undefined
+        && elkLabel.width !== undefined && elkLabel.height !== undefined
+      ) {
+        label = {
+          x: elkLabel.x + offsetX,
+          y: elkLabel.y + offsetY,
+          width: elkLabel.width,
+          height: elkLabel.height,
+        }
+      }
+      result.push({ edgeId: edge.id, points, ...(label === undefined ? {} : { label }) })
     }
     for (const child of container.children ?? []) visit(child, containerX, containerY)
   }

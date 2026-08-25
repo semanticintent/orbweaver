@@ -62,6 +62,18 @@ describe('ELK hierarchical layout', () => {
     expect(node(vertical, 'compiler').y).toBeLessThan(node(vertical, 'artifact').y)
   })
 
+  it('honors reverse horizontal and vertical direction', async () => {
+    const fixture = fixtures[0]
+    if (fixture === undefined) throw new Error('Basic flow fixture is missing.')
+    const horizontal = await layoutGraph(fixture, { direction: 'RL' })
+    const vertical = await layoutGraph(fixture, { direction: 'BT' })
+
+    expect(node(horizontal, 'author').x).toBeGreaterThan(node(horizontal, 'compiler').x)
+    expect(node(horizontal, 'compiler').x).toBeGreaterThan(node(horizontal, 'artifact').x)
+    expect(node(vertical, 'author').y).toBeGreaterThan(node(vertical, 'compiler').y)
+    expect(node(vertical, 'compiler').y).toBeGreaterThan(node(vertical, 'artifact').y)
+  })
+
   it('does not mutate graph input', async () => {
     const fixture = fixtures[2]
     if (fixture === undefined) throw new Error('Dependency fixture is missing.')

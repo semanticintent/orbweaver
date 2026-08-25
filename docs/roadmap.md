@@ -66,13 +66,13 @@ being reconstructed from SVG.
 
 ## Phase 5 — Showcase and v0.1
 
-**Status:** Not started
+**Status:** Complete
 
-- [ ] Basic process flow.
-- [ ] Branching decision flow.
-- [ ] Dependency map.
-- [ ] Grouped system architecture.
-- [ ] Browser example gallery and release documentation.
+- [x] Basic process flow.
+- [x] Branching decision flow.
+- [x] Dependency map.
+- [x] Grouped system architecture.
+- [x] Browser example gallery and release documentation.
 
 **Gate:** An unfamiliar developer can install Orbweaver and render a polished,
 accessible graph in under 15 minutes.

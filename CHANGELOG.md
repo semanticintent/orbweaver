@@ -1,0 +1,18 @@
+# Changelog
+
+All notable changes to Orbweaver will be documented here.
+
+## 0.1.0 — 2026-08-25
+
+Initial architectural proof:
+
+- JSON-compatible semantic graph, validation, and deterministic normalization;
+- provenance-preserving node, edge, group, and annotation models;
+- ELK-backed layered layout with LR, RL, TB, and BT directions;
+- renderer-independent scene geometry and routed edges;
+- accessible SVG renderer with premium light and dark themes;
+- semantic treatments for common node and relationship types;
+- graph summaries, semantic queries, inspection payloads, and source identity;
+- pointer and keyboard interaction with selected, related, and muted states;
+- four public showcase diagrams and interactive gallery;
+- Node and browser-oriented package verification.

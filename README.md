@@ -11,16 +11,30 @@ Orbweaver is currently an early architectural prototype. The v0.1 work is
 focused on a plain-data graph contract, deterministic derived layout, polished
 SVG rendering, provenance preservation, and a small interaction model.
 
+## Install
+
+```sh
+npm install @semanticintent/orbweaver
+```
+
 ## Current status
 
-Phases 0–4 are complete. The semantic graph, validation, normalization, ELK
+Phases 0–5 are complete. The semantic graph, validation, normalization, ELK
 layered layout, renderer-independent scene model, accessible SVG renderer,
 light and dark themes, semantic graph queries, provenance-aware inspection,
 keyboard/pointer interaction, tests, build, and public repository foundation
-are in place. The v0.1 showcase is next. See [the implementation roadmap](docs/roadmap.md)
-for live status.
+are in place. Orbweaver is now a v0.1 release candidate. See the
+[implementation roadmap](docs/roadmap.md) for completed gates and future work.
 
 ![Orbweaver dark-theme dependency map](examples/generated/commerce-platform-dark.svg)
+
+Run the complete interactive gallery locally:
+
+```sh
+npm run examples:generate
+npm run examples:serve
+# http://127.0.0.1:4173
+```
 
 ## Intended API
 
@@ -78,6 +92,8 @@ or layout-engine-specific objects.
 - [Architecture](docs/architecture.md)
 - [Visual language](docs/visual-language.md)
 - [Interaction and inspection](docs/interaction.md)
+- [Public API](docs/api.md)
+- [Release process](docs/releasing.md)
 - [Implementation roadmap](docs/roadmap.md)
 - [Original prototype specification](ORBWEAVER_SPEC.md)
 - [Project philosophy and biomimicry](ORBWEAVER_BIOMIMICRY.md)

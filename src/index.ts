@@ -44,7 +44,7 @@ export type {
   Provenance,
 } from './model/types.js'
 export { validateGraph } from './validation/validate.js'
-export type { Point, Scene, SceneEdge, SceneGroup, SceneNode } from './scene/types.js'
+export type { Point, Scene, SceneEdge, SceneEdgeLabel, SceneGroup, SceneNode } from './scene/types.js'
 export { renderGraph } from './render/render-graph.js'
 export { renderSvg, SvgRenderer } from './render/svg.js'
 export type { Renderer, RenderGraphOptions, SvgRenderOptions } from './render/types.js'
