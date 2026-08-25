@@ -1,0 +1,30 @@
+name: Feature request
+description: Propose a focused improvement to Orbweaver
+title: "feat: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or use case
+      description: What semantic visualization problem should this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed outcome
+      description: Describe the desired behavior without requiring a particular implementation.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: checkboxes
+    id: architecture
+    attributes:
+      label: Architectural fit
+      options:
+        - label: This keeps authored meaning separate from derived geometry.
+          required: true

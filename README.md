@@ -68,6 +68,11 @@ npm install
 npm run check
 ```
 
+Contributions are welcome. Read [Contributing](CONTRIBUTING.md), the
+[Code of Conduct](CODE_OF_CONDUCT.md), and the [Security Policy](SECURITY.md)
+before participating. Please report vulnerabilities privately rather than in a
+public issue.
+
 ## Architecture
 
 ```text

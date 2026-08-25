@@ -1,0 +1,39 @@
+name: Bug report
+description: Report reproducible incorrect behavior in Orbweaver
+title: "bug: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Thank you for helping improve Orbweaver.
+  - type: input
+    id: version
+    attributes:
+      label: Orbweaver version
+      placeholder: 0.1.0
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Include the smallest graph and code that demonstrate the problem.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Runtime and operating system
+      placeholder: Node.js 22, macOS 15
