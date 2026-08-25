@@ -21,6 +21,7 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
+    "examples:generate": "npm run build && node examples/generate-showcase.mjs",
     "check": "npm run typecheck && npm test && npm run build"
   },
   "keywords": [

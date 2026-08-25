@@ -1,0 +1,71 @@
+import type { OrbweaverTheme } from './types.js'
+
+export const lightTheme: OrbweaverTheme = {
+  id: 'orbweaver-light',
+  colors: {
+    canvas: '#f7f9fc',
+    surface: '#ffffff',
+    surfaceRaised: '#ffffff',
+    surfaceMuted: '#eef2f8',
+    text: '#172033',
+    textMuted: '#667085',
+    border: '#d6deeb',
+    borderStrong: '#aebbd0',
+    edge: '#71809a',
+    edgeLabel: '#475467',
+    accent: '#4f46e5',
+    accentSoft: '#e8e7ff',
+    focus: '#7c3aed',
+    selection: '#4f46e5',
+    success: '#15803d',
+    warning: '#b45309',
+    danger: '#c24152',
+    shadow: 'rgba(32, 48, 76, 0.14)',
+  },
+  typography: {
+    fontFamily: "Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+    monoFamily: "'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace",
+    fontSize: 14,
+    labelWeight: 600,
+  },
+  geometry: {
+    nodeRadius: 12,
+    groupRadius: 18,
+    edgeWidth: 1.75,
+  },
+}
+
+export const darkTheme: OrbweaverTheme = {
+  id: 'orbweaver-dark',
+  colors: {
+    canvas: '#080c14',
+    surface: '#111827',
+    surfaceRaised: '#162033',
+    surfaceMuted: '#0d1422',
+    text: '#f1f5f9',
+    textMuted: '#8fa0b8',
+    border: '#29364b',
+    borderStrong: '#40506a',
+    edge: '#60708a',
+    edgeLabel: '#c2ccda',
+    accent: '#67e8f9',
+    accentSoft: '#123342',
+    focus: '#fbbf24',
+    selection: '#67e8f9',
+    success: '#4ade80',
+    warning: '#fbbf24',
+    danger: '#fb7185',
+    shadow: 'rgba(0, 0, 0, 0.38)',
+  },
+  typography: {
+    fontFamily: "Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+    monoFamily: "'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace",
+    fontSize: 14,
+    labelWeight: 600,
+  },
+  geometry: {
+    nodeRadius: 12,
+    groupRadius: 18,
+    edgeWidth: 1.75,
+  },
+}

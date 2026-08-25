@@ -13,15 +13,18 @@ SVG rendering, provenance preservation, and a small interaction model.
 
 ## Current status
 
-Phases 0–2 are complete. The semantic graph, validation, normalization, ELK
-layered layout, renderer-independent scene model, tests, build, and public
-repository foundation are in place. The visual language and SVG renderer are
-next. See [the implementation roadmap](docs/roadmap.md) for live status.
+Phases 0–3 are complete. The semantic graph, validation, normalization, ELK
+layered layout, renderer-independent scene model, accessible SVG renderer,
+light and dark themes, tests, build, and public repository foundation are in
+place. Semantic inspection is next. See [the implementation roadmap](docs/roadmap.md)
+for live status.
+
+![Orbweaver dark-theme dependency map](examples/generated/commerce-platform-dark.svg)
 
 ## Intended API
 
 ```ts
-import { createGraph, layoutGraph, validateGraph } from '@semanticintent/orbweaver'
+import { createGraph, renderGraph, validateGraph } from '@semanticintent/orbweaver'
 
 const graph = createGraph({
   id: 'checkout',
@@ -38,11 +41,10 @@ const graph = createGraph({
 })
 
 const result = validateGraph(graph)
-const scene = await layoutGraph(graph, { direction: 'LR' })
+const svg = await renderGraph(graph, {
+  layout: { direction: 'LR' },
+})
 ```
-
-SVG rendering shown in the project specification is planned, not yet
-implemented.
 
 ## Development
 
@@ -73,6 +75,7 @@ or layout-engine-specific objects.
 ## Documentation
 
 - [Architecture](docs/architecture.md)
+- [Visual language](docs/visual-language.md)
 - [Implementation roadmap](docs/roadmap.md)
 - [Original prototype specification](ORBWEAVER_SPEC.md)
 - [Project philosophy and biomimicry](ORBWEAVER_BIOMIMICRY.md)

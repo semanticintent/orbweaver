@@ -43,12 +43,12 @@ engine types into the public API.
 
 ## Phase 3 — Visual language and SVG
 
-**Status:** Not started
+**Status:** Complete
 
-- [ ] Define neutral premium light and dark themes.
-- [ ] Implement accessible static SVG rendering.
-- [ ] Establish screenshot-based visual QA.
-- [ ] Polish nodes, edges, labels, groups, and responsive scaling.
+- [x] Define neutral premium light and dark themes.
+- [x] Implement accessible static SVG rendering.
+- [x] Establish screenshot-based visual QA.
+- [x] Polish nodes, edges, labels, groups, and responsive scaling.
 
 **Gate:** Showcase output is visually strong enough to lead the public README.
 
