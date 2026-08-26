@@ -37,3 +37,25 @@ absolute scene coordinates; renderers never consume ELK objects.
 The initial package owns graph modeling, validation, normalization, layout,
 scene construction, SVG rendering, accessibility helpers, and small interaction
 primitives. Consuming systems own domain adapters and inspector experiences.
+
+## AI-assisted proposal boundary
+
+AI-assisted systems sit before the core pipeline:
+
+```text
+Untrusted GraphProposal
+    ↓ proposal limits and diagnostics
+Validated proposal
+    ↓ explicit human or host acceptance
+GraphInput
+    ↓ ordinary Orbweaver pipeline
+SVG
+```
+
+The proposal envelope carries generation metadata, supporting evidence, and AI
+inferences for review. It does not replace `GraphInput`, and it cannot bypass
+graph validation. Provider authentication, retrieval, prompting, cost controls,
+and retention belong to consuming applications or optional adapters.
+
+See [AI-assisted semantic visualization](ai-assisted-semantic-visualization.md)
+and [ADR 0004](adr/0004-ai-proposes-semantics.md).

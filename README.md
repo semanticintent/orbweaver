@@ -19,11 +19,12 @@ npm install @semanticintent/orbweaver
 
 ## Current status
 
-Phases 0–5 are complete. The semantic graph, validation, normalization, ELK
+Phases 0–8 are complete. The semantic graph, validation, normalization, ELK
 layered layout, renderer-independent scene model, accessible SVG renderer,
 light and dark themes, semantic graph queries, provenance-aware inspection,
 keyboard/pointer interaction, tests, build, and public repository foundation
-are in place. Orbweaver is now a v0.1 release candidate. See the
+are in place and published as the v0.1 line. Phase 9 formalizes AI-assisted
+semantic visualization without coupling the core to an AI provider. See the
 [implementation roadmap](docs/roadmap.md) for completed gates and future work.
 
 ![Orbweaver dark-theme dependency map](examples/generated/commerce-platform-dark.svg)
@@ -120,6 +121,7 @@ or layout-engine-specific objects.
 - [Public API](docs/api.md)
 - [Release process](docs/releasing.md)
 - [Implementation roadmap](docs/roadmap.md)
+- [AI-assisted semantic visualization](docs/ai-assisted-semantic-visualization.md)
 - [Original prototype specification](ORBWEAVER_SPEC.md)
 - [Project philosophy and biomimicry](ORBWEAVER_BIOMIMICRY.md)
 - [Future RECALL integration](ORBWEAVER_RECALL_INTEGRATION.md)

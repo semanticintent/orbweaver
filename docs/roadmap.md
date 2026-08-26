@@ -77,6 +77,40 @@ being reconstructed from SVG.
 **Gate:** An unfamiliar developer can install Orbweaver and render a polished,
 accessible graph in under 15 minutes.
 
+## Phases 6–8 — Distribution and package-native gallery
+
+**Status:** Complete
+
+- [x] Publish the framework-independent package to npm.
+- [x] Establish the public website and package-native interactive gallery.
+- [x] Add source inspection, SVG download, themes, focus mode, and persistent
+  semantic selection.
+- [x] Defer the layout engine until the gallery approaches the viewport.
+- [x] Improve relationship hit targets and connected-entity emphasis.
+
+**Gate:** The public gallery consumes the published package, preserves live
+semantic interaction state, and keeps the initial gallery UI lightweight.
+
+## Phase 9 — AI-assisted semantic visualization
+
+**Status:** Proposed
+
+- [ ] Specify a versioned `GraphProposal` envelope and JSON schema.
+- [ ] Validate proposal structure, forbidden fields, and resource limits.
+- [ ] Distinguish trusted provenance, supporting evidence, AI inference, and
+  human acceptance.
+- [ ] Add a browser-local JSON import and review lab.
+- [ ] Add explicit accept, discard, JSON export, and SVG export actions.
+- [ ] Define a provider-neutral generation adapter.
+- [ ] Add one optional reference generator outside Orbweaver core.
+
+**Gate:** An unfamiliar user can safely review and accept an untrusted semantic
+proposal without AI output bypassing validation or entering the deterministic
+layout and rendering pipeline directly.
+
+See [AI-assisted semantic visualization](ai-assisted-semantic-visualization.md)
+for the complete scope and delivery gates.
+
 ## Deferred integrations
 
 RECALL, `recall-ui`, and StratIQX adapters are intentional future consumers.
