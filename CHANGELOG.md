@@ -2,7 +2,7 @@
 
 All notable changes to Orbweaver will be documented here.
 
-## Unreleased
+## 0.2.0-alpha.1 — 2026-08-26
 
 - Add the provider-neutral `GraphProposal` version 1 contract and JSON Schema;
 - validate untrusted proposals with path-specific structural, semantic, safety,
