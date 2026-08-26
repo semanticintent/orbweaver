@@ -34,6 +34,10 @@ describe('SVG renderer', () => {
     expect(svg).toContain('class="ow-edge-hit"')
     expect(svg).toContain('stroke-width:16')
     expect(svg).toContain('pointer-events:stroke')
+    expect(svg).toContain('fill:var(--ow-accent-soft);stroke:var(--ow-accent);stroke-width:2.5')
+    expect(svg).toContain('drop-shadow(0 0 7px var(--ow-accent))')
+    expect(svg).toContain('.ow-has-selection [data-muted]{opacity:.12}')
+    expect(svg.indexOf('[data-node-status="healthy"]')).toBeLessThan(svg.indexOf('.ow-node[data-related]'))
   })
 
   it('renders groups and semantic node surfaces', async () => {

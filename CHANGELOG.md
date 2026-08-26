@@ -2,6 +2,12 @@
 
 All notable changes to Orbweaver will be documented here.
 
+## 0.1.2 — 2026-08-26
+
+- Strengthen connected-node emphasis with brighter borders, lifted surfaces, and a soft accent glow;
+- increase contrast between related and unrelated entities during relationship inspection;
+- ensure interactive selection styling takes precedence over passive health and status colors.
+
 ## 0.1.1 — 2026-08-26
 
 - Add continuous 16-pixel interaction paths behind visible relationships;

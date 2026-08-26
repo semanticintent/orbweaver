@@ -1,6 +1,6 @@
 {
   "name": "@semanticintent/orbweaver",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Semantic visual structures for declarative systems.",
   "type": "module",
   "main": "./dist/index.js",

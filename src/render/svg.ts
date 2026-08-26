@@ -68,19 +68,19 @@ function stylesheet(prefix: string): string {
 .ow-node-surface{fill:var(--ow-surface-raised);stroke:var(--ow-border-strong);stroke-width:1.25;filter:url(#${prefix}-shadow)}
 .ow-node:hover .ow-node-surface{stroke:var(--ow-accent)}
 .ow-node:focus-visible .ow-node-surface{stroke:var(--ow-focus);stroke-width:2.5}
-.ow-node[data-selected] .ow-node-surface{stroke:var(--ow-selection);stroke-width:2.75}
-.ow-edge[data-selected] .ow-edge-path{stroke:var(--ow-selection);stroke-width:3}
-.ow-node[data-related] .ow-node-surface{stroke:var(--ow-accent)}
-.ow-edge[data-related] .ow-edge-path{stroke:var(--ow-accent);stroke-width:2.25}
-.ow-group[data-selected] .ow-group-surface{stroke:var(--ow-selection);stroke-width:2}
-.ow-has-selection [data-muted]{opacity:.18}
 .ow-node-accent{fill:var(--ow-accent)}
 .ow-node-label{fill:var(--ow-text);font-weight:var(--ow-label-weight);text-anchor:middle;dominant-baseline:middle}
 .ow-node-type{fill:var(--ow-text-muted);font-family:var(--ow-font-mono);font-size:9px;font-weight:600;letter-spacing:.9px;text-anchor:middle;text-transform:uppercase}
 .ow-node[data-node-status="critical"] .ow-node-surface,.ow-node[data-node-status="error"] .ow-node-surface{stroke:var(--ow-danger)}
 .ow-node[data-node-status="warning"] .ow-node-surface{stroke:var(--ow-warning)}
 .ow-node[data-node-status="healthy"] .ow-node-surface{stroke:var(--ow-success)}
-@media (prefers-reduced-motion:no-preference){.ow-node-surface,.ow-edge-path{transition:stroke .16s ease,opacity .16s ease}}
+.ow-node[data-selected] .ow-node-surface{stroke:var(--ow-selection);stroke-width:2.75}
+.ow-edge[data-selected] .ow-edge-path{stroke:var(--ow-selection);stroke-width:3}
+.ow-node[data-related] .ow-node-surface{fill:var(--ow-accent-soft);stroke:var(--ow-accent);stroke-width:2.5;filter:drop-shadow(0 0 7px var(--ow-accent))}
+.ow-edge[data-related] .ow-edge-path{stroke:var(--ow-accent);stroke-width:2.25}
+.ow-group[data-selected] .ow-group-surface{stroke:var(--ow-selection);stroke-width:2}
+.ow-has-selection [data-muted]{opacity:.12}
+@media (prefers-reduced-motion:no-preference){.ow-node-surface,.ow-edge-path{transition:fill .16s ease,stroke .16s ease,opacity .16s ease,filter .16s ease}}
 `
 }
 
