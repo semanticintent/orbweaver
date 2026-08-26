@@ -58,6 +58,7 @@ function stylesheet(prefix: string): string {
 .ow-group-label-bg{fill:var(--ow-canvas)}
 .ow-group-label{fill:var(--ow-text-muted);font-family:var(--ow-font-mono);font-size:10px;font-weight:600;letter-spacing:1.1px;text-transform:uppercase}
 .ow-edge-path{fill:none;stroke:var(--ow-edge);stroke-width:var(--ow-edge-width);stroke-linecap:round;stroke-linejoin:round}
+.ow-edge-hit{fill:none;stroke:transparent;stroke-width:16;stroke-linecap:round;stroke-linejoin:round;pointer-events:stroke}
 .ow-edge{cursor:pointer}
 .ow-edge[data-edge-type="error"] .ow-edge-path{stroke:var(--ow-danger)}
 .ow-edge[data-edge-type="event"] .ow-edge-path{stroke-dasharray:5 5}
@@ -123,7 +124,7 @@ function renderEdge(sceneEdge: SceneEdge, graph: NormalizedGraph, prefix: string
       : { x: sceneEdge.label.x + width / 2, y: sceneEdge.label.y + height / 2 }
     label = `<g class="ow-edge-label-wrap" transform="translate(${midpoint.x} ${midpoint.y})"><rect class="ow-edge-label-bg" x="${-width / 2}" y="${-height / 2}" width="${width}" height="${height}" rx="7"/><text class="ow-edge-label" text-anchor="middle" dominant-baseline="middle">${escapeXml(edge.label)}</text></g>`
   }
-  return `<g class="ow-edge" data-edge-id="${escapeXml(edge.id)}" data-edge-type="${escapeXml(type)}"><path class="ow-edge-path" d="${path}"${markerAttributes(edge, prefix)}/>${label}</g>`
+  return `<g class="ow-edge" data-edge-id="${escapeXml(edge.id)}" data-edge-type="${escapeXml(type)}"><path class="ow-edge-hit" d="${path}" aria-hidden="true"/><path class="ow-edge-path" d="${path}"${markerAttributes(edge, prefix)}/>${label}</g>`
 }
 
 function wrapLabel(label: string, width: number): string[] {

@@ -77,6 +77,44 @@ describe('SVG interaction controller', () => {
     expect(svg.querySelector('[data-node-id="a"]')?.hasAttribute('data-related')).toBe(true)
   })
 
+  it('selects consecutive solid and dashed relationships through wide hit paths', async () => {
+    const relationshipGraph: Graph = {
+      id: 'relationship-hit-targets',
+      nodes: [
+        { id: 'source', label: 'Source' },
+        { id: 'process', label: 'Process' },
+        { id: 'events', label: 'Events' },
+      ],
+      edges: [
+        { id: 'reserve', from: 'source', to: 'process', type: 'dependency', label: 'Reserve' },
+        { id: 'publish', from: 'process', to: 'events', type: 'event', label: 'Publish' },
+      ],
+    }
+    const scene = await layoutGraph(relationshipGraph)
+    const parsed = new DOMParser().parseFromString(renderSvg(scene), 'image/svg+xml')
+    const svg = document.importNode(parsed.documentElement, true)
+    document.body.append(svg)
+    if (!(svg instanceof SVGSVGElement)) throw new Error('Rendered SVG was not mounted.')
+    const onSelectionChange = vi.fn<(inspection: Inspection | undefined) => void>()
+    const controller = mountSvgInteraction(svg, scene.graph, { onSelectionChange })
+
+    svg.querySelector('[data-edge-id="reserve"] .ow-edge-hit')
+      ?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    expect(controller.selected).toEqual({ kind: 'edge', id: 'reserve' })
+    svg.querySelector('[data-edge-id="publish"] .ow-edge-hit')
+      ?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    expect(controller.selected).toEqual({ kind: 'edge', id: 'publish' })
+    expect(onSelectionChange).toHaveBeenLastCalledWith(expect.objectContaining({
+      kind: 'edge',
+      id: 'publish',
+      from: 'process',
+      to: 'events',
+      type: 'event',
+    }))
+    expect(svg.querySelector('[data-node-id="process"]')?.hasAttribute('data-related')).toBe(true)
+    expect(svg.querySelector('[data-node-id="events"]')?.hasAttribute('data-related')).toBe(true)
+  })
+
   it('clears on background click and removes listeners on destroy', async () => {
     const { svg, controller, onSelectionChange } = await setup()
     controller.select({ kind: 'node', id: 'a' })

@@ -2,6 +2,12 @@
 
 All notable changes to Orbweaver will be documented here.
 
+## 0.1.1 — 2026-08-26
+
+- Add continuous 16-pixel interaction paths behind visible relationships;
+- make solid, dashed, labeled, and unlabeled edges easier to select without changing their appearance;
+- cover consecutive relationship selection and connected-node highlighting with regression tests.
+
 ## 0.1.0 — 2026-08-25
 
 Initial architectural proof:

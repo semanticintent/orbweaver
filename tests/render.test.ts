@@ -31,6 +31,9 @@ describe('SVG renderer', () => {
     expect(svg).toContain('tabindex="0" role="listitem"')
     expect(svg).toContain('marker-end="url(#ow-decision-flow-arrow-end)"')
     expect(svg).toContain('class="ow-edge-label"')
+    expect(svg).toContain('class="ow-edge-hit"')
+    expect(svg).toContain('stroke-width:16')
+    expect(svg).toContain('pointer-events:stroke')
   })
 
   it('renders groups and semantic node surfaces', async () => {
