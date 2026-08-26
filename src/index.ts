@@ -27,6 +27,21 @@ export type {
 } from './layout/types.js'
 export { createGraph } from './model/create.js'
 export { normalizeGraph } from './model/normalize.js'
+export { graphProposalJsonSchema } from './proposal/schema.js'
+export { defaultProposalValidationLimits, validateGraphProposal } from './proposal/validate.js'
+export type {
+  EvidenceReference,
+  GraphProposal,
+  ProposalClaim,
+  ProposalEntityReference,
+  ProposalGeneration,
+  ProposalValidationIssue,
+  ProposalValidationLimits,
+  ProposalValidationOptions,
+  ProposalValidationResult,
+  ValidProposalValidationResult,
+  InvalidProposalValidationResult,
+} from './proposal/types.js'
 export type {
   Annotation,
   AnnotationTarget,

@@ -22,6 +22,48 @@ Validates and returns a `NormalizedGraph` with explicit graph defaults, stable
 edge IDs, and normalized edge direction. Throws `GraphValidationError` for
 structural errors.
 
+## AI-assisted proposals
+
+### `validateGraphProposal(input, options?)`
+
+Accepts `unknown` untrusted input and returns path-specific proposal
+diagnostics:
+
+```ts
+const result = validateGraphProposal(untrustedJson, {
+  limits: { maxNodes: 100, maxEdges: 200 },
+})
+
+if (result.valid) {
+  const acceptedGraph = result.proposal.graph
+}
+```
+
+Validation checks the versioned envelope, graph structure, evidence and claim
+references, ordinary graph invariants, executable markup, forbidden geometry
+and renderer fields, and configurable resource limits. A valid result means the
+proposal conforms to the contract; it does not establish that AI-generated
+claims are factually true.
+
+The accepted proposal is returned only when no errors remain. Warnings preserve
+ordinary graph diagnostics such as disconnected nodes.
+
+### `graphProposalJsonSchema`
+
+The provider-neutral JSON Schema for `GraphProposal` version `1`. It can be
+used as a structured-output schema or serialized for external validators.
+
+### `defaultProposalValidationLimits`
+
+The default limits are 1 MiB, 250 nodes, 500 edges, 50 groups, 500 evidence
+references, 1,000 claims, 200-character labels, 2,000-character descriptions,
+and eight metadata levels. Pass a partial `limits` object to lower or
+explicitly adjust them.
+
+Proposal types include `GraphProposal`, `ProposalGeneration`,
+`EvidenceReference`, `ProposalClaim`, `ProposalValidationIssue`, and
+`ProposalValidationResult`.
+
 ## Layout
 
 ### `layoutGraph(graph, options?)`

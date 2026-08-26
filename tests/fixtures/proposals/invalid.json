@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "2",
+  "graph": {
+    "id": "invalid",
+    "nodes": [{ "id": "only-an-id" }],
+    "edges": "not-an-array"
+  },
+  "generation": {
+    "provider": 42
+  },
+  "claims": [
+    {
+      "entity": { "kind": "shape", "id": "unknown" },
+      "evidenceIds": ["missing-evidence"]
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1",
+  "graph": {
+    "id": "ai-architecture",
+    "title": "Proposed checkout architecture",
+    "nodes": [
+      { "id": "checkout", "type": "service", "label": "Checkout" },
+      { "id": "payments", "type": "external", "label": "Payment provider" }
+    ],
+    "edges": [
+      { "id": "authorizes", "from": "checkout", "to": "payments", "type": "request", "label": "Authorize" }
+    ]
+  },
+  "generation": {
+    "provider": "example-provider",
+    "model": "example-model",
+    "adapter": "orbweaver-reference"
+  },
+  "evidence": [
+    { "id": "api-contract", "label": "Checkout API contract", "source": "checkout.openapi.json", "location": "/paths/authorize" }
+  ],
+  "claims": [
+    {
+      "entity": { "kind": "edge", "id": "authorizes" },
+      "evidenceIds": ["api-contract"],
+      "confidence": "high",
+      "rationale": "The supplied contract declares the authorization request."
+    }
+  ]
+}

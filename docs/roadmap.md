@@ -93,11 +93,11 @@ semantic interaction state, and keeps the initial gallery UI lightweight.
 
 ## Phase 9 — AI-assisted semantic visualization
 
-**Status:** Proposed
+**Status:** In progress
 
-- [ ] Specify a versioned `GraphProposal` envelope and JSON schema.
-- [ ] Validate proposal structure, forbidden fields, and resource limits.
-- [ ] Distinguish trusted provenance, supporting evidence, AI inference, and
+- [x] Specify a versioned `GraphProposal` envelope and JSON schema.
+- [x] Validate proposal structure, forbidden fields, and resource limits.
+- [x] Distinguish trusted provenance, supporting evidence, AI inference, and
   human acceptance.
 - [ ] Add a browser-local JSON import and review lab.
 - [ ] Add explicit accept, discard, JSON export, and SVG export actions.

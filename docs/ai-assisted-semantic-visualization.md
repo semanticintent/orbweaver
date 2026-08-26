@@ -1,7 +1,9 @@
 # AI-assisted semantic visualization
 
-**Status:** Proposed  
-**Target:** Phase 9 / Orbweaver v0.2 exploration  
+**Status:** In progress — 9A complete
+
+**Target:** Phase 9 / Orbweaver v0.2 exploration
+
 **Scope:** Provider-neutral generation boundary, validation experience, and
 reference gallery lab
 
@@ -195,26 +197,26 @@ Hosts may choose lower limits. Raising limits requires performance evidence.
 
 ### 9A — Contract and validation
 
-- Specify the versioned proposal envelope and JSON schema.
-- Implement resource-limit and forbidden-field diagnostics.
-- Add fixtures for valid, invalid, adversarial, and unsupported proposals.
-- Document the distinction between provenance, evidence, and inference.
+- [x] Specify the versioned proposal envelope and JSON schema.
+- [x] Implement resource-limit and forbidden-field diagnostics.
+- [x] Add fixtures for valid, invalid, adversarial, and unsupported proposals.
+- [x] Document the distinction between provenance, evidence, and inference.
 
 ### 9B — Review lab
 
-- Add JSON paste/import to the website.
-- Add diagnostics, proposal disclosure, evidence inspection, and explicit
+- [ ] Add JSON paste/import to the website.
+- [ ] Add diagnostics, proposal disclosure, evidence inspection, and explicit
   accept/discard actions.
-- Reuse the package-native renderer and interaction controller.
-- Keep all proposal state local to the browser.
+- [ ] Reuse the package-native renderer and interaction controller.
+- [ ] Keep all proposal state local to the browser.
 
 ### 9C — Reference generator
 
-- Define the provider-neutral generator interface.
-- Add one optional server-side reference adapter in the website, not core.
-- Require structured output conforming to the proposal schema.
-- Add cost, timeout, cancellation, and failure UX.
-- Publish the prompt contract and a reproducible example without publishing
+- [ ] Define the provider-neutral generator interface.
+- [ ] Add one optional server-side reference adapter in the website, not core.
+- [ ] Require structured output conforming to the proposal schema.
+- [ ] Add cost, timeout, cancellation, and failure UX.
+- [ ] Publish the prompt contract and a reproducible example without publishing
   secrets or private source material.
 
 ## Acceptance gate

@@ -2,6 +2,13 @@
 
 All notable changes to Orbweaver will be documented here.
 
+## Unreleased
+
+- Add the provider-neutral `GraphProposal` version 1 contract and JSON Schema;
+- validate untrusted proposals with path-specific structural, semantic, safety,
+  evidence, and resource-limit diagnostics;
+- add valid, invalid, oversized, circular, and adversarial proposal coverage.
+
 ## 0.1.2 — 2026-08-26
 
 - Strengthen connected-node emphasis with brighter borders, lifted surfaces, and a soft accent glow;
