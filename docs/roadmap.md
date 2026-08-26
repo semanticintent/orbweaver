@@ -99,8 +99,8 @@ semantic interaction state, and keeps the initial gallery UI lightweight.
 - [x] Validate proposal structure, forbidden fields, and resource limits.
 - [x] Distinguish trusted provenance, supporting evidence, AI inference, and
   human acceptance.
-- [ ] Add a browser-local JSON import and review lab.
-- [ ] Add explicit accept, discard, JSON export, and SVG export actions.
+- [x] Add a browser-local JSON import and review lab.
+- [x] Add explicit accept, discard, JSON export, and SVG export actions.
 - [ ] Define a provider-neutral generation adapter.
 - [ ] Add one optional reference generator outside Orbweaver core.
 

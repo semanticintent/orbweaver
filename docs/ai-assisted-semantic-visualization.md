@@ -204,11 +204,11 @@ Hosts may choose lower limits. Raising limits requires performance evidence.
 
 ### 9B — Review lab
 
-- [ ] Add JSON paste/import to the website.
-- [ ] Add diagnostics, proposal disclosure, evidence inspection, and explicit
+- [x] Add JSON paste/import to the website.
+- [x] Add diagnostics, proposal disclosure, evidence inspection, and explicit
   accept/discard actions.
-- [ ] Reuse the package-native renderer and interaction controller.
-- [ ] Keep all proposal state local to the browser.
+- [x] Reuse the package-native renderer and interaction controller.
+- [x] Keep all proposal state local to the browser.
 
 ### 9C — Reference generator
 
