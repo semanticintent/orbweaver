@@ -49,6 +49,30 @@ The v0.2 alpha line adds human-reviewed proposal contracts, deterministic SVG
 artifact frames, and lightweight, dependency-free viewport navigation for
 close inspection of detailed diagrams.
 
+## WebMCP — agent-assisted semantic visualization
+
+Orbweaver implements a bounded WebMCP interface in its public semantic
+playground. ChatGPT or Codex can discover page-local tools, read the active
+workspace and proposal contract, create or revise a semantic graph, inspect its
+meaning, and focus entities in the same live diagram a person is viewing.
+
+The integration deliberately keeps the trust boundary visible:
+
+- agent input is validated as untrusted semantic data;
+- mutations are atomic, revision-protected, and reversible;
+- Orbweaver derives layout and SVG rather than accepting authored geometry;
+- agent-created revisions remain unaccepted previews;
+- acceptance and export are human-only actions.
+
+> **Agent proposes. Human decides.**
+
+[Open the WebMCP playground](https://orbweaver.semanticintent.dev/playground),
+read the [public WebMCP guide](https://orbweaver.semanticintent.dev/docs/webmcp),
+or inspect the [implementation and trust model](docs/webmcp-semantic-playground.md).
+The core `@semanticintent/orbweaver` package remains provider-neutral; WebMCP
+is implemented by the website adapter over the same validation, rendering, and
+interaction boundaries used by the manual interface.
+
 ## Primary showcase — Northwind
 
 The canonical Northwind database becomes an inspectable relational map with 13
@@ -154,6 +178,8 @@ or layout-engine-specific objects.
 - [Release process](docs/releasing.md)
 - [Implementation roadmap](docs/roadmap.md)
 - [AI-assisted semantic visualization](docs/ai-assisted-semantic-visualization.md)
+- [WebMCP semantic playground and trust model](docs/webmcp-semantic-playground.md)
+- [WebMCP Challenge submission](docs/webmcp-challenge-submission.md)
 - [Reference proposal generator](docs/reference-generator.md)
 - [Original prototype specification](ORBWEAVER_SPEC.md)
 - [Project philosophy and biomimicry](ORBWEAVER_BIOMIMICRY.md)
