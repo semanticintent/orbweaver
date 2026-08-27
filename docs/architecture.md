@@ -59,3 +59,8 @@ and retention belong to consuming applications or optional adapters.
 
 See [AI-assisted semantic visualization](ai-assisted-semantic-visualization.md)
 and [ADR 0004](adr/0004-ai-proposes-semantics.md).
+
+The architectural boundaries in this document are applied through the
+[design and engineering discipline](design-discipline.md), which defines the
+decision tests for scope, dependencies, interaction, accessibility, and
+release quality.

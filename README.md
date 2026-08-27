@@ -147,6 +147,7 @@ or layout-engine-specific objects.
 ## Documentation
 
 - [Architecture](docs/architecture.md)
+- [Design and engineering discipline](docs/design-discipline.md)
 - [Visual language](docs/visual-language.md)
 - [Interaction and inspection](docs/interaction.md)
 - [Public API](docs/api.md)

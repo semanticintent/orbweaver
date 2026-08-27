@@ -1,7 +1,8 @@
 # Implementation roadmap
 
 This document is the live phase tracker for Orbweaver. A phase is complete only
-when its acceptance gate passes.
+when its acceptance gate passes. Cross-phase decisions follow the
+[design and engineering discipline](design-discipline.md).
 
 ## Phase 0 — Specification consolidation
 
