@@ -176,6 +176,32 @@ and interaction across supported browsers. Static SVG and PNG exports clearly
 document the smaller set of guarantees they preserve, and the complete quality
 suite passes within its published compatibility and performance budgets.
 
+## WebMCP semantic playground — Website track
+
+**Status:** Scoped
+
+- [x] Build a manual-first `/playground` workspace on the public website.
+- [x] Share one workspace controller between visible UI actions and future page
+  tools.
+- [ ] Register strict top-level JavaScript tools for workspace context,
+  proposal contract, semantic inspection, and visible focus.
+- [ ] Add validated create and atomic revision tools with revision-conflict
+  protection and undo.
+- [ ] Keep acceptance and export explicitly human-controlled for the initial
+  release.
+- [ ] Verify discovery, execution, safety review, and visible results in the
+  ChatGPT built-in browser.
+- [ ] Publish WebMCP documentation and a reproducible Northwind or commerce
+  demonstration.
+
+**Gate:** A person can ask an agent to create and revise a semantic diagram on
+the live page, inspect every proposed entity and relationship, and explicitly
+accept the current revision, while invalid input never reaches rendering and
+the complete workflow remains available without WebMCP.
+
+See [WebMCP semantic playground](webmcp-semantic-playground.md) for the product,
+tool, security, testing, and delivery scope.
+
 ## Deferred integrations
 
 RECALL, CAL, Mere, `recall-ui`, and StratIQX adapters are intentional future
