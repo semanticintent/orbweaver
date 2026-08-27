@@ -1,6 +1,6 @@
 # WebMCP semantic playground
 
-**Status:** In progress — W1–W3 complete; W4 next
+**Status:** W1–W4 complete
 
 **Surface:** `orbweaver.semanticintent.dev/playground`
 
@@ -357,15 +357,23 @@ increasing undo, and human-only acceptance were verified end-to-end.
 
 ### W4 — Browser hardening and public presentation
 
-- test in the ChatGPT built-in browser;
-- verify tool discovery, safety review, visual results, and recent activity;
-- test unsupported browsers and responsive layouts;
-- add `/docs/webmcp`, example prompts, privacy disclosure, and challenge copy;
-- record a short canonical demonstration and collect submission evidence.
+- [x] Test in the ChatGPT built-in browser.
+- [x] Verify tool discovery, invocation review, and visible results.
+- [x] Test unsupported browsers and responsive layouts.
+- [x] Add `/docs/webmcp`, example prompts, privacy disclosure, and challenge copy.
+- [x] Record the canonical creation, revision, focus, and undo demonstration.
 
 **Gate:** An unfamiliar user can reproduce the canonical acceptance prompt on
 the deployed site and understand what the agent changed and what still requires
 human judgment.
+
+**Result:** Passed on August 27, 2026. The public guide documents the complete
+six-tool surface, provides reproducible creation and revision prompts, explains
+the trust boundary, and links directly to the playground. Desktop WebMCP tests
+verified the canonical workflow. Automated fallback tests and visual QA at
+1512px and 390px verified the ordinary and responsive experiences; the mobile
+page has no horizontal overflow. The privacy notice now covers page-local site
+tools and in-memory proposal handling.
 
 ## Deferred work
 

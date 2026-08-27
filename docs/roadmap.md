@@ -178,7 +178,7 @@ suite passes within its published compatibility and performance budgets.
 
 ## WebMCP semantic playground — Website track
 
-**Status:** W1–W3 complete; W4 next
+**Status:** W1–W4 complete
 
 - [x] Build a manual-first `/playground` workspace on the public website.
 - [x] Share one workspace controller between visible UI actions and future page
@@ -191,7 +191,7 @@ suite passes within its published compatibility and performance budgets.
   release.
 - [x] Verify discovery, execution, safety review, and visible results in the
   ChatGPT built-in browser.
-- [ ] Publish WebMCP documentation and a reproducible Northwind or commerce
+- [x] Publish WebMCP documentation and a reproducible Northwind or commerce
   demonstration.
 
 **Gate:** A person can ask an agent to create and revise a semantic diagram on
