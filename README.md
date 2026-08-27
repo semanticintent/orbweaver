@@ -45,7 +45,16 @@ are in place and published as the v0.1 line. Phase 9 formalizes AI-assisted
 semantic visualization without coupling the core to an AI provider. See the
 [implementation roadmap](docs/roadmap.md) for completed gates and future work.
 
-![Orbweaver dark-theme dependency map](examples/generated/commerce-platform-dark.svg)
+## Primary showcase — Northwind
+
+The canonical Northwind database becomes an inspectable relational map with 13
+tables, 13 foreign-key relationships, five semantic domains, primary-key
+metadata, and source provenance—without authored coordinates.
+
+![Northwind relational model rendered by Orbweaver](examples/generated/northwind-schema-dark.svg)
+
+[Explore the interactive public gallery](https://orbweaver.semanticintent.dev/gallery)
+or inspect the [Northwind semantic graph](examples/showcases.mjs) in source.
 
 Run the complete interactive gallery locally:
 
