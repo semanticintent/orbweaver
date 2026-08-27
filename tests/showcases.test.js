@@ -16,12 +16,13 @@ describe('public showcases', () => {
       && label.y < node.y + node.height && label.y + label.height > node.y
   }
 
-  it('contains the four promised diagram categories', () => {
+  it('contains the promised diagram categories', () => {
     expect(showcases.map((showcase) => showcase.kicker)).toEqual([
       'Process flow',
       'Decision flow',
       'Dependency map',
       'System architecture',
+      'Relational schema',
     ])
   })
 
