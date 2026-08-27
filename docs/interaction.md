@@ -53,3 +53,37 @@ inspection includes recursively contained nodes.
 This boundary allows a future RECALL host to interpret a generic Orbweaver
 `source` object as a source-navigation action without adding RECALL behavior to
 Orbweaver core.
+
+## Lightweight viewport navigation
+
+`mountSvgViewport` adds bounded navigation directly to the root SVG `viewBox`.
+It does not wrap or transform the diagram, modify semantic geometry, or add a
+runtime dependency.
+
+```ts
+import { mountSvgViewport } from '@semanticintent/orbweaver'
+
+const viewport = mountSvgViewport(svg, {
+  minZoom: 1,
+  maxZoom: 4,
+  onViewChange(state) {
+    updateZoomLabel(Math.round(state.zoom * 100))
+  },
+})
+
+viewport.zoomIn()
+viewport.zoomOut()
+viewport.fit()
+
+// When the host removes the diagram:
+viewport.destroy()
+```
+
+The default behavior preserves ordinary page scrolling. Users can zoom with
+host controls, `+`, `-`, `0`, `Ctrl/Command + wheel`, or a two-pointer pinch.
+Panning uses Space + primary-button drag, middle-button drag, or two-pointer
+movement while zoomed. Zoom is limited to 100–400% by default, and `fit()`
+restores the SVG's original `viewBox` exactly.
+
+Fullscreen remains a host responsibility because the application—not the SVG
+renderer—owns the surrounding controls, inspector, and escape behavior.

@@ -9,6 +9,13 @@ export {
 } from './graph/queries.js'
 export { mountSvgInteraction } from './interaction/controller.js'
 export type { SvgInteractionController, SvgInteractionOptions } from './interaction/controller.js'
+export { mountSvgViewport } from './interaction/viewport.js'
+export type {
+  SvgViewportController,
+  SvgViewportOptions,
+  SvgViewportPoint,
+  SvgViewportState,
+} from './interaction/viewport.js'
 export { inspectEntity } from './interaction/inspection.js'
 export type {
   EntityRef,

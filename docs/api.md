@@ -159,6 +159,17 @@ rendered SVG. It returns a controller with `select`, `clear`, `destroy`, and
 
 Call `destroy()` before the host permanently removes the diagram.
 
+### `mountSvgViewport(svg, options?)`
+
+Adds dependency-free, bounded SVG navigation without changing rendered
+geometry. The returned controller exposes `zoomIn`, `zoomOut`, `setZoom`,
+`fit`, `destroy`, `zoom`, and `state`.
+
+Options configure `minZoom` (default `1`), `maxZoom` (default `4`),
+`zoomStep` (default `1.25`), and an `onViewChange` callback. Normal wheel
+scrolling is preserved; modified-wheel, keyboard, pointer, and pinch gestures
+operate only on the root SVG `viewBox`.
+
 ## Errors
 
 - `OrbweaverError`

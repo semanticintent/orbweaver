@@ -115,7 +115,7 @@ for the complete scope and delivery gates.
 
 ## Phase 10 — Portable artifacts and hardening
 
-**Status:** Planned
+**Status:** In progress
 
 ### Portable artifact export
 
@@ -131,6 +131,8 @@ for the complete scope and delivery gates.
 
 ### Interaction and browser resilience
 
+- [x] Add a dependency-free SVG viewport controller with deterministic fit,
+  bounded zoom, pan, pinch, keyboard controls, and lifecycle cleanup.
 - [ ] Test persistent node, edge, and group selection across repeated changes.
 - [ ] Verify relationship hit targets and connected-entity emphasis at
   different zoom levels and viewport sizes.

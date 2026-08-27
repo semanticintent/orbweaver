@@ -45,6 +45,10 @@ are in place and published as the v0.1 line. Phase 9 formalizes AI-assisted
 semantic visualization without coupling the core to an AI provider. See the
 [implementation roadmap](docs/roadmap.md) for completed gates and future work.
 
+The v0.2 alpha line adds human-reviewed proposal contracts, deterministic SVG
+artifact frames, and lightweight, dependency-free viewport navigation for
+close inspection of detailed diagrams.
+
 ## Primary showcase — Northwind
 
 The canonical Northwind database becomes an inspectable relational map with 13
