@@ -1,7 +1,9 @@
 // @vitest-environment happy-dom
 
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { mountSvgViewport, type SvgViewportState } from '../src/index.js'
+import { mountSvgViewport, type SvgViewportController, type SvgViewportState } from '../src/index.js'
+
+const mounted: SvgViewportController[] = []
 
 function setup(onViewChange = vi.fn<(state: SvgViewportState) => void>()) {
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
@@ -11,6 +13,7 @@ function setup(onViewChange = vi.fn<(state: SvgViewportState) => void>()) {
   })
   document.body.append(svg)
   const controller = mountSvgViewport(svg, { onViewChange })
+  mounted.push(controller)
   return { svg, controller, onViewChange }
 }
 
@@ -19,6 +22,7 @@ function viewBox(svg: SVGSVGElement): number[] {
 }
 
 afterEach(() => {
+  for (const controller of mounted.splice(0)) controller.destroy()
   document.body.innerHTML = ''
 })
 
@@ -83,6 +87,37 @@ describe('SVG viewport controller', () => {
     svg.dispatchEvent(new PointerEvent('pointermove', { pointerId: 7, buttons: 4, clientX: 300, clientY: 150, bubbles: true }))
     svg.dispatchEvent(new PointerEvent('pointerup', { pointerId: 7, button: 1, clientX: 300, clientY: 150, bubbles: true }))
     expect(viewBox(svg)).toEqual([260, 145, 400, 200])
+  })
+
+  it('supports Space-drag while hovered without requiring SVG keyboard focus', () => {
+    const { svg, controller } = setup()
+    controller.setZoom(2)
+    svg.dispatchEvent(new PointerEvent('pointerenter'))
+    const space = new KeyboardEvent('keydown', { key: ' ', cancelable: true })
+    window.dispatchEvent(space)
+    expect(space.defaultPrevented).toBe(true)
+
+    svg.dispatchEvent(new PointerEvent('pointerdown', { pointerId: 9, button: 0, clientX: 400, clientY: 200, bubbles: true }))
+    svg.dispatchEvent(new PointerEvent('pointermove', { pointerId: 9, buttons: 1, clientX: 320, clientY: 120, bubbles: true }))
+    svg.dispatchEvent(new PointerEvent('pointerup', { pointerId: 9, button: 0, clientX: 320, clientY: 120, bubbles: true }))
+    window.dispatchEvent(new KeyboardEvent('keyup', { key: ' ' }))
+    expect(viewBox(svg)).toEqual([250, 160, 400, 200])
+  })
+
+  it('does not capture Space when the pointer is outside or the diagram is fitted', () => {
+    const { svg, controller } = setup()
+    const fittedSpace = new KeyboardEvent('keydown', { key: ' ', cancelable: true })
+    const preventFitted = vi.spyOn(fittedSpace, 'preventDefault')
+    svg.dispatchEvent(new PointerEvent('pointerenter'))
+    window.dispatchEvent(fittedSpace)
+    expect(preventFitted).not.toHaveBeenCalled()
+
+    controller.setZoom(2)
+    svg.dispatchEvent(new PointerEvent('pointerleave'))
+    const outsideSpace = new KeyboardEvent('keydown', { key: ' ', cancelable: true })
+    const preventOutside = vi.spyOn(outsideSpace, 'preventDefault')
+    window.dispatchEvent(outsideSpace)
+    expect(preventOutside).not.toHaveBeenCalled()
   })
 
   it('removes listeners and restores the original SVG on destroy', () => {

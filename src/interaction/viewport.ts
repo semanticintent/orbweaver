@@ -78,6 +78,7 @@ export function mountSvgViewport(
   let zoom = 1
   let viewBox = { ...original }
   let spacePressed = false
+  let pointerInside = false
   let panPointer: number | undefined
   let panPoint: SvgViewportPoint | undefined
   const touches = new Map<number, SvgViewportPoint>()
@@ -156,8 +157,11 @@ export function mountSvgViewport(
       svg.removeEventListener('pointermove', onPointerMove)
       svg.removeEventListener('pointerup', onPointerEnd)
       svg.removeEventListener('pointercancel', onPointerEnd)
+      svg.removeEventListener('pointerenter', onPointerEnter)
+      svg.removeEventListener('pointerleave', onPointerLeave)
       svg.removeEventListener('keydown', onKeyDown)
       svg.removeEventListener('keyup', onKeyUp)
+      window.removeEventListener('keydown', onWindowKeyDown)
       window.removeEventListener('keyup', onWindowKeyUp)
       svg.style.touchAction = previousTouchAction
       svg.removeAttribute('data-ow-viewport-active')
@@ -173,7 +177,10 @@ export function mountSvgViewport(
   }
 
   const onKeyDown = (event: KeyboardEvent): void => {
-    if (event.key === ' ') spacePressed = true
+    if (event.key === ' ') {
+      spacePressed = true
+      if (zoom > minZoom) event.preventDefault()
+    }
     if (event.key === '+' || event.key === '=') {
       event.preventDefault()
       controller.zoomIn()
@@ -190,6 +197,13 @@ export function mountSvgViewport(
     if (event.key === ' ') spacePressed = false
   }
   const onWindowKeyUp = (event: KeyboardEvent): void => onKeyUp(event)
+  const onWindowKeyDown = (event: KeyboardEvent): void => {
+    if (event.key !== ' ' || !pointerInside || zoom <= minZoom) return
+    event.preventDefault()
+    spacePressed = true
+  }
+  const onPointerEnter = (): void => { pointerInside = true }
+  const onPointerLeave = (): void => { pointerInside = false }
 
   const onPointerDown = (event: PointerEvent): void => {
     const point = { x: event.clientX, y: event.clientY }
@@ -251,8 +265,11 @@ export function mountSvgViewport(
   svg.addEventListener('pointermove', onPointerMove)
   svg.addEventListener('pointerup', onPointerEnd)
   svg.addEventListener('pointercancel', onPointerEnd)
+  svg.addEventListener('pointerenter', onPointerEnter)
+  svg.addEventListener('pointerleave', onPointerLeave)
   svg.addEventListener('keydown', onKeyDown)
   svg.addEventListener('keyup', onKeyUp)
+  window.addEventListener('keydown', onWindowKeyDown)
   window.addEventListener('keyup', onWindowKeyUp)
   options.onViewChange?.(state())
   return controller

@@ -82,8 +82,9 @@ viewport.destroy()
 The default behavior preserves ordinary page scrolling. Users can zoom with
 host controls, `+`, `-`, `0`, `Ctrl/Command + wheel`, or a two-pointer pinch.
 Panning uses Space + primary-button drag, middle-button drag, or two-pointer
-movement while zoomed. Zoom is limited to 100–400% by default, and `fit()`
-restores the SVG's original `viewBox` exactly.
+movement while zoomed. Space-drag activates while the pointer is over the SVG;
+the SVG does not need keyboard focus first. Zoom is limited to 100–400% by
+default, and `fit()` restores the SVG's original `viewBox` exactly.
 
 Fullscreen remains a host responsibility because the application—not the SVG
 renderer—owns the surrounding controls, inspector, and escape behavior.
