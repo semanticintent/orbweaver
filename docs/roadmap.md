@@ -113,7 +113,69 @@ layout and rendering pipeline directly.
 See [AI-assisted semantic visualization](ai-assisted-semantic-visualization.md)
 for the complete scope and delivery gates.
 
+## Phase 10 — Portable artifacts and hardening
+
+**Status:** Planned
+
+### Portable artifact export
+
+- [ ] Define a versioned, self-contained Orbweaver HTML artifact containing
+  the accepted semantic graph, rendered SVG, minimal interaction runtime,
+  inspector, theme state, and provenance metadata.
+- [ ] Add a supported export API and CLI path for self-contained HTML.
+- [ ] Make SVG export reliable across Node and supported browsers, with
+  embedded accessibility and semantic identity metadata.
+- [ ] Add PNG export for social posts, presentations, and other environments
+  that do not accept SVG.
+- [ ] Document which guarantees survive in SVG, PNG, and interactive HTML.
+
+### Interaction and browser resilience
+
+- [ ] Test persistent node, edge, and group selection across repeated changes.
+- [ ] Verify relationship hit targets and connected-entity emphasis at
+  different zoom levels and viewport sizes.
+- [ ] Harden keyboard navigation, visible focus, Escape/background clearing,
+  and screen-reader summaries.
+- [ ] Support multiple independently interactive diagrams on one page.
+- [ ] Test mount, update, and destroy lifecycles for leaked listeners or stale
+  interaction state.
+- [ ] Define and continuously verify the supported browser matrix.
+
+### Rendering resilience
+
+- [ ] Add fixtures for empty, disconnected, cyclic, deeply nested, and dense
+  graphs.
+- [ ] Exercise long labels, Unicode, unusual metadata, and missing optional
+  content.
+- [ ] Verify nested groups, edge routing, collision behavior, responsive
+  resizing, and print output.
+- [ ] Establish deterministic visual-regression fixtures for light and dark
+  themes.
+
+### Contract, quality, and performance
+
+- [ ] Formalize graph, scene, proposal, and portable-artifact schema versions.
+- [ ] Define compatibility and migration policy for pre-1.0 artifacts.
+- [ ] Add compatibility fixtures that can be opened by future releases.
+- [ ] Improve diagnostics for invalid graphs and failed export operations.
+- [ ] Add browser-level interaction and accessibility tests to CI.
+- [ ] Establish bundle-size, layout-time, and render-time budgets with
+  representative benchmark graphs.
+- [ ] Document Node.js, browser, ESM, and bundler compatibility.
+
+**Non-goals:** This phase does not add RECALL, CAL, Mere, `recall-ui`, or
+StratIQX integration; a hosted collaboration service; a freeform diagram
+editor; or provider-specific AI behavior to Orbweaver core.
+
+**Gate:** A versioned semantic graph can be rendered, inspected, exported,
+reopened, and verified as a self-contained artifact with equivalent meaning
+and interaction across supported browsers. Static SVG and PNG exports clearly
+document the smaller set of guarantees they preserve, and the complete quality
+suite passes within its published compatibility and performance budgets.
+
 ## Deferred integrations
 
-RECALL, `recall-ui`, and StratIQX adapters are intentional future consumers.
-They are architectural test cases, not dependencies of the v0.1 core.
+RECALL, CAL, Mere, `recall-ui`, and StratIQX adapters are intentional future
+consumers. They are architectural test cases, not dependencies of Orbweaver
+core. Integration work begins only after the Phase 10 portability and hardening
+gate passes.
