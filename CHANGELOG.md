@@ -2,6 +2,16 @@
 
 All notable changes to Orbweaver will be documented here.
 
+## 0.2.0-alpha.2 — 2026-08-27
+
+- add optional deterministic SVG artifact frames with visible title,
+  description, version, as-of date, explicit generation time, and renderer
+  provenance;
+- serialize artifact-frame metadata into the SVG while preserving accessible
+  `<title>` and `<desc>` content;
+- keep embedded diagrams unframed by default and enable presentation-ready
+  frames for generated showcase downloads.
+
 ## 0.2.0-alpha.1 — 2026-08-26
 
 - Add the provider-neutral `GraphProposal` version 1 contract and JSON Schema;

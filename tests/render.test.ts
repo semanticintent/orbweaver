@@ -72,6 +72,42 @@ describe('SVG renderer', () => {
     expect(svg).toContain(`width="${scene.width}" height="${scene.height}"`)
     expect(svg).not.toContain('class="ow-summary"')
   })
+
+  it('renders an optional deterministic artifact frame outside scene geometry', async () => {
+    const scene = await layoutGraph(fixture(0))
+    const svg = renderSvg(scene, {
+      responsive: false,
+      frame: {
+        version: '1.4',
+        asOf: '2026-08-27',
+        renderer: 'Orbweaver 0.2.0-alpha.1',
+      },
+    })
+
+    expect(svg).toContain(`viewBox="0 0 ${scene.width} ${scene.height + 132}"`)
+    expect(svg).toContain(`width="${scene.width}" height="${scene.height + 132}"`)
+    expect(svg).toContain('class="ow-frame-title"')
+    expect(svg).not.toContain('class="ow-frame-description"')
+    expect(svg).toContain('class="ow-frame-meta"')
+    expect(svg).toContain('Version 1.4 · As of 2026-08-27 · Orbweaver 0.2.0-alpha.1')
+    expect(svg).toContain(`class="ow-scene" transform="translate(0 88)"`)
+    expect(svg).toContain('&quot;asOf&quot;:&quot;2026-08-27&quot;')
+    expect(svg).not.toContain('Generated 2026-')
+  })
+
+  it('escapes visible and machine-readable artifact metadata', async () => {
+    const scene = await layoutGraph(fixture(0))
+    const svg = renderSvg(scene, {
+      frame: {
+        title: '<script>frame</script>',
+        version: '1 & 2',
+      },
+    })
+
+    expect(svg).not.toContain('<script>')
+    expect(svg).toContain('&lt;script&gt;frame&lt;/script&gt;')
+    expect(svg).toContain('Version 1 &amp; 2')
+  })
 })
 
 describe('summarizeGraph', () => {

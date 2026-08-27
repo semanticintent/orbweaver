@@ -91,7 +91,29 @@ Returns the deterministic size estimate used by the initial layout adapter.
 ### `renderSvg(scene, options?)`
 
 Returns an accessible SVG string. Options include `theme`, `className`,
-`responsive`, and `includeSummary`.
+`responsive`, `includeSummary`, and an optional `frame` for portable artifacts.
+
+The frame adds visible title and description content above the unchanged scene
+and explicit artifact metadata below it. It also serializes the same metadata
+into the SVG. Dates are never inferred, preserving deterministic output.
+
+```ts
+const svg = renderSvg(scene, {
+  theme: darkTheme,
+  responsive: false,
+  frame: {
+    version: '1.0',
+    asOf: '2026-08-27',
+    renderer: 'Orbweaver 0.2.0-alpha.2',
+  },
+})
+```
+
+`frame.title` and `frame.description` override the visible and accessible
+artifact copy; otherwise the graph title and description are used. `version`
+describes the represented system or schema, `asOf` describes when its
+information was valid, `generatedAt` records an explicitly supplied render
+time, and `renderer` identifies the producing implementation.
 
 ### `renderGraph(graph, options?)`
 

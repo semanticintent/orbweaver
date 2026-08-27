@@ -98,6 +98,7 @@ export const showcases = [
   {
     slug: 'northwind-schema', kicker: 'Relational schema',
     description: 'The canonical Northwind database expressed as semantic tables, domains, and foreign-key relationships.',
+    artifact: { version: '1.0', asOf: '2026-08-27' },
     layout: { direction: 'LR', spacing: 52, layerSpacing: 92, padding: 36 },
     graph: {
       id: 'northwind-schema', title: 'Northwind relational model',

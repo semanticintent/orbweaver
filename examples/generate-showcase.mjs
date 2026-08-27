@@ -1,4 +1,4 @@
-import { mkdirSync, writeFileSync } from 'node:fs'
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
 import { darkTheme, layoutGraph, lightTheme, renderSvg, summarizeGraph } from '../dist/index.js'
@@ -6,6 +6,7 @@ import { showcases } from './showcases.mjs'
 
 const here = dirname(fileURLToPath(import.meta.url))
 const output = join(here, 'generated')
+const packageVersion = JSON.parse(readFileSync(join(here, '..', 'package.json'), 'utf8')).version
 mkdirSync(output, { recursive: true })
 
 function escapeHtml(value) {
@@ -15,8 +16,9 @@ function escapeHtml(value) {
 const rendered = []
 for (const showcase of showcases) {
   const scene = await layoutGraph(showcase.graph, showcase.layout)
-  const light = renderSvg(scene, { theme: lightTheme, responsive: false })
-  const dark = renderSvg(scene, { theme: darkTheme, responsive: false })
+  const frame = { ...showcase.artifact, renderer: `Orbweaver ${packageVersion}` }
+  const light = renderSvg(scene, { theme: lightTheme, responsive: false, frame })
+  const dark = renderSvg(scene, { theme: darkTheme, responsive: false, frame })
   writeFileSync(join(output, `${showcase.slug}-light.svg`), light)
   writeFileSync(join(output, `${showcase.slug}-dark.svg`), dark)
   rendered.push({ ...showcase, scene, light, dark, summary: summarizeGraph(scene.graph) })

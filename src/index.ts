@@ -62,7 +62,12 @@ export { validateGraph } from './validation/validate.js'
 export type { Point, Scene, SceneEdge, SceneEdgeLabel, SceneGroup, SceneNode } from './scene/types.js'
 export { renderGraph } from './render/render-graph.js'
 export { renderSvg, SvgRenderer } from './render/svg.js'
-export type { Renderer, RenderGraphOptions, SvgRenderOptions } from './render/types.js'
+export type {
+  Renderer,
+  RenderGraphOptions,
+  SvgArtifactFrameOptions,
+  SvgRenderOptions,
+} from './render/types.js'
 export { darkTheme, lightTheme } from './theme/defaults.js'
 export type { OrbweaverTheme } from './theme/types.js'
 export type {

@@ -3,7 +3,7 @@ import type { Edge, Node, NormalizedGraph } from '../model/types.js'
 import type { Point, Scene, SceneEdge, SceneNode } from '../scene/types.js'
 import { lightTheme } from '../theme/defaults.js'
 import type { OrbweaverTheme } from '../theme/types.js'
-import type { Renderer, SvgRenderOptions } from './types.js'
+import type { Renderer, SvgArtifactFrameOptions, SvgRenderOptions } from './types.js'
 
 function escapeXml(value: string): string {
   return value
@@ -54,6 +54,12 @@ function stylesheet(prefix: string): string {
   return `
 .orbweaver{font-family:var(--ow-font);font-size:var(--ow-font-size);background:var(--ow-canvas);color:var(--ow-text)}
 .ow-canvas{fill:var(--ow-canvas)}
+.ow-artifact-background{fill:var(--ow-canvas)}
+.ow-frame-kicker{fill:var(--ow-accent);font-family:var(--ow-font-mono);font-size:10px;font-weight:600;letter-spacing:1.4px}
+.ow-frame-title{fill:var(--ow-text);font-size:24px;font-weight:600}
+.ow-frame-description{fill:var(--ow-text-muted);font-size:12px}
+.ow-frame-meta{fill:var(--ow-text-muted);font-family:var(--ow-font-mono);font-size:10px;letter-spacing:.35px}
+.ow-frame-divider{stroke:var(--ow-border);stroke-width:1}
 .ow-group-surface{fill:var(--ow-surface-muted);stroke:var(--ow-border);stroke-width:1;stroke-dasharray:5 5}
 .ow-group-label-bg{fill:var(--ow-canvas)}
 .ow-group-label{fill:var(--ow-text-muted);font-family:var(--ow-font-mono);font-size:10px;font-weight:600;letter-spacing:1.1px;text-transform:uppercase}
@@ -207,6 +213,21 @@ function definitions(prefix: string): string {
   return `<defs><filter id="${prefix}-shadow" x="-20%" y="-30%" width="140%" height="170%"><feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="var(--ow-shadow)"/></filter><marker id="${prefix}-arrow-end" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="var(--ow-edge)"/></marker><marker id="${prefix}-arrow-start" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 10 0 L 0 5 L 10 10 z" fill="var(--ow-edge)"/></marker></defs>`
 }
 
+function truncateText(value: string, width: number, fontSize: number): string {
+  const maxCharacters = Math.max(16, Math.floor((width - 64) / (fontSize * 0.58)))
+  if (value.length <= maxCharacters) return value
+  return `${value.slice(0, Math.max(1, maxCharacters - 1)).trimEnd()}…`
+}
+
+function frameMetadata(frame: SvgArtifactFrameOptions): string[] {
+  return [
+    frame.version === undefined ? undefined : `Version ${frame.version}`,
+    frame.asOf === undefined ? undefined : `As of ${frame.asOf}`,
+    frame.generatedAt === undefined ? undefined : `Generated ${frame.generatedAt}`,
+    frame.renderer,
+  ].filter((value): value is string => value !== undefined && value.trim() !== '')
+}
+
 export class SvgRenderer implements Renderer<string> {
   render(scene: Scene, options: SvgRenderOptions = {}): string {
     const theme = options.theme ?? lightTheme
@@ -214,15 +235,33 @@ export class SvgRenderer implements Renderer<string> {
     const titleId = `${prefix}-title`
     const descriptionId = `${prefix}-description`
     const className = ['orbweaver', options.className].filter(Boolean).join(' ')
-    const width = options.responsive === false ? ` width="${scene.width}" height="${scene.height}"` : ' width="100%"'
+    const frame = options.frame
+    const frameTitle = frame?.title ?? scene.graph.title ?? scene.graph.id
+    const frameDescription = frame?.description ?? scene.graph.description
+    const headerHeight = frame === undefined ? 0 : frameDescription === undefined || frameDescription.trim() === '' ? 88 : 112
+    const meta = frame === undefined ? [] : frameMetadata(frame)
+    const footerHeight = meta.length === 0 ? 0 : 44
+    const totalHeight = scene.height + headerHeight + footerHeight
+    const width = options.responsive === false ? ` width="${scene.width}" height="${totalHeight}"` : ' width="100%"'
     const summary = summarizeGraph(scene.graph)
     const groupSurfaces = scene.groups.map((_group, index) => renderGroupSurface(scene, index)).join('')
     const groupLabels = scene.groups.map((_group, index) => renderGroupLabel(scene, index)).join('')
     const edges = scene.edges.map((edge) => renderEdge(edge, scene.graph, prefix)).join('')
     const nodes = scene.nodes.map((node) => renderNode(node, scene.graph)).join('')
     const summaryElement = options.includeSummary === false ? '' : `<metadata class="ow-summary">${escapeXml(summary)}</metadata>`
+    const artifactMetadata = frame === undefined ? '' : `<metadata class="ow-artifact-metadata">${escapeXml(JSON.stringify({
+      title: frameTitle,
+      ...(frameDescription === undefined ? {} : { description: frameDescription }),
+      ...(frame.version === undefined ? {} : { version: frame.version }),
+      ...(frame.asOf === undefined ? {} : { asOf: frame.asOf }),
+      ...(frame.generatedAt === undefined ? {} : { generatedAt: frame.generatedAt }),
+      ...(frame.renderer === undefined ? {} : { renderer: frame.renderer }),
+    }))}</metadata>`
+    const frameHeader = frame === undefined ? '' : `<g class="ow-frame ow-frame-header" aria-hidden="true"><text class="ow-frame-kicker" x="32" y="26">SEMANTIC VISUAL STRUCTURE</text><text class="ow-frame-title" x="32" y="58">${escapeXml(truncateText(frameTitle, scene.width, 24))}</text>${frameDescription === undefined || frameDescription.trim() === '' ? '' : `<text class="ow-frame-description" x="32" y="84">${escapeXml(truncateText(frameDescription, scene.width, 12))}</text>`}<line class="ow-frame-divider" x1="0" y1="${headerHeight - 1}" x2="${scene.width}" y2="${headerHeight - 1}"/></g>`
+    const frameFooter = frame === undefined || meta.length === 0 ? '' : `<g class="ow-frame ow-frame-footer" aria-hidden="true" transform="translate(0 ${headerHeight + scene.height})"><line class="ow-frame-divider" x1="0" y1="0" x2="${scene.width}" y2="0"/><text class="ow-frame-meta" x="32" y="27">${escapeXml(truncateText(meta.join(' · '), scene.width, 10))}</text></g>`
+    const sceneMarkup = `<g class="ow-scene"${headerHeight === 0 ? '' : ` transform="translate(0 ${headerHeight})"`}><rect class="ow-canvas" width="${scene.width}" height="${scene.height}" rx="12"/><g class="ow-groups">${groupSurfaces}</g><g class="ow-edges">${edges}</g><g class="ow-group-labels">${groupLabels}</g><g class="ow-nodes" role="list">${nodes}</g></g>`
 
-    return `<svg xmlns="http://www.w3.org/2000/svg" class="${escapeXml(className)}" viewBox="0 0 ${scene.width} ${scene.height}"${width} role="img" aria-labelledby="${titleId} ${descriptionId}" style="${escapeXml(cssVariables(theme))}" data-theme="${escapeXml(theme.id)}"><title id="${titleId}">${escapeXml(scene.graph.title ?? scene.graph.id)}</title><desc id="${descriptionId}">${escapeXml(scene.graph.description ?? summary)}</desc>${summaryElement}${definitions(prefix)}<style>${stylesheet(prefix)}</style><rect class="ow-canvas" width="${scene.width}" height="${scene.height}" rx="12"/><g class="ow-groups">${groupSurfaces}</g><g class="ow-edges">${edges}</g><g class="ow-group-labels">${groupLabels}</g><g class="ow-nodes" role="list">${nodes}</g></svg>`
+    return `<svg xmlns="http://www.w3.org/2000/svg" class="${escapeXml(className)}" viewBox="0 0 ${scene.width} ${totalHeight}"${width} role="img" aria-labelledby="${titleId} ${descriptionId}" style="${escapeXml(cssVariables(theme))}" data-theme="${escapeXml(theme.id)}"><title id="${titleId}">${escapeXml(frameTitle)}</title><desc id="${descriptionId}">${escapeXml(frameDescription ?? summary)}</desc>${summaryElement}${artifactMetadata}${definitions(prefix)}<style>${stylesheet(prefix)}</style>${frame === undefined ? '' : `<rect class="ow-artifact-background" width="${scene.width}" height="${totalHeight}" rx="12"/>`}${frameHeader}${sceneMarkup}${frameFooter}</svg>`
   }
 }
 
