@@ -1,7 +1,6 @@
 # WebMCP semantic playground
 
-**Status:** In progress — W1 complete; W2 implemented and awaiting built-in
-browser verification
+**Status:** In progress — W1 and W2 complete; W3 in development
 
 **Surface:** `orbweaver.semanticintent.dev/playground`
 
@@ -327,21 +326,26 @@ test suite passes before any page tools are registered.
 **Gate:** An agent can understand and focus the current diagram without
 mutating semantic content.
 
-**Verification status:** The production build, automated lifecycle tests,
-unsupported-browser fallback, and ordinary manual focus path pass. Final tool
-discovery and invocation remain to be exercised in the ChatGPT built-in browser;
-the connected Chrome extension does not currently expose `document.modelContext`.
+**Verification status:** Passed on August 27, 2026 in the ChatGPT Desktop
+built-in browser against the public playground. The browser discovered all four
+W2 tools, read revision 1, inspected the `request` node and its `classify`
+relationship, visibly focused the node, and opened the semantic inspector. The
+validated proposal remained an unaccepted preview throughout the test.
 
 ### W3 — Create and revise tools
 
-- register proposal creation;
-- implement the explicit semantic revision command language;
-- validate changes atomically with expected-revision conflict protection;
-- add undo for agent-created semantic changes;
-- preserve explicit human acceptance.
+- [x] Register complete proposal creation as an untrusted preview.
+- [x] Implement explicit graph, evidence, and claim revision operations.
+- [x] Validate changes atomically with expected-revision conflict protection.
+- [x] Add a visible human-operated undo for agent-created semantic changes.
+- [x] Preserve explicit human acceptance and accepted-only export.
 
 **Gate:** A natural-language request can become a visible, validated proposal
 and can be revised without bypassing the Phase 9 trust boundary.
+
+**Verification status:** The production build and complete website test suite
+pass with six registered tools. Built-in-browser creation, revision, conflict,
+undo, and acceptance-boundary tests remain before the W3 gate is closed.
 
 ### W4 — Browser hardening and public presentation
 
