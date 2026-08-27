@@ -13,6 +13,22 @@ Orbweaver is currently an early architectural prototype. The v0.1 work is
 focused on a plain-data graph contract, deterministic derived layout, polished
 SVG rendering, provenance preservation, and a small interaction model.
 
+## Why Orbweaver exists
+
+Software systems already contain meaning—in source code, configuration,
+schemas, and the relationships between them—but that meaning is often scattered
+across tools or reduced to diagrams that become stale as soon as they are drawn.
+
+Orbweaver explores a different boundary: authors describe entities,
+relationships, and provenance; the library validates that semantic structure
+and derives its geometry. The resulting diagrams remain reproducible,
+inspectable, accessible, and connected to their source.
+
+The project is also an open engineering showcase. It brings together API and
+type-system design, deterministic transformation pipelines, graph layout,
+accessible SVG rendering, interaction design, testing, documentation, release
+engineering, and a human-reviewed boundary for AI-assisted proposals.
+
 ## Install
 
 ```sh
