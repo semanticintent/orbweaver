@@ -1,6 +1,7 @@
 # WebMCP semantic playground
 
-**Status:** In progress — W1 workspace foundation complete
+**Status:** In progress — W1 complete; W2 implemented and awaiting built-in
+browser verification
 
 **Surface:** `orbweaver.semanticintent.dev/playground`
 
@@ -316,14 +317,20 @@ test suite passes before any page tools are registered.
 
 ### W2 — Read and focus tools
 
-- add local WebMCP TypeScript declarations and feature detection;
-- add a registration lifecycle hook;
-- register workspace, contract, inspection, and focus tools;
-- expose visible agent activity and accessible announcements;
-- test registrations with a mocked `document.modelContext`.
+- [x] Add local WebMCP declarations and feature detection.
+- [x] Add a registration lifecycle adapter that avoids duplicate tools while
+  delegating through the current workspace bridge.
+- [x] Register workspace, contract, inspection, and focus tools.
+- [x] Expose visible agent activity and accessible announcements.
+- [x] Test registrations with a mocked `document.modelContext`.
 
 **Gate:** An agent can understand and focus the current diagram without
 mutating semantic content.
+
+**Verification status:** The production build, automated lifecycle tests,
+unsupported-browser fallback, and ordinary manual focus path pass. Final tool
+discovery and invocation remain to be exercised in the ChatGPT built-in browser;
+the connected Chrome extension does not currently expose `document.modelContext`.
 
 ### W3 — Create and revise tools
 

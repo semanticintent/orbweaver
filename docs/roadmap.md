@@ -183,7 +183,7 @@ suite passes within its published compatibility and performance budgets.
 - [x] Build a manual-first `/playground` workspace on the public website.
 - [x] Share one workspace controller between visible UI actions and future page
   tools.
-- [ ] Register strict top-level JavaScript tools for workspace context,
+- [x] Register strict top-level JavaScript tools for workspace context,
   proposal contract, semantic inspection, and visible focus.
 - [ ] Add validated create and atomic revision tools with revision-conflict
   protection and undo.
