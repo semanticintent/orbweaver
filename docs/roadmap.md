@@ -101,8 +101,10 @@ semantic interaction state, and keeps the initial gallery UI lightweight.
   human acceptance.
 - [x] Add a browser-local JSON import and review lab.
 - [x] Add explicit accept, discard, JSON export, and SVG export actions.
-- [ ] Define a provider-neutral generation adapter.
-- [ ] Add one optional reference generator outside Orbweaver core.
+- [x] Define a provider-neutral generation adapter.
+- [x] Add a deterministic server-side reference generator outside Orbweaver
+  core, including cancellation, timeout, cost, and failure states.
+- [ ] Add one optional model-backed reference adapter outside Orbweaver core.
 
 **Gate:** An unfamiliar user can safely review and accept an untrusted semantic
 proposal without AI output bypassing validation or entering the deterministic

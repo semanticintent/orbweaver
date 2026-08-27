@@ -1,6 +1,6 @@
 # AI-assisted semantic visualization
 
-**Status:** In progress — 9A complete
+**Status:** In progress — 9A and 9B complete; 9C reference boundary active
 
 **Target:** Phase 9 / Orbweaver v0.2 exploration
 
@@ -212,10 +212,12 @@ Hosts may choose lower limits. Raising limits requires performance evidence.
 
 ### 9C — Reference generator
 
-- [ ] Define the provider-neutral generator interface.
-- [ ] Add one optional server-side reference adapter in the website, not core.
-- [ ] Require structured output conforming to the proposal schema.
-- [ ] Add cost, timeout, cancellation, and failure UX.
+- [x] Define the provider-neutral generator interface.
+- [x] Add a deterministic server-side reference adapter in the website, not
+  core.
+- [x] Require adapter output conforming to the proposal schema.
+- [x] Add cost, timeout, cancellation, and failure UX.
+- [ ] Add one optional model-backed reference adapter in the website, not core.
 - [ ] Publish the prompt contract and a reproducible example without publishing
   secrets or private source material.
 

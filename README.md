@@ -122,6 +122,7 @@ or layout-engine-specific objects.
 - [Release process](docs/releasing.md)
 - [Implementation roadmap](docs/roadmap.md)
 - [AI-assisted semantic visualization](docs/ai-assisted-semantic-visualization.md)
+- [Reference proposal generator](docs/reference-generator.md)
 - [Original prototype specification](ORBWEAVER_SPEC.md)
 - [Project philosophy and biomimicry](ORBWEAVER_BIOMIMICRY.md)
 - [Future RECALL integration](ORBWEAVER_RECALL_INTEGRATION.md)
