@@ -2,6 +2,8 @@
 
 > Semantic visual structures for declarative systems.
 
+![Orbweaver — Meaning, made visible](docs/assets/orbweaver-og.png)
+
 Orbweaver is a framework-independent TypeScript library for turning semantic
 graphs into inspectable, accessible visual structures.
 
