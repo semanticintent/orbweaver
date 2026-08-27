@@ -1,6 +1,6 @@
 # WebMCP semantic playground
 
-**Status:** In progress — W1 and W2 complete; W3 in development
+**Status:** In progress — W1–W3 complete; W4 next
 
 **Surface:** `orbweaver.semanticintent.dev/playground`
 
@@ -343,9 +343,17 @@ validated proposal remained an unaccepted preview throughout the test.
 **Gate:** A natural-language request can become a visible, validated proposal
 and can be revised without bypassing the Phase 9 trust boundary.
 
-**Verification status:** The production build and complete website test suite
-pass with six registered tools. Built-in-browser creation, revision, conflict,
-undo, and acceptance-boundary tests remain before the W3 gate is closed.
+**Verification status:** Passed on August 27, 2026 in the ChatGPT Desktop
+built-in browser against the public playground. Six tools were discovered. A
+natural-language order-fulfillment request created revision 1 atomically from
+revision 0 as a five-node, four-edge, three-group preview. A subsequent tool
+call added and focused `Delivery tracking` plus its labeled edge at revision 2.
+The visible human-operated undo restored the prior proposal at revision 3.
+Throughout the sequence the proposal remained `VALIDATED · UNTRUSTED PREVIEW`,
+`accepted: false`, and export stayed disabled.
+
+**Result:** Gate passed. Creation, revision, focus, validation, monotonically
+increasing undo, and human-only acceptance were verified end-to-end.
 
 ### W4 — Browser hardening and public presentation
 

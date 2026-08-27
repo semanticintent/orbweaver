@@ -178,18 +178,18 @@ suite passes within its published compatibility and performance budgets.
 
 ## WebMCP semantic playground — Website track
 
-**Status:** Scoped
+**Status:** W1–W3 complete; W4 next
 
 - [x] Build a manual-first `/playground` workspace on the public website.
 - [x] Share one workspace controller between visible UI actions and future page
   tools.
 - [x] Register strict top-level JavaScript tools for workspace context,
   proposal contract, semantic inspection, and visible focus.
-- [ ] Add validated create and atomic revision tools with revision-conflict
+- [x] Add validated create and atomic revision tools with revision-conflict
   protection and undo.
-- [ ] Keep acceptance and export explicitly human-controlled for the initial
+- [x] Keep acceptance and export explicitly human-controlled for the initial
   release.
-- [ ] Verify discovery, execution, safety review, and visible results in the
+- [x] Verify discovery, execution, safety review, and visible results in the
   ChatGPT built-in browser.
 - [ ] Publish WebMCP documentation and a reproducible Northwind or commerce
   demonstration.
