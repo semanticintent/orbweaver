@@ -73,6 +73,20 @@ export type { Point, Scene, SceneEdge, SceneEdgeLabel, SceneGroup, SceneNode } f
 export { deriveLensProjection, getLensMatch, getSemanticLensRecipe, semanticLensRecipes } from './semantic/lenses.js'
 export { defaultSemanticDetailThresholds, recommendSemanticDetailLevel } from './semantic/detail.js'
 export type { SemanticDetailLevel, SemanticDetailThresholds } from './semantic/detail.js'
+export { derivePathNarrative, getPathNarrativeMatch, getPathNarrativeRecipe, pathNarrativeRecipes } from './semantic/paths.js'
+export type {
+  PathNarrativeDiagnostic,
+  PathNarrativeDirection,
+  PathNarrativeEdgeRule,
+  PathNarrativeId,
+  PathNarrativeMatch,
+  PathNarrativeMetadataRule,
+  PathNarrativeOptions,
+  PathNarrativeProjection,
+  PathNarrativeRecipe,
+  PathNarrativeRole,
+  PathNarrativeStep,
+} from './semantic/paths.js'
 export type {
   LensMatch,
   LensProjection,

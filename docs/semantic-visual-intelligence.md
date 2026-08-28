@@ -179,6 +179,9 @@ readings over the same scene.
 
 ## 3. Focused path narratives
 
+**Implementation status:** Core vertical slice complete; prerelease and public
+gallery adoption pending.
+
 ### Reader problem
 
 A selected entity is more useful when a reader can follow its upstream causes,
@@ -200,13 +203,25 @@ Rendering emphasizes the selected path and retains the rest as context. A
 subtle one-time directional reveal may be evaluated only after the static and
 reduced-motion behavior is complete.
 
+The implemented projection uses a breadth-first traversal in normalized graph
+order. Each step records depth, relationship identity, semantic direction,
+traversal orientation, and a recipe-owned explanation. `maxDepth` and
+`maxSteps` provide explicit resource bounds; truncation is returned as data and
+included in the textual summary.
+
+Built-in recipes cover upstream dependencies, downstream impact, data/event
+lineage, declared failure relationships, and declared trust boundaries or
+external endpoints. They only follow authored semantics. Rendering adds an
+explicit start, ordered path emphasis, accessible metadata, and inspection
+context without changing the scene.
+
 ### Acceptance gate
 
-- Cycles, disconnected graphs, self-edges, and bounded traversal are tested.
-- Results have deterministic ordering and explicit truncation diagnostics.
-- Keyboard users can enter, advance through, and leave a narrative.
-- Text summaries communicate order and direction without relying on animation.
-- Selection and narrative emphasis compose without ambiguous states.
+- [x] Cycles, disconnected graphs, self-edges, and bounded traversal are tested.
+- [x] Results have deterministic ordering and explicit truncation diagnostics.
+- [x] Keyboard users can enter, advance through, and leave a narrative.
+- [x] Text summaries communicate order and direction without relying on animation.
+- [x] Selection and narrative emphasis compose without ambiguous states.
 
 ## 4. Generated legends
 

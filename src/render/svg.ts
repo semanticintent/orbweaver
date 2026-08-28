@@ -4,6 +4,8 @@ import type { Point, Scene, SceneEdge, SceneNode } from '../scene/types.js'
 import { deriveLensProjection, getLensMatch } from '../semantic/lenses.js'
 import type { LensProjection } from '../semantic/lenses.js'
 import type { SemanticDetailLevel } from '../semantic/detail.js'
+import { getPathNarrativeMatch } from '../semantic/paths.js'
+import type { PathNarrativeProjection } from '../semantic/paths.js'
 import { lightTheme } from '../theme/defaults.js'
 import type { OrbweaverTheme } from '../theme/types.js'
 import type { Renderer, SvgArtifactFrameOptions, SvgRenderOptions } from './types.js'
@@ -107,6 +109,11 @@ function stylesheet(prefix: string): string {
 .ow-lens-active .ow-group-label-wrap[data-lens-role="match"] .ow-group-label{fill:var(--ow-accent)}
 .ow-lens-active [data-lens-role="context"]{opacity:.68}
 .ow-lens-active [data-selected],.ow-lens-active [data-related]{opacity:1}
+.ow-path-active .ow-node[data-path-role="background"],.ow-path-active .ow-edge[data-path-role="background"]{opacity:.16}
+.ow-path-active .ow-node[data-path-role="start"] .ow-node-surface{stroke:var(--ow-focus);stroke-width:3;filter:drop-shadow(0 0 8px var(--ow-focus))}
+.ow-path-active .ow-node[data-path-role="step"] .ow-node-surface{stroke:var(--ow-accent);stroke-width:2.25}
+.ow-path-active .ow-edge[data-path-role="step"] .ow-edge-path{stroke:var(--ow-accent);stroke-width:3}
+.ow-path-active [data-path-role="start"],.ow-path-active [data-path-role="step"],.ow-path-active [data-selected],.ow-path-active [data-related]{opacity:1}
 .ow-detail-overview .ow-node-type,.ow-detail-overview .ow-node-detail,.ow-detail-overview .ow-edge-label-wrap,.ow-detail-overview .ow-group-detail{display:none}
 .ow-detail-standard .ow-node-detail,.ow-detail-standard .ow-group-detail{display:none}
 .ow-detail-close .ow-node-type{display:none}
@@ -205,7 +212,22 @@ function lensAria(projection: LensProjection | undefined, kind: 'node' | 'edge' 
   return ''
 }
 
-function renderEdge(sceneEdge: SceneEdge, graph: NormalizedGraph, prefix: string, detailLevel: SemanticDetailLevel, projection?: LensProjection): string {
+function pathAttributes(projection: PathNarrativeProjection | undefined, kind: 'node' | 'edge', id: string): string {
+  if (projection === undefined) return ''
+  const match = getPathNarrativeMatch(projection, { kind, id })
+  if (match === undefined) return ''
+  return ` data-path-role="${match.role}" data-path-steps="${match.stepIndexes.join(' ')}"`
+}
+
+function pathAria(projection: PathNarrativeProjection | undefined, kind: 'node' | 'edge', id: string): string {
+  if (projection === undefined) return ''
+  const match = getPathNarrativeMatch(projection, { kind, id })
+  if (match?.role === 'start') return ` Start of the active ${projection.label} narrative.`
+  if (match?.role === 'step') return ` Step ${match.stepIndexes.map((index) => index + 1).join(', ')} in the active ${projection.label} narrative.`
+  return ''
+}
+
+function renderEdge(sceneEdge: SceneEdge, graph: NormalizedGraph, prefix: string, detailLevel: SemanticDetailLevel, projection?: LensProjection, narrative?: PathNarrativeProjection): string {
   const edge = graph.edges.find((candidate) => candidate.id === sceneEdge.edgeId)
   if (edge === undefined) return ''
   const type = safeToken(edge.type ?? 'generic')
@@ -225,8 +247,8 @@ function renderEdge(sceneEdge: SceneEdge, graph: NormalizedGraph, prefix: string
     label = `<g class="ow-edge-label-wrap" transform="translate(${midpoint.x} ${midpoint.y})"><rect class="ow-edge-label-bg" x="${-width / 2}" y="${-height / 2}" width="${width}" height="${height}" rx="7"/><text class="ow-edge-label" text-anchor="middle" dominant-baseline="middle">${escapeXml(visibleLabel)}</text></g>`
     markerPoint = { x: midpoint.x + width / 2 + 10, y: midpoint.y }
   }
-  const ariaLabel = `${edge.label ?? edge.type ?? 'Relationship'} from ${edge.from} to ${edge.to}.${annotationAria(annotations)}${lensAria(projection, 'edge', edge.id)}`
-  return `<g class="ow-edge" data-edge-id="${escapeXml(edge.id)}" data-edge-type="${escapeXml(type)}"${lensAttributes(projection, 'edge', edge.id)} tabindex="0" role="listitem" aria-label="${escapeXml(ariaLabel)}"><path class="ow-edge-hit" d="${path}" aria-hidden="true"/><path class="ow-edge-path" d="${path}"${markerAttributes(edge, prefix)}/>${label}${annotationMarker(annotations, markerPoint.x, markerPoint.y, detailLevel)}</g>`
+  const ariaLabel = `${edge.label ?? edge.type ?? 'Relationship'} from ${edge.from} to ${edge.to}.${annotationAria(annotations)}${lensAria(projection, 'edge', edge.id)}${pathAria(narrative, 'edge', edge.id)}`
+  return `<g class="ow-edge" data-edge-id="${escapeXml(edge.id)}" data-edge-type="${escapeXml(type)}"${lensAttributes(projection, 'edge', edge.id)}${pathAttributes(narrative, 'edge', edge.id)} tabindex="0" role="listitem" aria-label="${escapeXml(ariaLabel)}"><path class="ow-edge-hit" d="${path}" aria-hidden="true"/><path class="ow-edge-path" d="${path}"${markerAttributes(edge, prefix)}/>${label}${annotationMarker(annotations, markerPoint.x, markerPoint.y, detailLevel)}</g>`
 }
 
 function wrapLabel(label: string, width: number): string[] {
@@ -264,7 +286,7 @@ function surface(node: Node, sceneNode: SceneNode): string {
   return `<rect class="ow-node-surface" width="${width}" height="${height}" rx="var(--ow-node-radius)"/>`
 }
 
-function renderNode(sceneNode: SceneNode, graph: NormalizedGraph, detailLevel: SemanticDetailLevel, projection?: LensProjection): string {
+function renderNode(sceneNode: SceneNode, graph: NormalizedGraph, detailLevel: SemanticDetailLevel, projection?: LensProjection, narrative?: PathNarrativeProjection): string {
   const node = graph.nodes.find((candidate) => candidate.id === sceneNode.nodeId)
   if (node === undefined) return ''
   const type = safeToken(node.type ?? 'generic')
@@ -283,7 +305,7 @@ function renderNode(sceneNode: SceneNode, graph: NormalizedGraph, detailLevel: S
   const annotations = annotationsFor(graph, 'node', node.id)
   const marker = annotationMarker(annotations, sceneNode.width - 12, 12, detailLevel)
 
-  return `<g class="ow-node" transform="translate(${sceneNode.x} ${sceneNode.y})" data-node-id="${escapeXml(node.id)}" data-node-type="${escapeXml(type)}" data-node-status="${escapeXml(status)}"${lensAttributes(projection, 'node', node.id)} tabindex="0" role="listitem" aria-label="${escapeXml(`${node.label}.${description}${annotationAria(annotations)}${lensAria(projection, 'node', node.id)}`)}">${surface(node, sceneNode)}${accent}<text class="ow-node-label">${text}</text>${typeLabel}${closeDetail}${marker}</g>`
+  return `<g class="ow-node" transform="translate(${sceneNode.x} ${sceneNode.y})" data-node-id="${escapeXml(node.id)}" data-node-type="${escapeXml(type)}" data-node-status="${escapeXml(status)}"${lensAttributes(projection, 'node', node.id)}${pathAttributes(narrative, 'node', node.id)} tabindex="0" role="listitem" aria-label="${escapeXml(`${node.label}.${description}${annotationAria(annotations)}${lensAria(projection, 'node', node.id)}${pathAria(narrative, 'node', node.id)}`)}">${surface(node, sceneNode)}${accent}<text class="ow-node-label">${text}</text>${typeLabel}${closeDetail}${marker}</g>`
 }
 
 function sceneGroup(scene: Scene, index: number) {
@@ -340,7 +362,8 @@ export class SvgRenderer implements Renderer<string> {
     const titleId = `${prefix}-title`
     const descriptionId = `${prefix}-description`
     const projection = options.lens === undefined ? undefined : deriveLensProjection(scene.graph, options.lens)
-    const className = ['orbweaver', `ow-detail-${detailLevel}`, projection === undefined ? undefined : 'ow-lens-active', options.className].filter(Boolean).join(' ')
+    const narrative = options.narrative
+    const className = ['orbweaver', `ow-detail-${detailLevel}`, projection === undefined ? undefined : 'ow-lens-active', narrative === undefined ? undefined : 'ow-path-active', options.className].filter(Boolean).join(' ')
     const frame = options.frame
     const frameTitle = frame?.title ?? scene.graph.title ?? scene.graph.id
     const frameDescription = frame?.description ?? scene.graph.description
@@ -352,13 +375,15 @@ export class SvgRenderer implements Renderer<string> {
     const summary = summarizeGraph(scene.graph)
     const lensSummary = projection === undefined ? undefined : `${projection.label} lens active. ${projection.matchCount} direct ${projection.matchCount === 1 ? 'match' : 'matches'} and ${projection.contextCount} context ${projection.contextCount === 1 ? 'entity' : 'entities'}.`
     const detailSummary = `${detailLevel.charAt(0).toUpperCase()}${detailLevel.slice(1)} semantic detail active.`
+    const narrativeSummary = narrative?.summary
     const groupSurfaces = scene.groups.map((_group, index) => renderGroupSurface(scene, index, projection)).join('')
     const groupLabels = scene.groups.map((_group, index) => renderGroupLabel(scene, index, detailLevel, projection)).join('')
-    const edges = scene.edges.map((edge) => renderEdge(edge, scene.graph, prefix, detailLevel, projection)).join('')
-    const nodes = scene.nodes.map((node) => renderNode(node, scene.graph, detailLevel, projection)).join('')
+    const edges = scene.edges.map((edge) => renderEdge(edge, scene.graph, prefix, detailLevel, projection, narrative)).join('')
+    const nodes = scene.nodes.map((node) => renderNode(node, scene.graph, detailLevel, projection, narrative)).join('')
     const summaryElement = options.includeSummary === false ? '' : `<metadata class="ow-summary">${escapeXml(summary)}</metadata>`
     const lensMetadata = projection === undefined ? '' : `<metadata class="ow-lens-summary">${escapeXml(lensSummary ?? '')}</metadata>`
     const detailMetadata = `<metadata class="ow-detail-summary">${escapeXml(detailSummary)}</metadata>`
+    const narrativeMetadata = narrative === undefined ? '' : `<metadata class="ow-path-summary">${escapeXml(narrative.summary)}</metadata>`
     const artifactMetadata = frame === undefined ? '' : `<metadata class="ow-artifact-metadata">${escapeXml(JSON.stringify({
       title: frameTitle,
       ...(frameDescription === undefined ? {} : { description: frameDescription }),
@@ -371,7 +396,7 @@ export class SvgRenderer implements Renderer<string> {
     const frameFooter = frame === undefined || meta.length === 0 ? '' : `<g class="ow-frame ow-frame-footer" aria-hidden="true" transform="translate(0 ${headerHeight + scene.height})"><line class="ow-frame-divider" x1="0" y1="0" x2="${scene.width}" y2="0"/><text class="ow-frame-meta" x="32" y="27">${escapeXml(truncateText(meta.join(' · '), scene.width, 10))}</text></g>`
     const sceneMarkup = `<g class="ow-scene"${headerHeight === 0 ? '' : ` transform="translate(0 ${headerHeight})"`}><rect class="ow-canvas" width="${scene.width}" height="${scene.height}" rx="12"/><g class="ow-groups">${groupSurfaces}</g><g class="ow-edges">${edges}</g><g class="ow-group-labels">${groupLabels}</g><g class="ow-nodes" role="list">${nodes}</g></g>`
 
-    return `<svg xmlns="http://www.w3.org/2000/svg" class="${escapeXml(className)}" viewBox="0 0 ${scene.width} ${totalHeight}"${width} role="img" aria-labelledby="${titleId} ${descriptionId}" style="${escapeXml(cssVariables(theme))}" data-theme="${escapeXml(theme.id)}" data-detail-level="${detailLevel}"${projection === undefined ? '' : ` data-lens-id="${escapeXml(projection.lensId)}"`}><title id="${titleId}">${escapeXml(frameTitle)}</title><desc id="${descriptionId}">${escapeXml([frameDescription ?? summary, detailSummary, lensSummary].filter(Boolean).join(' '))}</desc>${summaryElement}${detailMetadata}${lensMetadata}${artifactMetadata}${definitions(prefix)}<style>${stylesheet(prefix)}</style>${frame === undefined ? '' : `<rect class="ow-artifact-background" width="${scene.width}" height="${totalHeight}" rx="12"/>`}${frameHeader}${sceneMarkup}${frameFooter}</svg>`
+    return `<svg xmlns="http://www.w3.org/2000/svg" class="${escapeXml(className)}" viewBox="0 0 ${scene.width} ${totalHeight}"${width} role="img" aria-labelledby="${titleId} ${descriptionId}" style="${escapeXml(cssVariables(theme))}" data-theme="${escapeXml(theme.id)}" data-detail-level="${detailLevel}"${projection === undefined ? '' : ` data-lens-id="${escapeXml(projection.lensId)}"`}${narrative === undefined ? '' : ` data-path-id="${escapeXml(narrative.narrativeId)}" data-path-start="${escapeXml(narrative.startNodeId)}"`}><title id="${titleId}">${escapeXml(frameTitle)}</title><desc id="${descriptionId}">${escapeXml([frameDescription ?? summary, detailSummary, lensSummary, narrativeSummary].filter(Boolean).join(' '))}</desc>${summaryElement}${detailMetadata}${lensMetadata}${narrativeMetadata}${artifactMetadata}${definitions(prefix)}<style>${stylesheet(prefix)}</style>${frame === undefined ? '' : `<rect class="ow-artifact-background" width="${scene.width}" height="${totalHeight}" rx="12"/>`}${frameHeader}${sceneMarkup}${frameFooter}</svg>`
   }
 }
 

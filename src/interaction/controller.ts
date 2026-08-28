@@ -1,17 +1,22 @@
 import { getGroupNodes, getIncidentEdges, getNeighbors } from '../graph/queries.js'
 import type { NormalizedGraph } from '../model/types.js'
 import type { LensProjection } from '../semantic/lenses.js'
+import type { PathNarrativeProjection } from '../semantic/paths.js'
 import { inspectEntity, type EntityRef, type Inspection } from './inspection.js'
 
 export interface SvgInteractionOptions {
   onSelectionChange?: (inspection: Inspection | undefined) => void
   muteUnrelated?: boolean
   lensProjection?: LensProjection
+  narrativeProjection?: PathNarrativeProjection
 }
 
 export interface SvgInteractionController {
   readonly selected: EntityRef | undefined
+  readonly narrativeStep: number | undefined
   select(ref: EntityRef): Inspection | undefined
+  nextNarrativeStep(): Inspection | undefined
+  previousNarrativeStep(): Inspection | undefined
   clear(): void
   destroy(): void
 }
@@ -128,23 +133,48 @@ export function mountSvgInteraction(
   options: SvgInteractionOptions = {},
 ): SvgInteractionController {
   let selected: EntityRef | undefined
+  let narrativeStep: number | undefined
   const muteUnrelated = options.muteUnrelated ?? true
 
   const controller: SvgInteractionController = {
     get selected() {
       return selected
     },
+    get narrativeStep() {
+      return narrativeStep
+    },
     select(ref) {
-      const inspection = inspectEntity(graph, ref, options.lensProjection)
+      const inspection = inspectEntity(graph, ref, options.lensProjection, options.narrativeProjection)
       if (inspection === undefined) return undefined
       selected = { ...ref }
+      const pathMatch = options.narrativeProjection?.matches.find((match) => match.entity.kind === ref.kind && match.entity.id === ref.id)
+      narrativeStep = pathMatch?.role === 'start' ? -1 : pathMatch?.stepIndexes[0]
       setEntityState(svg, selected, relatedEntities(graph, selected), muteUnrelated)
       options.onSelectionChange?.(inspection)
       return inspection
     },
+    nextNarrativeStep() {
+      const narrative = options.narrativeProjection
+      if (narrative === undefined || narrative.steps.length === 0) return undefined
+      const index = Math.min((narrativeStep ?? -1) + 1, narrative.steps.length - 1)
+      narrativeStep = index
+      return controller.select({ kind: 'node', id: narrative.steps[index]!.to })
+    },
+    previousNarrativeStep() {
+      const narrative = options.narrativeProjection
+      if (narrative === undefined) return undefined
+      const index = (narrativeStep ?? 0) - 1
+      if (index < 0) {
+        narrativeStep = -1
+        return controller.select({ kind: 'node', id: narrative.startNodeId })
+      }
+      narrativeStep = index
+      return controller.select({ kind: 'node', id: narrative.steps[index]!.to })
+    },
     clear() {
       if (selected === undefined && !svg.classList.contains('ow-has-selection')) return
       selected = undefined
+      narrativeStep = undefined
       clearEntityState(svg)
       options.onSelectionChange?.(undefined)
     },
@@ -168,6 +198,16 @@ export function mountSvgInteraction(
   const onKeyDown = (event: KeyboardEvent): void => {
     if (event.key === 'Escape') {
       controller.clear()
+      return
+    }
+    if (event.key === 'ArrowRight' && options.narrativeProjection !== undefined) {
+      event.preventDefault()
+      controller.nextNarrativeStep()
+      return
+    }
+    if (event.key === 'ArrowLeft' && options.narrativeProjection !== undefined) {
+      event.preventDefault()
+      controller.previousNarrativeStep()
       return
     }
     if (event.key !== 'Enter' && event.key !== ' ') return

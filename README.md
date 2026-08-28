@@ -58,6 +58,11 @@ modernization views derive emphasis from existing graph meaning. Explicit
 `overview`, `standard`, and `close` states progressively disclose that meaning
 without changing entity identity or layout geometry.
 
+Focused path narratives extend that reading model across upstream dependencies,
+downstream impact, data lineage, failure propagation, and trust crossings.
+Every traversal is bounded, ordered, explainable, and available to static SVG
+and keyboard interaction without introducing authored routes.
+
 ## WebMCP — agent-assisted semantic visualization
 
 Orbweaver implements a bounded WebMCP interface in its public semantic

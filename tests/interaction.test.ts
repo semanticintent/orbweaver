@@ -3,7 +3,9 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import {
   deriveLensProjection,
+  derivePathNarrative,
   getSemanticLensRecipe,
+  getPathNarrativeRecipe,
   layoutGraph,
   mountSvgInteraction,
   renderSvg,
@@ -159,5 +161,25 @@ describe('SVG interaction controller', () => {
     expect(controller.select({ kind: 'node', id: 'isolated' })?.lens).toMatchObject({
       id: 'risk', role: 'background', reasons: [],
     })
+  })
+
+  it('advances and reverses an active narrative with keyboard-equivalent controller steps', async () => {
+    const scene = await layoutGraph(graph)
+    const narrative = derivePathNarrative(scene.graph, 'a', getPathNarrativeRecipe('downstream'))
+    const parsed = new DOMParser().parseFromString(renderSvg(scene, { narrative }), 'image/svg+xml')
+    const svg = document.importNode(parsed.documentElement, true)
+    document.body.append(svg)
+    if (!(svg instanceof SVGSVGElement)) throw new Error('Rendered SVG was not mounted.')
+    const controller = mountSvgInteraction(svg, scene.graph, { narrativeProjection: narrative })
+
+    controller.select({ kind: 'node', id: 'a' })
+    expect(controller.narrativeStep).toBe(-1)
+    expect(controller.nextNarrativeStep()?.id).toBe('b')
+    expect(controller.narrativeStep).toBe(0)
+    expect(controller.nextNarrativeStep()?.id).toBe('c')
+    expect(controller.previousNarrativeStep()?.id).toBe('b')
+    expect(controller.previousNarrativeStep()?.id).toBe('a')
+    controller.clear()
+    expect(controller.narrativeStep).toBeUndefined()
   })
 })

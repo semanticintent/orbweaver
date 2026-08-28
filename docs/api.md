@@ -210,6 +210,36 @@ entity descriptions, and interaction contract. A level is recorded in SVG
 metadata and `data-detail-level`, making static exports deterministic and
 auditable.
 
+## Focused path narratives
+
+### `derivePathNarrative(graph, startNodeId, recipe, options?)`
+
+Derives a deterministic breadth-first reading from one explicit node. The
+result contains ordered relationship steps, traversal direction, semantic
+reasons, entity roles, a textual summary, and truncation diagnostics.
+
+```ts
+const narrative = derivePathNarrative(
+  normalizedGraph,
+  'checkout',
+  getPathNarrativeRecipe('downstream'),
+  { maxDepth: 4, maxSteps: 50 },
+)
+
+const svg = renderSvg(scene, { narrative })
+```
+
+Built-in recipes are `upstream`, `downstream`, `data-lineage`,
+`failure-propagation`, and `trust-crossings`. Semantic recipes filter declared
+relationship types, metadata, or endpoint types; they do not infer hidden
+dependencies. `getPathNarrativeMatch(projection, ref)` returns whether an
+entity is the start, a step, or background and identifies its ordered steps.
+
+Traversal honors normalized edge direction and graph order. Cycles and
+self-edges terminate safely. `maxDepth` and `maxSteps` must be positive
+integers; a bounded result reports `max-depth` or `max-steps` rather than
+silently dropping continuation.
+
 `frame.title` and `frame.description` override the visible and accessible
 artifact copy; otherwise the graph title and description are used. `version`
 describes the represented system or schema, `asOf` describes when its
@@ -246,7 +276,7 @@ DOM objects.
 
 ## Inspection and interaction
 
-### `inspectEntity(normalizedGraph, ref, lensProjection?)`
+### `inspectEntity(normalizedGraph, ref, lensProjection?, narrativeProjection?)`
 
 Returns a semantic `Inspection` for a node, edge, or group. Inspection can
 include metadata, provenance, endpoints, neighbor IDs, relationship IDs, or
@@ -257,6 +287,9 @@ severity, metadata, and provenance.
 When a lens projection is supplied, inspection also reports the entity role and
 the semantic reasons that produced it.
 
+When a narrative projection is supplied, inspection reports narrative role,
+ordered step indexes, and the accessible narrative summary.
+
 ### `mountSvgInteraction(svg, normalizedGraph, options?)`
 
 Attaches framework-independent pointer and keyboard selection behavior to a
@@ -266,6 +299,11 @@ rendered SVG. It returns a controller with `select`, `clear`, `destroy`, and
 Pass the corresponding `lensProjection` in the interaction options when the
 SVG was rendered with a lens. Pointer and keyboard selection will then return
 the same explainable lens context through `onSelectionChange`.
+
+Pass `narrativeProjection` when the SVG was rendered with a focused path.
+`nextNarrativeStep()` and `previousNarrativeStep()` move selection through the
+ordered result; Arrow Right and Arrow Left provide the same keyboard behavior.
+Escape clears the active selection without mutating the narrative projection.
 
 Call `destroy()` before the host permanently removes the diagram.
 

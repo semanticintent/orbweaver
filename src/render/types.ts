@@ -2,6 +2,7 @@ import type { LayoutGraphOptions } from '../layout/types.js'
 import type { OrbweaverTheme } from '../theme/types.js'
 import type { SemanticLens } from '../semantic/lenses.js'
 import type { SemanticDetailLevel } from '../semantic/detail.js'
+import type { PathNarrativeProjection } from '../semantic/paths.js'
 
 export interface SvgArtifactFrameOptions {
   title?: string
@@ -20,6 +21,7 @@ export interface SvgRenderOptions {
   frame?: SvgArtifactFrameOptions
   lens?: SemanticLens
   detailLevel?: SemanticDetailLevel
+  narrative?: PathNarrativeProjection
 }
 
 export interface RenderGraphOptions {

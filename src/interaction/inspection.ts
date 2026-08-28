@@ -8,6 +8,8 @@ import {
 import type { Annotation, Metadata, NormalizedGraph, Provenance } from '../model/types.js'
 import { getLensMatch } from '../semantic/lenses.js'
 import type { LensProjection, LensProjectionRole, LensReason } from '../semantic/lenses.js'
+import { getPathNarrativeMatch } from '../semantic/paths.js'
+import type { PathNarrativeProjection, PathNarrativeRole } from '../semantic/paths.js'
 
 export type InspectableEntityKind = 'node' | 'edge' | 'group'
 
@@ -42,6 +44,13 @@ export interface Inspection {
     role: LensProjectionRole
     reasons: LensReason[]
   }
+  narrative?: {
+    id: string
+    label: string
+    role: PathNarrativeRole
+    stepIndexes: number[]
+    summary: string
+  }
 }
 
 function lensInspection(projection: LensProjection | undefined, ref: EntityRef): Pick<Inspection, 'lens'> {
@@ -51,7 +60,14 @@ function lensInspection(projection: LensProjection | undefined, ref: EntityRef):
   return { lens: { id: projection.lensId, label: projection.label, role: match.role, reasons: match.reasons } }
 }
 
-export function inspectEntity(graph: NormalizedGraph, ref: EntityRef, projection?: LensProjection): Inspection | undefined {
+function narrativeInspection(projection: PathNarrativeProjection | undefined, ref: EntityRef): Pick<Inspection, 'narrative'> {
+  if (projection === undefined) return {}
+  const match = getPathNarrativeMatch(projection, ref)
+  if (match === undefined) return {}
+  return { narrative: { id: projection.narrativeId, label: projection.label, role: match.role, stepIndexes: match.stepIndexes, summary: projection.summary } }
+}
+
+export function inspectEntity(graph: NormalizedGraph, ref: EntityRef, projection?: LensProjection, narrative?: PathNarrativeProjection): Inspection | undefined {
   if (ref.kind === 'node') {
     const node = graph.nodes.find((candidate) => candidate.id === ref.id)
     if (node === undefined) return undefined
@@ -67,6 +83,7 @@ export function inspectEntity(graph: NormalizedGraph, ref: EntityRef, projection
       ...(node.source === undefined ? {} : { source: node.source }),
       ...(annotations.length === 0 ? {} : { annotations }),
       ...lensInspection(projection, ref),
+      ...narrativeInspection(narrative, ref),
       relationships: {
         incomingEdgeIds: getIncomingEdges(graph, node.id).flatMap((edge) => edge.id === undefined ? [] : [edge.id]),
         outgoingEdgeIds: getOutgoingEdges(graph, node.id).flatMap((edge) => edge.id === undefined ? [] : [edge.id]),
@@ -88,6 +105,7 @@ export function inspectEntity(graph: NormalizedGraph, ref: EntityRef, projection
       ...(edge.source === undefined ? {} : { source: edge.source }),
       ...(annotations.length === 0 ? {} : { annotations }),
       ...lensInspection(projection, ref),
+      ...narrativeInspection(narrative, ref),
       from: edge.from,
       to: edge.to,
     }
@@ -106,6 +124,7 @@ export function inspectEntity(graph: NormalizedGraph, ref: EntityRef, projection
     ...(group.source === undefined ? {} : { source: group.source }),
     ...(annotations.length === 0 ? {} : { annotations }),
     ...lensInspection(projection, ref),
+    ...narrativeInspection(narrative, ref),
     memberNodeIds: getGroupNodes(graph, group.id).map((node) => node.id),
   }
 }
