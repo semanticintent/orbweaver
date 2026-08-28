@@ -221,7 +221,7 @@ tool, security, testing, and delivery scope.
 
 ## Phase 11 — Semantic visual intelligence
 
-**Status:** In progress — 11A complete; 11B core complete
+**Status:** In progress — 11A–11B complete
 
 ### 11A — Semantic lenses
 
@@ -239,14 +239,14 @@ tool, security, testing, and delivery scope.
 
 ### 11B — Semantic level of detail
 
-**Status:** Core vertical slice complete; prerelease and gallery adoption pending
+**Status:** Complete
 
 - [x] Define explicit overview, standard, and close detail states.
 - [x] Derive disclosure from renderer-owned rules rather than graph-authored
   breakpoints.
 - [x] Preserve identity, selection, hit targets, and geometry across levels.
 - [x] Add explicit static export and reduced-motion behavior.
-- [ ] Publish the detail API in the next v0.2 prerelease and adopt it in the
+- [x] Publish the detail API in the next v0.2 prerelease and adopt it in the
   package-native public gallery.
 
 ### 11C — Focused path narratives
