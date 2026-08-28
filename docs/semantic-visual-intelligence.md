@@ -179,8 +179,8 @@ readings over the same scene.
 
 ## 3. Focused path narratives
 
-**Implementation status:** Core vertical slice complete; prerelease and public
-gallery adoption pending.
+**Implementation status:** Complete in `0.2.0-alpha.8` and adopted by the public
+package-native gallery.
 
 ### Reader problem
 

@@ -221,7 +221,7 @@ tool, security, testing, and delivery scope.
 
 ## Phase 11 — Semantic visual intelligence
 
-**Status:** In progress — 11A–11B complete; 11C core complete
+**Status:** In progress — 11A–11C complete
 
 ### 11A — Semantic lenses
 
@@ -251,14 +251,14 @@ tool, security, testing, and delivery scope.
 
 ### 11C — Focused path narratives
 
-**Status:** Core vertical slice complete; prerelease and gallery adoption pending
+**Status:** Complete
 
 - [x] Compose deterministic upstream, downstream, lineage, failure, and trust
   traversal recipes.
 - [x] Return ordered paths, semantic reasons, summaries, and truncation
   diagnostics.
 - [x] Add keyboard navigation and non-animated accessible equivalents.
-- [ ] Publish the focused-path API in the next v0.2 prerelease and adopt it in
+- [x] Publish the focused-path API in the next v0.2 prerelease and adopt it in
   the package-native public gallery.
 
 ### 11D — Generated legends
