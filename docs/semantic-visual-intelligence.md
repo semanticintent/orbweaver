@@ -56,6 +56,9 @@ SVG. Rendering maps projection roles to theme-owned visual tokens.
 
 ## 1. Semantic lenses
 
+**Implementation status:** Core vertical slice complete; prerelease and public
+gallery adoption pending.
+
 ### Reader problem
 
 Large diagrams often answer several questions at once. A reader needs to

@@ -52,6 +52,10 @@ annotations that surface why an entity deserves closer inspection. Annotation
 markers remain compact at overview scale, preserve accessible meaning in static
 SVG, and reveal their complete context through semantic inspection.
 
+The next visual-intelligence line begins with explainable semantic lenses. Risk,
+trust, data-flow, provenance, ownership, and modernization views derive
+emphasis from existing graph meaning while leaving layout geometry unchanged.
+
 ## WebMCP — agent-assisted semantic visualization
 
 Orbweaver implements a bounded WebMCP interface in its public semantic

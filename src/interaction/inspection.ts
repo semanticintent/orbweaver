@@ -6,6 +6,8 @@ import {
   getOutgoingEdges,
 } from '../graph/queries.js'
 import type { Annotation, Metadata, NormalizedGraph, Provenance } from '../model/types.js'
+import { getLensMatch } from '../semantic/lenses.js'
+import type { LensProjection, LensProjectionRole, LensReason } from '../semantic/lenses.js'
 
 export type InspectableEntityKind = 'node' | 'edge' | 'group'
 
@@ -34,9 +36,22 @@ export interface Inspection {
   from?: string
   to?: string
   annotations?: Annotation[]
+  lens?: {
+    id: string
+    label: string
+    role: LensProjectionRole
+    reasons: LensReason[]
+  }
 }
 
-export function inspectEntity(graph: NormalizedGraph, ref: EntityRef): Inspection | undefined {
+function lensInspection(projection: LensProjection | undefined, ref: EntityRef): Pick<Inspection, 'lens'> {
+  if (projection === undefined) return {}
+  const match = getLensMatch(projection, ref)
+  if (match === undefined) return {}
+  return { lens: { id: projection.lensId, label: projection.label, role: match.role, reasons: match.reasons } }
+}
+
+export function inspectEntity(graph: NormalizedGraph, ref: EntityRef, projection?: LensProjection): Inspection | undefined {
   if (ref.kind === 'node') {
     const node = graph.nodes.find((candidate) => candidate.id === ref.id)
     if (node === undefined) return undefined
@@ -51,6 +66,7 @@ export function inspectEntity(graph: NormalizedGraph, ref: EntityRef): Inspectio
       ...(node.metadata === undefined ? {} : { metadata: node.metadata }),
       ...(node.source === undefined ? {} : { source: node.source }),
       ...(annotations.length === 0 ? {} : { annotations }),
+      ...lensInspection(projection, ref),
       relationships: {
         incomingEdgeIds: getIncomingEdges(graph, node.id).flatMap((edge) => edge.id === undefined ? [] : [edge.id]),
         outgoingEdgeIds: getOutgoingEdges(graph, node.id).flatMap((edge) => edge.id === undefined ? [] : [edge.id]),
@@ -71,6 +87,7 @@ export function inspectEntity(graph: NormalizedGraph, ref: EntityRef): Inspectio
       ...(edge.metadata === undefined ? {} : { metadata: edge.metadata }),
       ...(edge.source === undefined ? {} : { source: edge.source }),
       ...(annotations.length === 0 ? {} : { annotations }),
+      ...lensInspection(projection, ref),
       from: edge.from,
       to: edge.to,
     }
@@ -88,6 +105,7 @@ export function inspectEntity(graph: NormalizedGraph, ref: EntityRef): Inspectio
     ...(group.metadata === undefined ? {} : { metadata: group.metadata }),
     ...(group.source === undefined ? {} : { source: group.source }),
     ...(annotations.length === 0 ? {} : { annotations }),
+    ...lensInspection(projection, ref),
     memberNodeIds: getGroupNodes(graph, group.id).map((node) => node.id),
   }
 }

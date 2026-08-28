@@ -1,5 +1,6 @@
 import type { LayoutGraphOptions } from '../layout/types.js'
 import type { OrbweaverTheme } from '../theme/types.js'
+import type { SemanticLens } from '../semantic/lenses.js'
 
 export interface SvgArtifactFrameOptions {
   title?: string
@@ -16,6 +17,7 @@ export interface SvgRenderOptions {
   responsive?: boolean
   includeSummary?: boolean
   frame?: SvgArtifactFrameOptions
+  lens?: SemanticLens
 }
 
 export interface RenderGraphOptions {

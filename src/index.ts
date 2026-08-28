@@ -70,6 +70,18 @@ export type {
 } from './model/types.js'
 export { validateGraph } from './validation/validate.js'
 export type { Point, Scene, SceneEdge, SceneEdgeLabel, SceneGroup, SceneNode } from './scene/types.js'
+export { deriveLensProjection, getLensMatch, getSemanticLensRecipe, semanticLensRecipes } from './semantic/lenses.js'
+export type {
+  LensMatch,
+  LensProjection,
+  LensProjectionRole,
+  LensReason,
+  SemanticLens,
+  SemanticLensAnnotationRule,
+  SemanticLensId,
+  SemanticLensMetadataRule,
+  SemanticLensRule,
+} from './semantic/lenses.js'
 export { renderGraph } from './render/render-graph.js'
 export { renderSvg, SvgRenderer } from './render/svg.js'
 export type {

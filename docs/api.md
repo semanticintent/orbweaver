@@ -51,6 +51,48 @@ placement; annotation data never contains visual coordinates.
 Returns annotations for a graph or exact semantic entity target in graph order.
 Omitting `target` returns graph-level annotations.
 
+## Semantic lenses
+
+### `deriveLensProjection(normalizedGraph, lens)`
+
+Derives an ordered, explainable reading of a graph without changing its
+semantics or geometry. Every node, edge, and group receives one role:
+`match`, `context`, or `background`. Direct matches include semantic reasons;
+context identifies supporting endpoints, relationships, members, or groups.
+
+```ts
+const graph = normalizeGraph(input)
+const lens = getSemanticLensRecipe('risk')
+const projection = deriveLensProjection(graph, lens)
+
+for (const match of projection.matches) {
+  if (match.role === 'match') console.log(match.entity, match.reasons)
+}
+```
+
+Lens rules may match entity kind, semantic type, status, source presence,
+top-level metadata, or targeted annotation type, severity, and metadata. Rules
+contain semantic predicates and explanation text—not colors, opacity,
+coordinates, CSS, SVG, callbacks, or executable regular expressions.
+
+### Built-in recipes
+
+`getSemanticLensRecipe(id)` returns one of six built-in recipes:
+
+- `risk`
+- `trust`
+- `data-flow`
+- `provenance`
+- `ownership`
+- `modernization`
+
+`semanticLensRecipes` exposes the same recipes as a keyed collection. Recipes
+recognize only declared graph meaning; they do not infer architectural truth.
+
+### `getLensMatch(projection, ref)`
+
+Returns the projection entry for an exact node, edge, or group reference.
+
 ## AI-assisted proposals
 
 ### `validateGraphProposal(input, options?)`
@@ -120,7 +162,8 @@ Returns the deterministic size estimate used by the initial layout adapter.
 ### `renderSvg(scene, options?)`
 
 Returns an accessible SVG string. Options include `theme`, `className`,
-`responsive`, `includeSummary`, and an optional `frame` for portable artifacts.
+`responsive`, `includeSummary`, an optional `frame` for portable artifacts, and
+an optional semantic `lens`.
 
 The frame adds visible title and description content above the unchanged scene
 and explicit artifact metadata below it. It also serializes the same metadata
@@ -129,6 +172,7 @@ into the SVG. Dates are never inferred, preserving deterministic output.
 ```ts
 const svg = renderSvg(scene, {
   theme: darkTheme,
+  lens: getSemanticLensRecipe('risk'),
   responsive: false,
   frame: {
     version: '1.0',
@@ -174,7 +218,7 @@ DOM objects.
 
 ## Inspection and interaction
 
-### `inspectEntity(normalizedGraph, ref)`
+### `inspectEntity(normalizedGraph, ref, lensProjection?)`
 
 Returns a semantic `Inspection` for a node, edge, or group. Inspection can
 include metadata, provenance, endpoints, neighbor IDs, relationship IDs, or
@@ -182,11 +226,18 @@ recursive group membership. Targeted semantic annotations are included in
 graph order so an inspector can present their complete labels, bodies,
 severity, metadata, and provenance.
 
+When a lens projection is supplied, inspection also reports the entity role and
+the semantic reasons that produced it.
+
 ### `mountSvgInteraction(svg, normalizedGraph, options?)`
 
 Attaches framework-independent pointer and keyboard selection behavior to a
 rendered SVG. It returns a controller with `select`, `clear`, `destroy`, and
 `selected`.
+
+Pass the corresponding `lensProjection` in the interaction options when the
+SVG was rendered with a lens. Pointer and keyboard selection will then return
+the same explainable lens context through `onSelectionChange`.
 
 Call `destroy()` before the host permanently removes the diagram.
 

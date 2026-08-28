@@ -1,10 +1,12 @@
 import { getGroupNodes, getIncidentEdges, getNeighbors } from '../graph/queries.js'
 import type { NormalizedGraph } from '../model/types.js'
+import type { LensProjection } from '../semantic/lenses.js'
 import { inspectEntity, type EntityRef, type Inspection } from './inspection.js'
 
 export interface SvgInteractionOptions {
   onSelectionChange?: (inspection: Inspection | undefined) => void
   muteUnrelated?: boolean
+  lensProjection?: LensProjection
 }
 
 export interface SvgInteractionController {
@@ -133,7 +135,7 @@ export function mountSvgInteraction(
       return selected
     },
     select(ref) {
-      const inspection = inspectEntity(graph, ref)
+      const inspection = inspectEntity(graph, ref, options.lensProjection)
       if (inspection === undefined) return undefined
       selected = { ...ref }
       setEntityState(svg, selected, relatedEntities(graph, selected), muteUnrelated)

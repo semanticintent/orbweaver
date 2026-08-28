@@ -2,6 +2,8 @@
 
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import {
+  deriveLensProjection,
+  getSemanticLensRecipe,
   layoutGraph,
   mountSvgInteraction,
   renderSvg,
@@ -136,5 +138,26 @@ describe('SVG interaction controller', () => {
     const controller = mountSvgInteraction(svg, scene.graph, { muteUnrelated: false })
     controller.select({ kind: 'node', id: 'a' })
     expect(svg.querySelector('[data-node-id="isolated"]')?.hasAttribute('data-muted')).toBe(false)
+  })
+
+  it('includes active lens reasons in keyboard and pointer inspection', async () => {
+    const scene = await layoutGraph({
+      ...graph,
+      nodes: graph.nodes.map((node) => node.id === 'a' ? { ...node, status: 'warning' } : node),
+    })
+    const lens = getSemanticLensRecipe('risk')
+    const projection = deriveLensProjection(scene.graph, lens)
+    const parsed = new DOMParser().parseFromString(renderSvg(scene, { lens }), 'image/svg+xml')
+    const svg = document.importNode(parsed.documentElement, true)
+    document.body.append(svg)
+    if (!(svg instanceof SVGSVGElement)) throw new Error('Rendered SVG was not mounted.')
+    const controller = mountSvgInteraction(svg, scene.graph, { lensProjection: projection })
+
+    expect(controller.select({ kind: 'node', id: 'a' })?.lens).toMatchObject({
+      id: 'risk', label: 'Risk', role: 'match',
+    })
+    expect(controller.select({ kind: 'node', id: 'isolated' })?.lens).toMatchObject({
+      id: 'risk', role: 'background', reasons: [],
+    })
   })
 })
