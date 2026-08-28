@@ -130,8 +130,8 @@ for the complete scope and delivery gates.
   preserving topology and scene geometry.
 - [x] Add an annotated dependency showcase and contract, rendering,
   inspection, validation, and accessibility tests.
-- [ ] Evaluate an optional close-view one-line summary after marker density and
-  viewport behavior have been tested in the public gallery.
+- [x] Carry progressive disclosure forward into the disciplined semantic
+  level-of-detail scope in Phase 11B after public gallery evaluation.
 
 ### Portable artifact export
 
@@ -202,6 +202,8 @@ suite passes within its published compatibility and performance budgets.
   proposal contract, semantic inspection, and visible focus.
 - [x] Add validated create and atomic revision tools with revision-conflict
   protection and undo.
+- [x] Add atomic annotation creation, update, and removal through the existing
+  revision tool, with inspection and workspace summaries.
 - [x] Keep acceptance and export explicitly human-controlled for the initial
   release.
 - [x] Verify discovery, execution, safety review, and visible results in the
@@ -216,6 +218,64 @@ the complete workflow remains available without WebMCP.
 
 See [WebMCP semantic playground](webmcp-semantic-playground.md) for the product,
 tool, security, testing, and delivery scope.
+
+## Phase 11 — Semantic visual intelligence
+
+**Status:** Scoped
+
+### 11A — Semantic lenses
+
+- [ ] Define a declarative lens rule and explainable projection contract.
+- [ ] Add built-in risk, trust, data-flow, provenance, ownership, and
+  modernization recipes.
+- [ ] Apply theme-owned match, context, and background treatment without
+  changing layout geometry.
+- [ ] Expose lens reasons through inspection and accessible summaries.
+- [ ] Verify interactive and static SVG behavior across contrasting fixtures.
+
+### 11B — Semantic level of detail
+
+- [ ] Define explicit overview, standard, and close detail states.
+- [ ] Derive disclosure from renderer-owned rules rather than graph-authored
+  breakpoints.
+- [ ] Preserve identity, selection, hit targets, and geometry across levels.
+- [ ] Add explicit static export and reduced-motion behavior.
+
+### 11C — Focused path narratives
+
+- [ ] Compose deterministic upstream, downstream, lineage, failure, and trust
+  traversal recipes.
+- [ ] Return ordered paths, semantic reasons, summaries, and truncation
+  diagnostics.
+- [ ] Add keyboard navigation and non-animated accessible equivalents.
+
+### 11D — Generated legends
+
+- [ ] Derive a compact legend containing only vocabulary present in the
+  rendered artifact.
+- [ ] Include active lens and detail state where applicable.
+- [ ] Support optional deterministic SVG legend output.
+
+### 11E — Architecture comparison
+
+- [ ] Define an inspectable semantic diff between two validated graphs.
+- [ ] Derive unchanged, introduced, removed, and changed states by stable ID.
+- [ ] Preserve removed semantics for inspection and accessible output.
+- [ ] Demonstrate a current-state versus target-state enterprise architecture.
+
+**Non-goals:** Authored styling or breakpoints; manual geometry; decorative
+animation; vendor icon catalogs; inferred architectural truth; a freeform
+editor; or an enterprise architecture repository and governance suite.
+
+**Gate:** A large semantic architecture can be viewed through explainable
+lenses, progressively disclosed, traversed as bounded narratives, exported
+with a derived legend, and compared with another version without changing its
+authored geometry contract, losing identity, or materially burdening basic
+consumers.
+
+See [Semantic visual intelligence](semantic-visual-intelligence.md) for the
+invariants, proposed contracts, acceptance gates, budgets, and ordered delivery
+plan.
 
 ## Deferred integrations
 

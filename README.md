@@ -195,6 +195,7 @@ or layout-engine-specific objects.
 - [Visual language](docs/visual-language.md)
 - [Interaction and inspection](docs/interaction.md)
 - [Semantic annotation layer](docs/semantic-annotations.md)
+- [Semantic visual intelligence](docs/semantic-visual-intelligence.md)
 - [Public API](docs/api.md)
 - [Release process](docs/releasing.md)
 - [Implementation roadmap](docs/roadmap.md)
