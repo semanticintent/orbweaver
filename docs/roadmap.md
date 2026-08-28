@@ -221,7 +221,7 @@ tool, security, testing, and delivery scope.
 
 ## Phase 11 — Semantic visual intelligence
 
-**Status:** In progress — 11A–11D complete; 11E core complete
+**Status:** Complete — 11A–11E released and adopted by the public gallery
 
 ### 11A — Semantic lenses
 
@@ -274,7 +274,7 @@ tool, security, testing, and delivery scope.
 
 ### 11E — Architecture comparison
 
-**Status:** Core vertical slice complete; prerelease and gallery adoption pending
+**Status:** Complete in `0.2.0-alpha.10` and adopted by the public gallery
 
 - [x] Define an inspectable semantic diff between two validated graphs.
 - [x] Derive unchanged, introduced, removed, and changed states by stable ID.

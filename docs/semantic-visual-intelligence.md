@@ -263,8 +263,8 @@ without requiring separately maintained legend content.
 
 ## 5. Architecture comparison
 
-**Implementation status:** Core vertical slice complete; prerelease and public
-gallery adoption pending.
+**Implementation status:** Complete in `0.2.0-alpha.10` and adopted by the public
+gallery.
 
 ### Reader problem
 
