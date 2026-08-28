@@ -268,6 +268,36 @@ outside unchanged scene geometry. The visible key, SVG description, and
 machine-readable metadata contain equivalent meaning. The renderer includes
 the current explicit detail level and any active lens or narrative.
 
+## Architecture comparison
+
+### `compareArchitectures(base, target)`
+
+Compares two normalized graphs by stable node, edge, and group IDs. It returns
+target-first entries classified as `unchanged`, `introduced`, `changed`, or
+`removed`, plus counts, a textual summary, preserved before/after snapshots,
+targeted annotations, and top-level semantic field changes.
+
+```ts
+const comparison = compareArchitectures(currentGraph, targetGraph)
+const entry = getArchitectureComparisonEntry(comparison, {
+  kind: 'node',
+  id: 'checkout',
+})
+
+const svg = renderSvg(targetScene, { comparison, includeLegend: true })
+```
+
+Target order is stable, followed by removed entities in base order. A missing
+old ID and a new ID remain removal plus introduction; Orbweaver never guesses a
+rename. Metadata and provenance compare canonically regardless of object key
+insertion order. Annotation changes are explicit field changes.
+
+SVG comparison renders the target scene only, so it never invents coordinates
+for removed entities. Unchanged, introduced, and changed target semantics have
+text-and-treatment states; the complete comparison, including removed entity
+snapshots, is embedded in accessible descriptions and SVG metadata. The
+comparison target graph ID must match the rendered scene.
+
 `frame.title` and `frame.description` override the visible and accessible
 artifact copy; otherwise the graph title and description are used. `version`
 describes the represented system or schema, `asOf` describes when its

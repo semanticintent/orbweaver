@@ -73,6 +73,15 @@ export type { Point, Scene, SceneEdge, SceneEdgeLabel, SceneGroup, SceneNode } f
 export { deriveLensProjection, getLensMatch, getSemanticLensRecipe, semanticLensRecipes } from './semantic/lenses.js'
 export { defaultSemanticDetailThresholds, recommendSemanticDetailLevel } from './semantic/detail.js'
 export type { SemanticDetailLevel, SemanticDetailThresholds } from './semantic/detail.js'
+export { compareArchitectures, getArchitectureComparisonEntry } from './semantic/comparison.js'
+export type {
+  ArchitectureChangeState,
+  ArchitectureComparison,
+  ArchitectureComparisonCounts,
+  ArchitectureComparisonEntry,
+  ArchitectureEntity,
+  ArchitectureFieldChange,
+} from './semantic/comparison.js'
 export { deriveLegend } from './semantic/legend.js'
 export type { LegendContext, LegendItem, LegendModel, LegendSection, LegendSectionId } from './semantic/legend.js'
 export { derivePathNarrative, getPathNarrativeMatch, getPathNarrativeRecipe, pathNarrativeRecipes } from './semantic/paths.js'

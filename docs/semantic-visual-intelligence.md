@@ -263,6 +263,9 @@ without requiring separately maintained legend content.
 
 ## 5. Architecture comparison
 
+**Implementation status:** Core vertical slice complete; prerelease and public
+gallery adoption pending.
+
 ### Reader problem
 
 Architecture reviews need to explain what is retained, introduced, retired, or
@@ -285,13 +288,25 @@ truth. The initial renderer may use an overlay or side-by-side host composition
 only after the diff model is stable. Animation and timeline editing are out of
 scope.
 
+The implemented comparison matches stable node, edge, and group IDs and
+classifies target-first entries as unchanged, introduced, changed, or removed.
+Changed entries contain explicit before/after values for semantic fields and
+targeted annotations. Removed entries preserve the complete prior semantic
+entity and its annotations. Renames are never inferred.
+
+The initial SVG treatment renders the target scene: unchanged meaning recedes,
+introduced and changed meaning receive distinct non-color-only treatments, and
+accessible labels name every state. Removed semantics remain in the comparison
+summary and embedded metadata because placing them onto target geometry would
+violate the authored-meaning/derived-geometry boundary.
+
 ### Acceptance gate
 
-- Diff ordering is deterministic and field changes are inspectable.
-- Renames are not guessed; they require stable identity or an explicit mapping.
-- Removed entities retain enough semantic data for accessible inspection.
-- Static output distinguishes states without depending on color.
-- Current/target enterprise architecture fixtures demonstrate the result.
+- [x] Diff ordering is deterministic and field changes are inspectable.
+- [x] Renames are not guessed; they require stable identity or an explicit mapping.
+- [x] Removed entities retain enough semantic data for accessible inspection.
+- [x] Static output distinguishes states without depending on color.
+- [x] Current/target architecture fixtures demonstrate the result.
 
 ## Delivery sequence and dependencies
 

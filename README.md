@@ -68,6 +68,11 @@ compact inventory from only the entity, relationship, status, annotation, and
 active-view vocabulary present; authors choose whether to include it, but never
 maintain colors or symbols by hand.
 
+Architecture comparison closes the visual-intelligence sequence with a
+stable-ID semantic diff. Target artifacts distinguish unchanged, introduced,
+and changed meaning while preserving removed entities and annotations as
+inspectable comparison data—without guessing renames or fabricating geometry.
+
 ## WebMCP — agent-assisted semantic visualization
 
 Orbweaver implements a bounded WebMCP interface in its public semantic

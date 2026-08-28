@@ -2,6 +2,7 @@ import type { NormalizedGraph } from '../model/types.js'
 import type { SemanticDetailLevel } from './detail.js'
 import type { LensProjection } from './lenses.js'
 import type { PathNarrativeProjection } from './paths.js'
+import type { ArchitectureComparison } from './comparison.js'
 
 export type LegendSectionId = 'entities' | 'groups' | 'relationships' | 'statuses' | 'annotations' | 'view'
 
@@ -21,6 +22,7 @@ export interface LegendContext {
   lens?: LensProjection
   detailLevel?: SemanticDetailLevel
   narrative?: PathNarrativeProjection
+  comparison?: ArchitectureComparison
 }
 
 export interface LegendModel {
@@ -56,6 +58,7 @@ export function deriveLegend(graph: NormalizedGraph, context: LegendContext = {}
       ...(context.lens === undefined ? [] : [`${context.lens.label} lens`]),
       ...(context.detailLevel === undefined ? [] : [`${context.detailLevel} detail`]),
       ...(context.narrative === undefined ? [] : [context.narrative.label]),
+      ...(context.comparison === undefined ? [] : ['Architecture comparison']),
     ]),
   ].filter((value): value is LegendSection => value !== undefined)
   const itemCount = sections.reduce((total, current) => total + current.items.length, 0)
