@@ -181,7 +181,8 @@ Returns the deterministic size estimate used by the initial layout adapter.
 
 Returns an accessible SVG string. Options include `theme`, `className`,
 `responsive`, `includeSummary`, an optional `frame` for portable artifacts, an
-optional semantic `lens`, and an explicit `detailLevel`.
+optional semantic `lens`, an explicit `detailLevel`, an optional focused
+`narrative`, and `includeLegend`.
 
 The frame adds visible title and description content above the unchanged scene
 and explicit artifact metadata below it. It also serializes the same metadata
@@ -239,6 +240,33 @@ Traversal honors normalized edge direction and graph order. Cycles and
 self-edges terminate safely. `maxDepth` and `maxSteps` must be positive
 integers; a bounded result reports `max-depth` or `max-steps` rather than
 silently dropping continuation.
+
+## Generated legends
+
+### `deriveLegend(graph, context?)`
+
+Returns a deterministic, presentation-neutral inventory of semantic vocabulary
+actually present in a normalized graph. Optional context identifies an active
+lens, detail level, or focused path.
+
+```ts
+const legend = deriveLegend(normalizedGraph, {
+  detailLevel: 'close',
+  lens: riskProjection,
+  narrative: downstreamPath,
+})
+```
+
+Sections appear in stable order: entities, groups, relationships, non-default
+statuses, annotations, and active view. Empty sections are omitted. Items retain
+first-occurrence graph order and include counts. Custom types are supported as
+plain semantic vocabulary; legend data contains no colors, coordinates, SVG,
+or author-controlled symbols.
+
+Set `includeLegend: true` in SVG render options to append the generated legend
+outside unchanged scene geometry. The visible key, SVG description, and
+machine-readable metadata contain equivalent meaning. The renderer includes
+the current explicit detail level and any active lens or narrative.
 
 `frame.title` and `frame.description` override the visible and accessible
 artifact copy; otherwise the graph title and description are used. `version`

@@ -6,6 +6,8 @@ import type { LensProjection } from '../semantic/lenses.js'
 import type { SemanticDetailLevel } from '../semantic/detail.js'
 import { getPathNarrativeMatch } from '../semantic/paths.js'
 import type { PathNarrativeProjection } from '../semantic/paths.js'
+import { deriveLegend } from '../semantic/legend.js'
+import type { LegendModel } from '../semantic/legend.js'
 import { lightTheme } from '../theme/defaults.js'
 import type { OrbweaverTheme } from '../theme/types.js'
 import type { Renderer, SvgArtifactFrameOptions, SvgRenderOptions } from './types.js'
@@ -65,6 +67,10 @@ function stylesheet(prefix: string): string {
 .ow-frame-description{fill:var(--ow-text-muted);font-size:12px}
 .ow-frame-meta{fill:var(--ow-text-muted);font-family:var(--ow-font-mono);font-size:10px;letter-spacing:.35px}
 .ow-frame-divider{stroke:var(--ow-border);stroke-width:1}
+.ow-legend-background{fill:var(--ow-canvas)}
+.ow-legend-title{fill:var(--ow-accent);font-family:var(--ow-font-mono);font-size:9px;font-weight:600;letter-spacing:1.2px}
+.ow-legend-section{fill:var(--ow-text-muted);font-family:var(--ow-font-mono);font-size:8px;font-weight:600;letter-spacing:.8px;text-transform:uppercase}
+.ow-legend-items{fill:var(--ow-text);font-size:9px}
 .ow-group-surface{fill:var(--ow-surface-muted);stroke:var(--ow-border);stroke-width:1;stroke-dasharray:5 5}
 .ow-group-label-bg{fill:var(--ow-canvas)}
 .ow-group-label{fill:var(--ow-text-muted);font-family:var(--ow-font-mono);font-size:10px;font-weight:600;letter-spacing:1.1px;text-transform:uppercase}
@@ -354,6 +360,16 @@ function frameMetadata(frame: SvgArtifactFrameOptions): string[] {
   ].filter((value): value is string => value !== undefined && value.trim() !== '')
 }
 
+function renderLegend(legend: LegendModel, width: number, y: number): string {
+  const rows = legend.sections.map((section, index) => {
+    const items = section.items.map((item) => `${item.label} (${item.count})`).join(' · ')
+    const rowY = 50 + index * 25
+    return `<text class="ow-legend-section" x="32" y="${rowY}">${escapeXml(section.label)}</text><text class="ow-legend-items" x="142" y="${rowY}">${escapeXml(truncateText(items, width - 142, 9))}</text>`
+  }).join('')
+  const height = 62 + legend.sections.length * 25
+  return `<g class="ow-legend" transform="translate(0 ${y})" role="group" aria-label="${escapeXml(legend.summary)}"><rect class="ow-legend-background" width="${width}" height="${height}"/><line class="ow-frame-divider" x1="0" y1="0" x2="${width}" y2="0"/><text class="ow-legend-title" x="32" y="25">GENERATED LEGEND · PRESENT SEMANTICS ONLY</text>${rows}</g>`
+}
+
 export class SvgRenderer implements Renderer<string> {
   render(scene: Scene, options: SvgRenderOptions = {}): string {
     const theme = options.theme ?? lightTheme
@@ -363,19 +379,26 @@ export class SvgRenderer implements Renderer<string> {
     const descriptionId = `${prefix}-description`
     const projection = options.lens === undefined ? undefined : deriveLensProjection(scene.graph, options.lens)
     const narrative = options.narrative
+    const legend = options.includeLegend === true ? deriveLegend(scene.graph, {
+      ...(projection === undefined ? {} : { lens: projection }),
+      detailLevel,
+      ...(narrative === undefined ? {} : { narrative }),
+    }) : undefined
     const className = ['orbweaver', `ow-detail-${detailLevel}`, projection === undefined ? undefined : 'ow-lens-active', narrative === undefined ? undefined : 'ow-path-active', options.className].filter(Boolean).join(' ')
     const frame = options.frame
     const frameTitle = frame?.title ?? scene.graph.title ?? scene.graph.id
     const frameDescription = frame?.description ?? scene.graph.description
     const headerHeight = frame === undefined ? 0 : frameDescription === undefined || frameDescription.trim() === '' ? 88 : 112
     const meta = frame === undefined ? [] : frameMetadata(frame)
+    const legendHeight = legend === undefined ? 0 : 62 + legend.sections.length * 25
     const footerHeight = meta.length === 0 ? 0 : 44
-    const totalHeight = scene.height + headerHeight + footerHeight
+    const totalHeight = scene.height + headerHeight + legendHeight + footerHeight
     const width = options.responsive === false ? ` width="${scene.width}" height="${totalHeight}"` : ' width="100%"'
     const summary = summarizeGraph(scene.graph)
     const lensSummary = projection === undefined ? undefined : `${projection.label} lens active. ${projection.matchCount} direct ${projection.matchCount === 1 ? 'match' : 'matches'} and ${projection.contextCount} context ${projection.contextCount === 1 ? 'entity' : 'entities'}.`
     const detailSummary = `${detailLevel.charAt(0).toUpperCase()}${detailLevel.slice(1)} semantic detail active.`
     const narrativeSummary = narrative?.summary
+    const legendSummary = legend?.summary
     const groupSurfaces = scene.groups.map((_group, index) => renderGroupSurface(scene, index, projection)).join('')
     const groupLabels = scene.groups.map((_group, index) => renderGroupLabel(scene, index, detailLevel, projection)).join('')
     const edges = scene.edges.map((edge) => renderEdge(edge, scene.graph, prefix, detailLevel, projection, narrative)).join('')
@@ -384,6 +407,7 @@ export class SvgRenderer implements Renderer<string> {
     const lensMetadata = projection === undefined ? '' : `<metadata class="ow-lens-summary">${escapeXml(lensSummary ?? '')}</metadata>`
     const detailMetadata = `<metadata class="ow-detail-summary">${escapeXml(detailSummary)}</metadata>`
     const narrativeMetadata = narrative === undefined ? '' : `<metadata class="ow-path-summary">${escapeXml(narrative.summary)}</metadata>`
+    const legendMetadata = legend === undefined ? '' : `<metadata class="ow-legend-summary">${escapeXml(legend.summary)}</metadata>`
     const artifactMetadata = frame === undefined ? '' : `<metadata class="ow-artifact-metadata">${escapeXml(JSON.stringify({
       title: frameTitle,
       ...(frameDescription === undefined ? {} : { description: frameDescription }),
@@ -393,10 +417,11 @@ export class SvgRenderer implements Renderer<string> {
       ...(frame.renderer === undefined ? {} : { renderer: frame.renderer }),
     }))}</metadata>`
     const frameHeader = frame === undefined ? '' : `<g class="ow-frame ow-frame-header" aria-hidden="true"><text class="ow-frame-kicker" x="32" y="26">SEMANTIC VISUAL STRUCTURE</text><text class="ow-frame-title" x="32" y="58">${escapeXml(truncateText(frameTitle, scene.width, 24))}</text>${frameDescription === undefined || frameDescription.trim() === '' ? '' : `<text class="ow-frame-description" x="32" y="84">${escapeXml(truncateText(frameDescription, scene.width, 12))}</text>`}<line class="ow-frame-divider" x1="0" y1="${headerHeight - 1}" x2="${scene.width}" y2="${headerHeight - 1}"/></g>`
-    const frameFooter = frame === undefined || meta.length === 0 ? '' : `<g class="ow-frame ow-frame-footer" aria-hidden="true" transform="translate(0 ${headerHeight + scene.height})"><line class="ow-frame-divider" x1="0" y1="0" x2="${scene.width}" y2="0"/><text class="ow-frame-meta" x="32" y="27">${escapeXml(truncateText(meta.join(' · '), scene.width, 10))}</text></g>`
+    const legendMarkup = legend === undefined ? '' : renderLegend(legend, scene.width, headerHeight + scene.height)
+    const frameFooter = frame === undefined || meta.length === 0 ? '' : `<g class="ow-frame ow-frame-footer" aria-hidden="true" transform="translate(0 ${headerHeight + scene.height + legendHeight})"><line class="ow-frame-divider" x1="0" y1="0" x2="${scene.width}" y2="0"/><text class="ow-frame-meta" x="32" y="27">${escapeXml(truncateText(meta.join(' · '), scene.width, 10))}</text></g>`
     const sceneMarkup = `<g class="ow-scene"${headerHeight === 0 ? '' : ` transform="translate(0 ${headerHeight})"`}><rect class="ow-canvas" width="${scene.width}" height="${scene.height}" rx="12"/><g class="ow-groups">${groupSurfaces}</g><g class="ow-edges">${edges}</g><g class="ow-group-labels">${groupLabels}</g><g class="ow-nodes" role="list">${nodes}</g></g>`
 
-    return `<svg xmlns="http://www.w3.org/2000/svg" class="${escapeXml(className)}" viewBox="0 0 ${scene.width} ${totalHeight}"${width} role="img" aria-labelledby="${titleId} ${descriptionId}" style="${escapeXml(cssVariables(theme))}" data-theme="${escapeXml(theme.id)}" data-detail-level="${detailLevel}"${projection === undefined ? '' : ` data-lens-id="${escapeXml(projection.lensId)}"`}${narrative === undefined ? '' : ` data-path-id="${escapeXml(narrative.narrativeId)}" data-path-start="${escapeXml(narrative.startNodeId)}"`}><title id="${titleId}">${escapeXml(frameTitle)}</title><desc id="${descriptionId}">${escapeXml([frameDescription ?? summary, detailSummary, lensSummary, narrativeSummary].filter(Boolean).join(' '))}</desc>${summaryElement}${detailMetadata}${lensMetadata}${narrativeMetadata}${artifactMetadata}${definitions(prefix)}<style>${stylesheet(prefix)}</style>${frame === undefined ? '' : `<rect class="ow-artifact-background" width="${scene.width}" height="${totalHeight}" rx="12"/>`}${frameHeader}${sceneMarkup}${frameFooter}</svg>`
+    return `<svg xmlns="http://www.w3.org/2000/svg" class="${escapeXml(className)}" viewBox="0 0 ${scene.width} ${totalHeight}"${width} role="img" aria-labelledby="${titleId} ${descriptionId}" style="${escapeXml(cssVariables(theme))}" data-theme="${escapeXml(theme.id)}" data-detail-level="${detailLevel}"${projection === undefined ? '' : ` data-lens-id="${escapeXml(projection.lensId)}"`}${narrative === undefined ? '' : ` data-path-id="${escapeXml(narrative.narrativeId)}" data-path-start="${escapeXml(narrative.startNodeId)}"`}${legend === undefined ? '' : ' data-legend="generated"'}><title id="${titleId}">${escapeXml(frameTitle)}</title><desc id="${descriptionId}">${escapeXml([frameDescription ?? summary, detailSummary, lensSummary, narrativeSummary, legendSummary].filter(Boolean).join(' '))}</desc>${summaryElement}${detailMetadata}${lensMetadata}${narrativeMetadata}${legendMetadata}${artifactMetadata}${definitions(prefix)}<style>${stylesheet(prefix)}</style>${frame === undefined ? '' : `<rect class="ow-artifact-background" width="${scene.width}" height="${totalHeight}" rx="12"/>`}${frameHeader}${sceneMarkup}${legendMarkup}${frameFooter}</svg>`
   }
 }
 

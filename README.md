@@ -63,6 +63,11 @@ downstream impact, data lineage, failure propagation, and trust crossings.
 Every traversal is bounded, ordered, explainable, and available to static SVG
 and keyboard interaction without introducing authored routes.
 
+Generated legends make exported artifacts self-explaining. Orbweaver derives a
+compact inventory from only the entity, relationship, status, annotation, and
+active-view vocabulary present; authors choose whether to include it, but never
+maintain colors or symbols by hand.
+
 ## WebMCP — agent-assisted semantic visualization
 
 Orbweaver implements a bounded WebMCP interface in its public semantic

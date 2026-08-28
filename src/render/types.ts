@@ -22,6 +22,7 @@ export interface SvgRenderOptions {
   lens?: SemanticLens
   detailLevel?: SemanticDetailLevel
   narrative?: PathNarrativeProjection
+  includeLegend?: boolean
 }
 
 export interface RenderGraphOptions {

@@ -225,6 +225,9 @@ context without changing the scene.
 
 ## 4. Generated legends
 
+**Implementation status:** Core vertical slice complete; prerelease and public
+gallery adoption pending.
+
 ### Reader problem
 
 Published artifacts should explain the visual vocabulary they actually use
@@ -240,13 +243,23 @@ Empty categories are omitted. Legend ordering is stable. Authors may choose
 whether a legend is included, but may not override individual symbols or
 colors.
 
+The implemented legend model contains stable sections and counted items. It
+derives entity types, group types, relationship types, non-default statuses,
+annotation kinds, and any active lens, detail, or focused-path state. Custom
+vocabulary remains plain semantic text; no presentation tokens enter the model.
+
+`includeLegend: true` appends a compact renderer-owned key outside unchanged
+scene geometry. The same summary is embedded in SVG accessibility text and
+metadata. Artifact frames, focused paths, lenses, and semantic detail compose
+without requiring separately maintained legend content.
+
 ### Acceptance gate
 
-- The legend model contains only semantics present in the rendered artifact.
-- Symbols and text remain meaningful without color.
-- SVG export can embed an optional deterministic legend.
-- Legends remain compact for graphs with custom entity and relationship types.
-- Active lens and detail level are identified when applicable.
+- [x] The legend model contains only semantics present in the rendered artifact.
+- [x] Symbols and text remain meaningful without color.
+- [x] SVG export can embed an optional deterministic legend.
+- [x] Legends remain compact for graphs with custom entity and relationship types.
+- [x] Active lens and detail level are identified when applicable.
 
 ## 5. Architecture comparison
 
