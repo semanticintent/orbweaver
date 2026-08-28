@@ -129,6 +129,9 @@ or geometry.
 
 ## 2. Semantic level of detail
 
+**Implementation status:** Core vertical slice complete; prerelease and public
+gallery adoption pending.
+
 ### Reader problem
 
 Dense diagrams need to remain calm at overview scale and informative at close
@@ -147,13 +150,31 @@ an explicit level so tests and exports never depend on ambient browser state.
 Level changes reveal content inside existing geometry; they do not trigger
 relayout or author-controlled breakpoints.
 
+The implemented API accepts `detailLevel` in SVG render options and exports
+`recommendSemanticDetailLevel(zoom, thresholds?)` for hosts that want a stable
+viewport recommendation. Defaults select overview below `1.2`, standard from
+`1.2` through values below `2`, and close at `2` or above. Static exports choose
+a level explicitly and never depend on ambient browser zoom.
+
+Disclosure is deliberately bounded:
+
+| Level | Visible treatment |
+| --- | --- |
+| Overview | Entity identity, group boundaries, topology, and critical annotation markers |
+| Standard | Established node types, relationship labels, and all annotation markers |
+| Close | Bounded node/group descriptions and relationship type context |
+
+All underlying entities and annotation meaning remain in accessible SVG text
+at every level. Semantic lenses and detail levels compose as independent
+readings over the same scene.
+
 ### Acceptance gate
 
-- Thresholds and disclosed fields are renderer-owned and documented.
-- No entity disappears completely solely because it is not selected.
-- Detail transitions preserve selection, focus, hit targets, and scene geometry.
-- Reduced-motion mode uses immediate changes; animation is never required.
-- Static SVG export accepts an explicit detail level.
+- [x] Thresholds and disclosed fields are renderer-owned and documented.
+- [x] No entity disappears completely solely because it is not selected.
+- [x] Detail transitions preserve selection, focus, hit targets, and scene geometry.
+- [x] Reduced-motion mode uses immediate changes; animation is never required.
+- [x] Static SVG export accepts an explicit detail level.
 - Long-label and dense-graph fixtures remain legible at all three levels.
 
 ## 3. Focused path narratives

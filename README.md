@@ -52,9 +52,11 @@ annotations that surface why an entity deserves closer inspection. Annotation
 markers remain compact at overview scale, preserve accessible meaning in static
 SVG, and reveal their complete context through semantic inspection.
 
-The next visual-intelligence line begins with explainable semantic lenses. Risk,
-trust, data-flow, provenance, ownership, and modernization views derive
-emphasis from existing graph meaning while leaving layout geometry unchanged.
+The visual-intelligence line adds explainable semantic lenses and deterministic
+semantic detail. Risk, trust, data-flow, provenance, ownership, and
+modernization views derive emphasis from existing graph meaning. Explicit
+`overview`, `standard`, and `close` states progressively disclose that meaning
+without changing entity identity or layout geometry.
 
 ## WebMCP — agent-assisted semantic visualization
 

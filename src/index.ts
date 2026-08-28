@@ -71,6 +71,8 @@ export type {
 export { validateGraph } from './validation/validate.js'
 export type { Point, Scene, SceneEdge, SceneEdgeLabel, SceneGroup, SceneNode } from './scene/types.js'
 export { deriveLensProjection, getLensMatch, getSemanticLensRecipe, semanticLensRecipes } from './semantic/lenses.js'
+export { defaultSemanticDetailThresholds, recommendSemanticDetailLevel } from './semantic/detail.js'
+export type { SemanticDetailLevel, SemanticDetailThresholds } from './semantic/detail.js'
 export type {
   LensMatch,
   LensProjection,

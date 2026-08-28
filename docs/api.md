@@ -93,6 +93,24 @@ recognize only declared graph meaning; they do not infer architectural truth.
 
 Returns the projection entry for an exact node, edge, or group reference.
 
+## Semantic detail
+
+### `recommendSemanticDetailLevel(zoom, thresholds?)`
+
+Returns an explicit `overview`, `standard`, or `close` recommendation from a
+positive zoom value. Defaults are renderer-owned: overview below `1.2`,
+standard from `1.2` through values below `2`, and close at `2` or above.
+
+```ts
+const detailLevel = recommendSemanticDetailLevel(viewport.zoom)
+const svg = renderSvg(scene, { detailLevel })
+```
+
+Hosts may override `overviewBelow` and `closeAt`, provided both are positive
+and `closeAt` is greater. `defaultSemanticDetailThresholds` exposes the stable
+defaults. The helper does not observe browser state or mutate a viewport; it
+only translates an explicit scale into deterministic semantic presentation.
+
 ## AI-assisted proposals
 
 ### `validateGraphProposal(input, options?)`
@@ -162,8 +180,8 @@ Returns the deterministic size estimate used by the initial layout adapter.
 ### `renderSvg(scene, options?)`
 
 Returns an accessible SVG string. Options include `theme`, `className`,
-`responsive`, `includeSummary`, an optional `frame` for portable artifacts, and
-an optional semantic `lens`.
+`responsive`, `includeSummary`, an optional `frame` for portable artifacts, an
+optional semantic `lens`, and an explicit `detailLevel`.
 
 The frame adds visible title and description content above the unchanged scene
 and explicit artifact metadata below it. It also serializes the same metadata
@@ -173,6 +191,7 @@ into the SVG. Dates are never inferred, preserving deterministic output.
 const svg = renderSvg(scene, {
   theme: darkTheme,
   lens: getSemanticLensRecipe('risk'),
+  detailLevel: 'close',
   responsive: false,
   frame: {
     version: '1.0',
@@ -181,6 +200,15 @@ const svg = renderSvg(scene, {
   },
 })
 ```
+
+The default `standard` level preserves the established rendering. `overview`
+keeps entity identity, topology, groups, hit targets, and critical annotation
+signals while suppressing secondary type and relationship copy. `close`
+reveals bounded node and group descriptions plus relationship type context.
+All three levels share the same scene bounds, routes, semantic IDs, accessible
+entity descriptions, and interaction contract. A level is recorded in SVG
+metadata and `data-detail-level`, making static exports deterministic and
+auditable.
 
 `frame.title` and `frame.description` override the visible and accessible
 artifact copy; otherwise the graph title and description are used. `version`

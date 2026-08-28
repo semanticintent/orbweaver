@@ -105,7 +105,7 @@ describe('semantic lens projection', () => {
     const baseline = renderSvg(scene)
     const lensSvg = renderSvg(scene, { lens: getSemanticLensRecipe('risk') })
 
-    expect(lensSvg).toContain('class="orbweaver ow-lens-active"')
+    expect(lensSvg).toContain('class="orbweaver ow-detail-standard ow-lens-active"')
     expect(lensSvg).toContain('data-lens-id="risk"')
     expect(lensSvg).toContain('data-node-id="inventory" data-node-type="service" data-node-status="warning" data-lens-role="match"')
     expect(lensSvg).toContain('data-node-id="storefront" data-node-type="service" data-node-status="default" data-lens-role="background"')
