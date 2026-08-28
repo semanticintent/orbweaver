@@ -56,8 +56,8 @@ SVG. Rendering maps projection roles to theme-owned visual tokens.
 
 ## 1. Semantic lenses
 
-**Implementation status:** Core vertical slice complete; prerelease and public
-gallery adoption pending.
+**Implementation status:** Complete in `0.2.0-alpha.6` and adopted by the public
+package-native gallery.
 
 ### Reader problem
 

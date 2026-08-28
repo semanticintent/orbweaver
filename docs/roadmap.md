@@ -225,7 +225,7 @@ tool, security, testing, and delivery scope.
 
 ### 11A — Semantic lenses
 
-**Status:** Core vertical slice complete; prerelease and gallery adoption pending
+**Status:** Complete
 
 - [x] Define a declarative lens rule and explainable projection contract.
 - [x] Add built-in risk, trust, data-flow, provenance, ownership, and
@@ -234,7 +234,7 @@ tool, security, testing, and delivery scope.
   changing layout geometry.
 - [x] Expose lens reasons through inspection and accessible summaries.
 - [x] Verify interactive and static SVG behavior across contrasting fixtures.
-- [ ] Publish the lens API in the next v0.2 prerelease and adopt it in the
+- [x] Publish the lens API in the next v0.2 prerelease and adopt it in the
   package-native public gallery.
 
 ### 11B — Semantic level of detail
