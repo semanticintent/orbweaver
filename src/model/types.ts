@@ -65,12 +65,24 @@ export interface AnnotationTarget {
   id?: string
 }
 
+export type AnnotationKind =
+  | 'note'
+  | 'constraint'
+  | 'risk'
+  | 'decision'
+  | 'evidence'
+  | 'assumption'
+  | 'change'
+
+export type AnnotationSeverity = 'info' | 'warning' | 'critical'
+
 export interface Annotation {
   id: string
   target?: AnnotationTarget
   label?: string
   body: string
   type?: string
+  severity?: AnnotationSeverity
   metadata?: Metadata
   source?: Provenance
 }

@@ -12,5 +12,9 @@ export function summarizeGraph(graph: Graph): string {
   const labels = new Map(graph.nodes.map((node) => [node.id, node.label]))
   const count = `${graph.nodes.length} ${graph.nodes.length === 1 ? 'node' : 'nodes'} and ${graph.edges.length} ${graph.edges.length === 1 ? 'relationship' : 'relationships'}.`
   const relationships = graph.edges.map((edge) => relationship(edge, labels)).join(' ')
-  return [heading, graph.description, count, relationships].filter((part) => part !== undefined && part !== '').join('. ').replaceAll('..', '.')
+  const annotationCount = graph.annotations?.length ?? 0
+  const annotations = annotationCount === 0
+    ? undefined
+    : `${annotationCount} semantic ${annotationCount === 1 ? 'annotation' : 'annotations'}.`
+  return [heading, graph.description, count, annotations, relationships].filter((part) => part !== undefined && part !== '').join('. ').replaceAll('..', '.')
 }

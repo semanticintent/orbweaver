@@ -40,6 +40,7 @@ export interface ProposalValidationLimits {
   maxNodes: number
   maxEdges: number
   maxGroups: number
+  maxAnnotations: number
   maxEvidence: number
   maxClaims: number
   maxLabelLength: number

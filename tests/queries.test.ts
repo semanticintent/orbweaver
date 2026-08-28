@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import {
   getGroupNodes,
+  getAnnotations,
   getIncidentEdges,
   getIncomingEdges,
   getNeighbors,
@@ -32,6 +33,11 @@ const graph: Graph = {
     { id: 'web-api', from: 'web', to: 'api', type: 'request' },
     { id: 'api-db', from: 'api', to: 'db', type: 'data' },
   ],
+  annotations: [
+    { id: 'api-policy', target: { kind: 'node', id: 'api' }, type: 'constraint', body: 'Requests require authorization.' },
+    { id: 'data-risk', target: { kind: 'edge', id: 'api-db' }, type: 'risk', severity: 'warning', body: 'Sensitive data crosses a boundary.' },
+    { id: 'platform-decision', target: { kind: 'group', id: 'platform' }, type: 'decision', body: 'Platform ownership is centralized.' },
+  ],
 }
 
 describe('graph queries', () => {
@@ -49,6 +55,12 @@ describe('graph queries', () => {
     expect(getGroupNodes(graph, 'platform').map((node) => node.id)).toEqual(['web', 'api'])
     expect(getGroupNodes(graph, 'platform', false).map((node) => node.id)).toEqual(['web'])
   })
+
+  it('returns semantic annotations for an exact target in graph order', () => {
+    expect(getAnnotations(graph, { kind: 'node', id: 'api' }).map((annotation) => annotation.id)).toEqual(['api-policy'])
+    expect(getAnnotations(graph, { kind: 'edge', id: 'api-db' }).map((annotation) => annotation.id)).toEqual(['data-risk'])
+    expect(getAnnotations(graph)).toEqual([])
+  })
 })
 
 describe('inspection', () => {
@@ -62,6 +74,9 @@ describe('inspection', () => {
       type: 'service',
       metadata: { owner: 'Platform' },
       source: { file: 'architecture.rcl', line: 42, path: 'API-SERVICE' },
+      annotations: [
+        { id: 'api-policy', target: { kind: 'node', id: 'api' }, type: 'constraint', body: 'Requests require authorization.' },
+      ],
       relationships: {
         incomingEdgeIds: ['web-api'],
         outgoingEdgeIds: ['api-db'],
@@ -76,8 +91,10 @@ describe('inspection', () => {
       id: 'api-db',
       from: 'api',
       to: 'db',
+      annotations: [{ id: 'data-risk', severity: 'warning' }],
     })
     expect(inspectEntity(normalized, { kind: 'group', id: 'platform' })?.memberNodeIds).toEqual(['web', 'api'])
+    expect(inspectEntity(normalized, { kind: 'group', id: 'platform' })?.annotations?.[0]?.type).toBe('decision')
   })
 
   it('returns undefined for an unknown entity', () => {

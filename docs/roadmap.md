@@ -118,6 +118,21 @@ for the complete scope and delivery gates.
 
 **Status:** In progress
 
+### Semantic annotation layer
+
+- [x] Activate the existing graph-level annotation contract for graph, node,
+  edge, and group targets.
+- [x] Add annotation severity, target validation, proposal limits, and schema
+  support without accepting presentation or geometry.
+- [x] Include targeted annotations in semantic inspection and accessible graph
+  summaries.
+- [x] Derive compact category/count markers for nodes, edges, and groups while
+  preserving topology and scene geometry.
+- [x] Add an annotated dependency showcase and contract, rendering,
+  inspection, validation, and accessibility tests.
+- [ ] Evaluate an optional close-view one-line summary after marker density and
+  viewport behavior have been tested in the public gallery.
+
 ### Portable artifact export
 
 - [ ] Define a versioned, self-contained Orbweaver HTML artifact containing

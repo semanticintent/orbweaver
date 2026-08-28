@@ -1,4 +1,15 @@
-import type { Edge, Graph, Group, Node } from '../model/types.js'
+import type { Annotation, AnnotationTarget, Edge, Graph, Group, Node } from '../model/types.js'
+
+export function getAnnotations(
+  graph: Graph,
+  target: AnnotationTarget = { kind: 'graph' },
+): Annotation[] {
+  return (graph.annotations ?? []).filter((annotation) => {
+    const annotationTarget = annotation.target ?? { kind: 'graph' as const }
+    return annotationTarget.kind === target.kind
+      && (target.kind === 'graph' || annotationTarget.id === target.id)
+  })
+}
 
 export function getIncomingEdges(graph: Graph, nodeId: string): Edge[] {
   return graph.edges.filter((edge) => edge.to === nodeId)

@@ -25,12 +25,29 @@ documentation, published analysis, and application interfaces.
 - Databases use a datastore surface.
 - Event relationships use a dashed route.
 - Error relationships and critical nodes use the danger token.
+- Semantic annotations use compact, derived markers: `§` constraint, `!` risk,
+  `◆` decision, `◇` evidence, `?` assumption, `Δ` change, and `·` note.
+- Multiple annotations on one entity collapse into a count marker so topology
+  remains primary. Warning and critical severity use existing theme tokens.
 
 Unknown types retain the generic treatment. These mappings are renderer
 defaults, not graph semantics.
 
+## Progressive semantic detail
+
+Annotations form a restrained bridge between topology and the semantic
+inspector. At overview scale the marker answers “why should I look closer?”
+without expanding node geometry. Focus and inspection expose the full annotation
+body, provenance, and metadata. A future close-view presentation may reveal a
+single concise summary, but essential meaning must never depend on zoom or
+hover alone.
+
+Authors declare annotation meaning and targets. They do not specify marker
+coordinates, symbols, colors, expansion dimensions, or visibility breakpoints.
+
 ## Accessibility
 
 SVG output includes a title, description, textual graph summary, focusable
-nodes, accessible node names, meaningful list roles, and visible focus states.
+nodes and edges, accessible entity names including annotation detail,
+meaningful list roles, and visible focus states.
 Essential meaning must remain available without hover or color perception.

@@ -2,6 +2,7 @@ export { GraphValidationError, LayoutError, OrbweaverError } from './errors.js'
 export { summarizeGraph } from './accessibility/summarize.js'
 export {
   getGroupNodes,
+  getAnnotations,
   getIncidentEdges,
   getIncomingEdges,
   getNeighbors,
@@ -51,6 +52,8 @@ export type {
 } from './proposal/types.js'
 export type {
   Annotation,
+  AnnotationKind,
+  AnnotationSeverity,
   AnnotationTarget,
   Edge,
   EdgeDirection,

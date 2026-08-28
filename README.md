@@ -46,8 +46,8 @@ semantic visualization without coupling the core to an AI provider. See the
 [implementation roadmap](docs/roadmap.md) for completed gates and future work.
 
 The v0.2 alpha line adds human-reviewed proposal contracts, deterministic SVG
-artifact frames, and lightweight, dependency-free viewport navigation for
-close inspection of detailed diagrams.
+artifact frames, lightweight viewport navigation, and structured semantic
+annotations that surface why an entity deserves closer inspection.
 
 ## WebMCP — agent-assisted semantic visualization
 
@@ -174,6 +174,7 @@ or layout-engine-specific objects.
 - [Design and engineering discipline](docs/design-discipline.md)
 - [Visual language](docs/visual-language.md)
 - [Interaction and inspection](docs/interaction.md)
+- [Semantic annotation layer](docs/semantic-annotations.md)
 - [Public API](docs/api.md)
 - [Release process](docs/releasing.md)
 - [Implementation roadmap](docs/roadmap.md)

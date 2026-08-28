@@ -13,6 +13,7 @@ export const defaultProposalValidationLimits: ProposalValidationLimits = {
   maxNodes: 250,
   maxEdges: 500,
   maxGroups: 50,
+  maxAnnotations: 500,
   maxEvidence: 500,
   maxClaims: 1000,
   maxLabelLength: 200,
@@ -210,14 +211,25 @@ function validateGraphShape(value: unknown, errors: ProposalValidationIssue[]): 
   let annotationsValid = true
   if (value.annotations !== undefined) {
     annotationsValid = validateEntityArray(value.annotations, `${path}.annotations`, ['id', 'body'], new Set([
-      'id', 'target', 'label', 'body', 'type', 'metadata', 'source',
+      'id', 'target', 'label', 'body', 'type', 'severity', 'metadata', 'source',
     ]), errors)
     if (Array.isArray(value.annotations)) {
       value.annotations.forEach((annotation, index) => {
         if (!isRecord(annotation)) return
         const annotationPath = `${path}.annotations[${index}]`
-        for (const key of ['label', 'type']) optionalString(annotation, key, annotationPath, errors)
+        for (const key of ['label', 'type', 'severity']) optionalString(annotation, key, annotationPath, errors)
         optionalRecord(annotation, 'target', annotationPath, errors)
+        if (annotation.severity !== undefined && !['info', 'warning', 'critical'].includes(String(annotation.severity))) {
+          addIssue(errors, 'proposal-annotation-severity-invalid', 'Annotation severity must be info, warning, or critical.', `${annotationPath}.severity`)
+        }
+        if (isRecord(annotation.target)) {
+          rejectUnknownFields(annotation.target, new Set(['kind', 'id']), `${annotationPath}.target`, errors)
+          if (!['graph', 'node', 'edge', 'group'].includes(String(annotation.target.kind))) {
+            addIssue(errors, 'proposal-annotation-target-kind-invalid', 'Annotation target kind must be graph, node, edge, or group.', `${annotationPath}.target.kind`)
+          }
+          if (annotation.target.kind !== 'graph') requireString(annotation.target, 'id', `${annotationPath}.target`, errors)
+          else optionalString(annotation.target, 'id', `${annotationPath}.target`, errors)
+        }
         optionalRecord(annotation, 'metadata', annotationPath, errors)
         optionalRecord(annotation, 'source', annotationPath, errors)
       })
@@ -316,6 +328,7 @@ function applyLimits(
     [proposal.graph.nodes.length, limits.maxNodes, 'proposal-nodes-limit', '$.graph.nodes', 'Nodes'],
     [proposal.graph.edges.length, limits.maxEdges, 'proposal-edges-limit', '$.graph.edges', 'Edges'],
     [proposal.graph.groups?.length ?? 0, limits.maxGroups, 'proposal-groups-limit', '$.graph.groups', 'Groups'],
+    [proposal.graph.annotations?.length ?? 0, limits.maxAnnotations, 'proposal-annotations-limit', '$.graph.annotations', 'Annotations'],
     [proposal.evidence?.length ?? 0, limits.maxEvidence, 'proposal-evidence-limit', '$.evidence', 'Evidence references'],
     [proposal.claims?.length ?? 0, limits.maxClaims, 'proposal-claims-limit', '$.claims', 'Claims'],
   ]

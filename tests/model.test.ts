@@ -46,6 +46,23 @@ describe('normalizeGraph', () => {
     expect(graph.edges[0]?.direction).toBe('none')
   })
 
+  it('preserves semantic annotations without retaining caller-owned values', () => {
+    const input: Graph = {
+      ...fixture,
+      annotations: [{
+        id: 'approval',
+        target: { kind: 'node', id: 'payment' },
+        type: 'decision',
+        severity: 'warning',
+        body: 'A person approves the final revision.',
+      }],
+    }
+    const graph = normalizeGraph(input)
+    expect(graph.annotations).toEqual(input.annotations)
+    expect(graph.annotations).not.toBe(input.annotations)
+    expect(graph.annotations?.[0]?.target).not.toBe(input.annotations?.[0]?.target)
+  })
+
   it('avoids collisions between explicit and generated edge IDs', () => {
     const graph = normalizeGraph({
       ...fixture,

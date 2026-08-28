@@ -68,6 +68,24 @@ describe('validateGraph', () => {
     )
   })
 
+  it('validates annotation identity, severity, and semantic targets', () => {
+    const result = validateGraph(graph({
+      edges: [{ id: 'a-b', from: 'a', to: 'b' }],
+      annotations: [
+        { id: 'valid', target: { kind: 'edge', id: 'a-b' }, type: 'evidence', body: 'Supported.' },
+        { id: 'missing', target: { kind: 'node', id: 'absent' }, type: 'risk', body: 'Missing target.' },
+        { id: 'bad-severity', target: { kind: 'graph' }, body: 'Invalid severity.', severity: 'urgent' as 'critical' },
+        { id: 'empty', target: { kind: 'node', id: 'a' }, body: '' },
+      ],
+    }))
+    expect(result.valid).toBe(false)
+    expect(result.errors.map((entry) => entry.code)).toEqual(expect.arrayContaining([
+      'annotation-target-missing',
+      'annotation-severity-invalid',
+    ]))
+    expect(result.warnings.some((entry) => entry.code === 'annotation-body-empty')).toBe(true)
+  })
+
   it('throws an explicit error when normalization receives an invalid graph', () => {
     expect(() => normalizeGraph(graph({ edges: [{ from: 'a', to: 'missing' }] })))
       .toThrow(GraphValidationError)

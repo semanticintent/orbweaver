@@ -1,10 +1,11 @@
 import {
   getGroupNodes,
+  getAnnotations,
   getIncomingEdges,
   getNeighbors,
   getOutgoingEdges,
 } from '../graph/queries.js'
-import type { Metadata, NormalizedGraph, Provenance } from '../model/types.js'
+import type { Annotation, Metadata, NormalizedGraph, Provenance } from '../model/types.js'
 
 export type InspectableEntityKind = 'node' | 'edge' | 'group'
 
@@ -32,12 +33,14 @@ export interface Inspection {
   memberNodeIds?: string[]
   from?: string
   to?: string
+  annotations?: Annotation[]
 }
 
 export function inspectEntity(graph: NormalizedGraph, ref: EntityRef): Inspection | undefined {
   if (ref.kind === 'node') {
     const node = graph.nodes.find((candidate) => candidate.id === ref.id)
     if (node === undefined) return undefined
+    const annotations = getAnnotations(graph, ref)
     return {
       kind: 'node',
       id: node.id,
@@ -47,6 +50,7 @@ export function inspectEntity(graph: NormalizedGraph, ref: EntityRef): Inspectio
       ...(node.status === undefined ? {} : { status: node.status }),
       ...(node.metadata === undefined ? {} : { metadata: node.metadata }),
       ...(node.source === undefined ? {} : { source: node.source }),
+      ...(annotations.length === 0 ? {} : { annotations }),
       relationships: {
         incomingEdgeIds: getIncomingEdges(graph, node.id).flatMap((edge) => edge.id === undefined ? [] : [edge.id]),
         outgoingEdgeIds: getOutgoingEdges(graph, node.id).flatMap((edge) => edge.id === undefined ? [] : [edge.id]),
@@ -58,6 +62,7 @@ export function inspectEntity(graph: NormalizedGraph, ref: EntityRef): Inspectio
   if (ref.kind === 'edge') {
     const edge = graph.edges.find((candidate) => candidate.id === ref.id)
     if (edge === undefined) return undefined
+    const annotations = getAnnotations(graph, ref)
     return {
       kind: 'edge',
       id: edge.id,
@@ -65,6 +70,7 @@ export function inspectEntity(graph: NormalizedGraph, ref: EntityRef): Inspectio
       ...(edge.type === undefined ? {} : { type: edge.type }),
       ...(edge.metadata === undefined ? {} : { metadata: edge.metadata }),
       ...(edge.source === undefined ? {} : { source: edge.source }),
+      ...(annotations.length === 0 ? {} : { annotations }),
       from: edge.from,
       to: edge.to,
     }
@@ -72,6 +78,7 @@ export function inspectEntity(graph: NormalizedGraph, ref: EntityRef): Inspectio
 
   const group = graph.groups?.find((candidate) => candidate.id === ref.id)
   if (group === undefined) return undefined
+  const annotations = getAnnotations(graph, ref)
   return {
     kind: 'group',
     id: group.id,
@@ -80,6 +87,7 @@ export function inspectEntity(graph: NormalizedGraph, ref: EntityRef): Inspectio
     ...(group.type === undefined ? {} : { type: group.type }),
     ...(group.metadata === undefined ? {} : { metadata: group.metadata }),
     ...(group.source === undefined ? {} : { source: group.source }),
+    ...(annotations.length === 0 ? {} : { annotations }),
     memberNodeIds: getGroupNodes(graph, group.id).map((node) => node.id),
   }
 }

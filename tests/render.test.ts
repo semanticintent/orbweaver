@@ -49,6 +49,35 @@ describe('SVG renderer', () => {
     expect(dependency).toContain('data-node-status="critical"')
   })
 
+  it('derives restrained semantic annotation markers without changing layout geometry', async () => {
+    const graph: Graph = {
+      id: 'annotated',
+      title: 'Annotated workflow',
+      groups: [{ id: 'control', label: 'Control plane' }],
+      nodes: [
+        { id: 'authorize', type: 'process', label: 'Authorize', group: 'control' },
+        { id: 'persist', type: 'database', label: 'Persist', group: 'control' },
+      ],
+      edges: [{ id: 'write', from: 'authorize', to: 'persist', type: 'data', label: 'Write' }],
+      annotations: [
+        { id: 'policy', target: { kind: 'node', id: 'authorize' }, type: 'constraint', body: 'Human approval is required.' },
+        { id: 'audit', target: { kind: 'node', id: 'authorize' }, type: 'evidence', body: 'Approval is recorded.' },
+        { id: 'risk', target: { kind: 'edge', id: 'write' }, type: 'risk', severity: 'critical', body: 'The write is irreversible.' },
+        { id: 'owner', target: { kind: 'group', id: 'control' }, type: 'decision', body: 'The platform team owns this boundary.' },
+      ],
+    }
+    const scene = await layoutGraph(graph)
+    const svg = renderSvg(scene)
+
+    expect(svg).toContain('class="ow-annotation-marker"')
+    expect(svg).toContain('data-annotation-count="2" data-annotation-type="constraint"')
+    expect(svg).toContain('data-annotation-type="risk" data-annotation-severity="critical"')
+    expect(svg).toContain('data-annotation-type="decision"')
+    expect(svg).toContain('2 semantic annotations. Constraint: Human approval is required.')
+    expect(svg).toContain('4 semantic annotations.')
+    expect(svg).toContain('aria-label="Write from authorize to persist.')
+  })
+
   it('escapes untrusted graph content', async () => {
     const graph: Graph = {
       id: 'unsafe',

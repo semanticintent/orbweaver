@@ -171,6 +171,15 @@ export function validateGraph(graph: Graph): ValidationResult {
   }
 
   for (const annotation of annotations) {
+    if (annotation.id.trim() === '') {
+      errors.push(issue('error', 'annotation-id-empty', 'Annotation ID must not be empty.', { kind: 'annotation', id: annotation.id }))
+    }
+    if (annotation.body.trim() === '') {
+      warnings.push(issue('warning', 'annotation-body-empty', `Annotation "${annotation.id}" has an empty body.`, { kind: 'annotation', id: annotation.id }))
+    }
+    if (annotation.severity !== undefined && !['info', 'warning', 'critical'].includes(annotation.severity)) {
+      errors.push(issue('error', 'annotation-severity-invalid', `Annotation "${annotation.id}" has invalid severity "${annotation.severity}".`, { kind: 'annotation', id: annotation.id }))
+    }
     const targetIssue = validateAnnotationTarget(annotation, nodeIds, groupIds, explicitEdgeIds)
     if (targetIssue !== undefined) errors.push(targetIssue)
   }

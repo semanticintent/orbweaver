@@ -93,6 +93,7 @@ export const graphProposalJsonSchema = {
         },
         annotations: {
           type: 'array',
+          maxItems: 500,
           items: {
             type: 'object',
             additionalProperties: false,
@@ -111,6 +112,7 @@ export const graphProposalJsonSchema = {
               label: { type: 'string', maxLength: 200 },
               body: { type: 'string', maxLength: 2000 },
               type: { type: 'string' },
+              severity: { enum: ['info', 'warning', 'critical'] },
               metadata,
               source: provenance,
             },

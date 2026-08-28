@@ -1,5 +1,5 @@
 import { summarizeGraph } from '../accessibility/summarize.js'
-import type { Edge, Node, NormalizedGraph } from '../model/types.js'
+import type { Annotation, Edge, Node, NormalizedGraph } from '../model/types.js'
 import type { Point, Scene, SceneEdge, SceneNode } from '../scene/types.js'
 import { lightTheme } from '../theme/defaults.js'
 import type { OrbweaverTheme } from '../theme/types.js'
@@ -70,6 +70,13 @@ function stylesheet(prefix: string): string {
 .ow-edge[data-edge-type="event"] .ow-edge-path{stroke-dasharray:5 5}
 .ow-edge-label-bg{fill:var(--ow-canvas);stroke:var(--ow-border);stroke-width:1}
 .ow-edge-label{fill:var(--ow-edge-label);font-size:11px;font-weight:600}
+.ow-annotation-marker{pointer-events:none}
+.ow-annotation-marker-bg{fill:var(--ow-surface);stroke:var(--ow-accent);stroke-width:1.25}
+.ow-annotation-marker[data-annotation-severity="warning"] .ow-annotation-marker-bg{stroke:var(--ow-warning)}
+.ow-annotation-marker[data-annotation-severity="critical"] .ow-annotation-marker-bg{fill:var(--ow-danger);stroke:var(--ow-danger)}
+.ow-annotation-marker-text{fill:var(--ow-accent);font-family:var(--ow-font-mono);font-size:9px;font-weight:700;text-anchor:middle;dominant-baseline:middle}
+.ow-annotation-marker[data-annotation-severity="warning"] .ow-annotation-marker-text{fill:var(--ow-warning)}
+.ow-annotation-marker[data-annotation-severity="critical"] .ow-annotation-marker-text{fill:var(--ow-canvas)}
 .ow-node{cursor:default;outline:none}
 .ow-node-surface{fill:var(--ow-surface-raised);stroke:var(--ow-border-strong);stroke-width:1.25;filter:url(#${prefix}-shadow)}
 .ow-node:hover .ow-node-surface{stroke:var(--ow-accent)}
@@ -82,9 +89,11 @@ function stylesheet(prefix: string): string {
 .ow-node[data-node-status="healthy"] .ow-node-surface{stroke:var(--ow-success)}
 .ow-node[data-selected] .ow-node-surface{stroke:var(--ow-selection);stroke-width:2.75}
 .ow-edge[data-selected] .ow-edge-path{stroke:var(--ow-selection);stroke-width:3}
+.ow-edge:focus-visible .ow-edge-path{stroke:var(--ow-focus);stroke-width:2.75}
 .ow-node[data-related] .ow-node-surface{fill:var(--ow-accent-soft);stroke:var(--ow-accent);stroke-width:2.5;filter:drop-shadow(0 0 7px var(--ow-accent))}
 .ow-edge[data-related] .ow-edge-path{stroke:var(--ow-accent);stroke-width:2.25}
 .ow-group[data-selected] .ow-group-surface{stroke:var(--ow-selection);stroke-width:2}
+.ow-group:focus-visible .ow-group-surface{stroke:var(--ow-focus);stroke-width:2}
 .ow-has-selection [data-muted]{opacity:.12}
 @media (prefers-reduced-motion:no-preference){.ow-node-surface,.ow-edge-path{transition:fill .16s ease,stroke .16s ease,opacity .16s ease,filter .16s ease}}
 `
@@ -115,22 +124,73 @@ function markerAttributes(edge: Edge, prefix: string): string {
   return `${start}${end}`
 }
 
+const annotationSymbols: Readonly<Record<string, string>> = {
+  note: '·',
+  constraint: '§',
+  risk: '!',
+  decision: '◆',
+  evidence: '◇',
+  assumption: '?',
+  change: 'Δ',
+}
+
+function annotationsFor(
+  graph: NormalizedGraph,
+  kind: 'node' | 'edge' | 'group',
+  id: string,
+): Annotation[] {
+  return (graph.annotations ?? []).filter((annotation) =>
+    annotation.target?.kind === kind && annotation.target.id === id,
+  )
+}
+
+function annotationSeverity(annotations: readonly Annotation[]): 'info' | 'warning' | 'critical' {
+  if (annotations.some((annotation) => annotation.severity === 'critical')) return 'critical'
+  if (annotations.some((annotation) => annotation.severity === 'warning')) return 'warning'
+  return 'info'
+}
+
+function annotationMarker(annotations: readonly Annotation[], x: number, y: number): string {
+  if (annotations.length === 0) return ''
+  const primary = annotations[0]
+  if (primary === undefined) return ''
+  const severity = annotationSeverity(annotations)
+  const symbol = annotations.length > 1 ? String(annotations.length) : annotationSymbols[primary.type ?? 'note'] ?? '·'
+  const summary = annotations.map((annotation) => `${annotationLabel(annotation)}: ${annotation.body}`).join(' ')
+  return `<g class="ow-annotation-marker" transform="translate(${x} ${y})" data-annotation-count="${annotations.length}" data-annotation-type="${escapeXml(safeToken(primary.type ?? 'note'))}" data-annotation-severity="${severity}" aria-hidden="true"><title>${escapeXml(summary)}</title><circle class="ow-annotation-marker-bg" r="8"/><text class="ow-annotation-marker-text" y=".5">${escapeXml(symbol)}</text></g>`
+}
+
+function annotationLabel(annotation: Annotation): string {
+  const value = annotation.label ?? annotation.type ?? 'Note'
+  return `${value.charAt(0).toUpperCase()}${value.slice(1)}`
+}
+
+function annotationAria(annotations: readonly Annotation[]): string {
+  if (annotations.length === 0) return ''
+  const details = annotations.map((annotation) => `${annotationLabel(annotation)}: ${annotation.body}`).join(' ')
+  return ` ${annotations.length} semantic ${annotations.length === 1 ? 'annotation' : 'annotations'}. ${details}`
+}
+
 function renderEdge(sceneEdge: SceneEdge, graph: NormalizedGraph, prefix: string): string {
   const edge = graph.edges.find((candidate) => candidate.id === sceneEdge.edgeId)
   if (edge === undefined) return ''
   const type = safeToken(edge.type ?? 'generic')
   const path = polylinePath(sceneEdge.points)
+  const annotations = annotationsFor(graph, 'edge', edge.id)
+  const fallback = longestSegmentMidpoint(sceneEdge.points)
   let label = ''
+  let markerPoint = { x: fallback.x + 10, y: fallback.y - 12 }
   if (edge.label !== undefined && edge.label.trim() !== '') {
-    const fallback = longestSegmentMidpoint(sceneEdge.points)
     const width = sceneEdge.label?.width ?? Math.max(32, edge.label.length * 7 + 16)
     const height = sceneEdge.label?.height ?? 22
     const midpoint = sceneEdge.label === undefined
       ? fallback
       : { x: sceneEdge.label.x + width / 2, y: sceneEdge.label.y + height / 2 }
     label = `<g class="ow-edge-label-wrap" transform="translate(${midpoint.x} ${midpoint.y})"><rect class="ow-edge-label-bg" x="${-width / 2}" y="${-height / 2}" width="${width}" height="${height}" rx="7"/><text class="ow-edge-label" text-anchor="middle" dominant-baseline="middle">${escapeXml(edge.label)}</text></g>`
+    markerPoint = { x: midpoint.x + width / 2 + 10, y: midpoint.y }
   }
-  return `<g class="ow-edge" data-edge-id="${escapeXml(edge.id)}" data-edge-type="${escapeXml(type)}"><path class="ow-edge-hit" d="${path}" aria-hidden="true"/><path class="ow-edge-path" d="${path}"${markerAttributes(edge, prefix)}/>${label}</g>`
+  const ariaLabel = `${edge.label ?? edge.type ?? 'Relationship'} from ${edge.from} to ${edge.to}.${annotationAria(annotations)}`
+  return `<g class="ow-edge" data-edge-id="${escapeXml(edge.id)}" data-edge-type="${escapeXml(type)}" tabindex="0" role="listitem" aria-label="${escapeXml(ariaLabel)}"><path class="ow-edge-hit" d="${path}" aria-hidden="true"/><path class="ow-edge-path" d="${path}"${markerAttributes(edge, prefix)}/>${label}${annotationMarker(annotations, markerPoint.x, markerPoint.y)}</g>`
 }
 
 function wrapLabel(label: string, width: number): string[] {
@@ -182,8 +242,10 @@ function renderNode(sceneNode: SceneNode, graph: NormalizedGraph): string {
   const typeLabel = hasType ? `<text class="ow-node-type" x="${sceneNode.width / 2}" y="${sceneNode.height - 10}">${escapeXml(node.type ?? '')}</text>` : ''
   const accent = type === 'service' || type === 'process' ? `<rect class="ow-node-accent" x="0" y="12" width="3" height="${Math.max(12, sceneNode.height - 24)}" rx="1.5"/>` : ''
   const description = node.description === undefined ? '' : ` ${node.description}`
+  const annotations = annotationsFor(graph, 'node', node.id)
+  const marker = annotationMarker(annotations, sceneNode.width - 12, 12)
 
-  return `<g class="ow-node" transform="translate(${sceneNode.x} ${sceneNode.y})" data-node-id="${escapeXml(node.id)}" data-node-type="${escapeXml(type)}" data-node-status="${escapeXml(status)}" tabindex="0" role="listitem" aria-label="${escapeXml(`${node.label}.${description}`)}">${surface(node, sceneNode)}${accent}<text class="ow-node-label">${text}</text>${typeLabel}</g>`
+  return `<g class="ow-node" transform="translate(${sceneNode.x} ${sceneNode.y})" data-node-id="${escapeXml(node.id)}" data-node-type="${escapeXml(type)}" data-node-status="${escapeXml(status)}" tabindex="0" role="listitem" aria-label="${escapeXml(`${node.label}.${description}${annotationAria(annotations)}`)}">${surface(node, sceneNode)}${accent}<text class="ow-node-label">${text}</text>${typeLabel}${marker}</g>`
 }
 
 function sceneGroup(scene: Scene, index: number) {
@@ -198,7 +260,8 @@ function renderGroupSurface(scene: Scene, index: number): string {
   const entry = sceneGroup(scene, index)
   if (entry === undefined) return ''
   const { group, groupShape } = entry
-  return `<g class="ow-group" data-group-id="${escapeXml(group.id)}" tabindex="0" role="group" aria-label="${escapeXml(group.label)}"><rect class="ow-group-surface" x="${groupShape.x}" y="${groupShape.y}" width="${groupShape.width}" height="${groupShape.height}" rx="var(--ow-group-radius)"/></g>`
+  const annotations = annotationsFor(scene.graph, 'group', group.id)
+  return `<g class="ow-group" data-group-id="${escapeXml(group.id)}" tabindex="0" role="group" aria-label="${escapeXml(`${group.label}.${annotationAria(annotations)}`)}"><rect class="ow-group-surface" x="${groupShape.x}" y="${groupShape.y}" width="${groupShape.width}" height="${groupShape.height}" rx="var(--ow-group-radius)"/></g>`
 }
 
 function renderGroupLabel(scene: Scene, index: number): string {
@@ -206,7 +269,9 @@ function renderGroupLabel(scene: Scene, index: number): string {
   if (entry === undefined) return ''
   const { group, groupShape } = entry
   const labelWidth = Math.max(72, group.label.length * 7 + 20)
-  return `<g class="ow-group-label-wrap" data-group-id="${escapeXml(group.id)}"><rect class="ow-group-label-bg" x="${groupShape.x + 16}" y="${groupShape.y - 1}" width="${labelWidth}" height="22" rx="7"/><text class="ow-group-label" x="${groupShape.x + 26}" y="${groupShape.y + 14}">${escapeXml(group.label)}</text></g>`
+  const annotations = annotationsFor(scene.graph, 'group', group.id)
+  const marker = annotationMarker(annotations, groupShape.x + 16 + labelWidth + 10, groupShape.y + 10)
+  return `<g class="ow-group-label-wrap" data-group-id="${escapeXml(group.id)}"><rect class="ow-group-label-bg" x="${groupShape.x + 16}" y="${groupShape.y - 1}" width="${labelWidth}" height="22" rx="7"/><text class="ow-group-label" x="${groupShape.x + 26}" y="${groupShape.y + 14}">${escapeXml(group.label)}</text>${marker}</g>`
 }
 
 function definitions(prefix: string): string {

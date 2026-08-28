@@ -73,6 +73,34 @@ describe('validateGraphProposal', () => {
     ]))
   })
 
+  it('accepts bounded semantic annotations and rejects invalid annotation presentation', () => {
+    const proposal: GraphProposal = {
+      schemaVersion: '1',
+      graph: {
+        id: 'annotations',
+        nodes: [{ id: 'a', label: 'A' }],
+        edges: [],
+        annotations: [{
+          id: 'approval',
+          target: { kind: 'node', id: 'a' },
+          type: 'decision',
+          severity: 'warning',
+          body: 'Human approval is required.',
+        }],
+      },
+      generation: { adapter: 'test' },
+    }
+    expect(validateGraphProposal(proposal).valid).toBe(true)
+    expect(validateGraphProposal(proposal, { limits: { maxAnnotations: 0 } }).errors)
+      .toContainEqual(expect.objectContaining({ code: 'proposal-annotations-limit' }))
+
+    const invalid = structuredClone(proposal) as unknown as Record<string, unknown>
+    const invalidGraph = invalid.graph as { annotations: Array<Record<string, unknown>> }
+    invalidGraph.annotations[0]!.severity = 'urgent'
+    expect(validateGraphProposal(invalid).errors)
+      .toContainEqual(expect.objectContaining({ code: 'proposal-annotation-severity-invalid' }))
+  })
+
   it('keeps ordinary graph diagnostics and warnings in the proposal result', () => {
     const result = validateGraphProposal({
       schemaVersion: '1',
@@ -123,6 +151,7 @@ describe('validateGraphProposal', () => {
       maxNodes: 250,
       maxEdges: 500,
       maxGroups: 50,
+      maxAnnotations: 500,
       maxLabelLength: 200,
       maxDescriptionLength: 2000,
       maxMetadataDepth: 8,

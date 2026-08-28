@@ -22,6 +22,35 @@ Validates and returns a `NormalizedGraph` with explicit graph defaults, stable
 edge IDs, and normalized edge direction. Throws `GraphValidationError` for
 structural errors.
 
+### Semantic annotations
+
+`Graph.annotations` adds structured meaning to a graph, node, edge, or group
+without introducing authored geometry. An annotation contains an `id`, `body`,
+optional `label`, semantic `type`, `severity`, provenance, and target.
+
+```ts
+annotations: [{
+  id: 'payment-timeout-risk',
+  target: { kind: 'node', id: 'authorize-payment' },
+  type: 'risk',
+  severity: 'warning',
+  label: 'Timeout risk',
+  body: 'Authorization can time out before the provider confirms state.',
+  source: { file: 'fulfillment.rcl', line: 84 },
+}]
+```
+
+Built-in annotation kinds are `note`, `constraint`, `risk`, `decision`,
+`evidence`, `assumption`, and `change`. Severity is `info`, `warning`, or
+`critical`. Custom type strings remain valid and receive the neutral marker.
+Orbweaver derives marker symbols, count aggregation, severity treatment, and
+placement; annotation data never contains visual coordinates.
+
+### `getAnnotations(graph, target?)`
+
+Returns annotations for a graph or exact semantic entity target in graph order.
+Omitting `target` returns graph-level annotations.
+
 ## AI-assisted proposals
 
 ### `validateGraphProposal(input, options?)`
@@ -55,10 +84,10 @@ used as a structured-output schema or serialized for external validators.
 
 ### `defaultProposalValidationLimits`
 
-The default limits are 1 MiB, 250 nodes, 500 edges, 50 groups, 500 evidence
-references, 1,000 claims, 200-character labels, 2,000-character descriptions,
-and eight metadata levels. Pass a partial `limits` object to lower or
-explicitly adjust them.
+The default limits are 1 MiB, 250 nodes, 500 edges, 50 groups, 500 annotations,
+500 evidence references, 1,000 claims, 200-character labels, 2,000-character
+descriptions, and eight metadata levels. Pass a partial `limits` object to
+lower or explicitly adjust them.
 
 Proposal types include `GraphProposal`, `ProposalGeneration`,
 `EvidenceReference`, `ProposalClaim`, `ProposalValidationIssue`, and
@@ -149,7 +178,9 @@ DOM objects.
 
 Returns a semantic `Inspection` for a node, edge, or group. Inspection can
 include metadata, provenance, endpoints, neighbor IDs, relationship IDs, or
-recursive group membership.
+recursive group membership. Targeted semantic annotations are included in
+graph order so an inspector can present their complete labels, bodies,
+severity, metadata, and provenance.
 
 ### `mountSvgInteraction(svg, normalizedGraph, options?)`
 
