@@ -9,9 +9,10 @@ graphs into inspectable, accessible visual structures.
 
 > **Authors declare meaning. Orbweaver owns geometry.**
 
-Orbweaver is currently an early architectural prototype. The v0.1 work is
-focused on a plain-data graph contract, deterministic derived layout, polished
-SVG rendering, provenance preservation, and a small interaction model.
+Orbweaver is an early-stage open-source library with a published stable v0.1
+line and an active v0.2 alpha. Its foundation combines a plain-data graph
+contract, deterministic derived layout, polished SVG rendering, provenance,
+semantic annotations, and a deliberately small interaction model.
 
 ## Why Orbweaver exists
 
@@ -47,19 +48,24 @@ semantic visualization without coupling the core to an AI provider. See the
 
 The v0.2 alpha line adds human-reviewed proposal contracts, deterministic SVG
 artifact frames, lightweight viewport navigation, and structured semantic
-annotations that surface why an entity deserves closer inspection.
+annotations that surface why an entity deserves closer inspection. Annotation
+markers remain compact at overview scale, preserve accessible meaning in static
+SVG, and reveal their complete context through semantic inspection.
 
 ## WebMCP — agent-assisted semantic visualization
 
 Orbweaver implements a bounded WebMCP interface in its public semantic
 playground. ChatGPT or Codex can discover page-local tools, read the active
-workspace and proposal contract, create or revise a semantic graph, inspect its
-meaning, and focus entities in the same live diagram a person is viewing.
+workspace and proposal contract, create or revise a semantic graph, add, update,
+or remove annotations, inspect their meaning, and focus entities in the same
+live diagram a person is viewing.
 
 The integration deliberately keeps the trust boundary visible:
 
 - agent input is validated as untrusted semantic data;
 - mutations are atomic, revision-protected, and reversible;
+- agent-authored annotations remain reviewable claims rather than established
+  facts;
 - Orbweaver derives layout and SVG rather than accepting authored geometry;
 - agent-created revisions remain unaccepted previews;
 - acceptance and export are human-only actions.
@@ -73,7 +79,9 @@ The core `@semanticintent/orbweaver` package remains provider-neutral; WebMCP
 is implemented by the website adapter over the same validation, rendering, and
 interaction boundaries used by the manual interface.
 
-## Primary showcase — Northwind
+## Primary showcases
+
+### Northwind relational model
 
 The canonical Northwind database becomes an inspectable relational map with 13
 tables, 13 foreign-key relationships, five semantic domains, primary-key
@@ -83,6 +91,18 @@ metadata, and source provenance—without authored coordinates.
 
 [Explore the interactive public gallery](https://orbweaver.semanticintent.dev/gallery)
 or inspect the [Northwind semantic graph](examples/showcases.mjs) in source.
+
+### Enterprise architecture landscape
+
+The enterprise architecture showcase connects customer channels, business
+capabilities, domain platforms, shared data and events, external partners, and
+governance. Its annotations carry modernization risk, regulated trust
+boundaries, ownership decisions, integration strategy, controls, and evidence
+without crowding the topology.
+
+[Open the enterprise architecture showcase](https://orbweaver.semanticintent.dev/gallery)
+and select **06 Enterprise architecture**. Zoom or enter full screen, then
+select marked entities to inspect why they matter.
 
 Run the complete interactive gallery locally:
 

@@ -135,19 +135,22 @@ easier for agents to select correctly and easier to test.
 
 #### `orbweaver_get_workspace`
 
-Returns the current state, revision, proposal summary, validation summary,
-selection, and supported next actions. It does not return rendered SVG.
+Returns the current state, revision, proposal summary—including annotation
+count—validation summary, selection, and supported next actions. It does not
+return rendered SVG.
 
 #### `orbweaver_get_proposal_contract`
 
-Returns the supported `GraphProposal` version, semantic entity fields,
-resource limits, forbidden geometry and markup fields, and a compact example.
+Returns the supported `GraphProposal` version, semantic entity and annotation
+fields, resource limits, forbidden geometry and markup fields, and a compact
+example.
 
 #### `orbweaver_inspect_semantics`
 
 Accepts either an entity reference or a bounded path query. Returns semantic
-identity, relationships, claims, evidence, and source provenance. It may also
-focus the result only when that reversible visual side effect is declared.
+identity, relationships, annotations, claims, evidence, and source provenance.
+It may also focus the result only when that reversible visual side effect is
+declared.
 
 ### Reversible write tools
 
@@ -168,13 +171,14 @@ JavaScript or JSON Patch:
 - add, update, or remove a node;
 - add, update, or remove an edge;
 - add, update, or remove a group;
+- add, update, or remove an annotation by stable annotation ID;
 - update graph title or description;
 - attach or remove proposal evidence and claims.
 
 The command validates the complete resulting proposal atomically. On failure,
 the previous valid preview remains unchanged.
 
-#### `orbweaver_focus_entities`
+#### `orbweaver_focus_entity`
 
 Selects a node, edge, group, or returned path in the visible diagram and opens
 the semantic inspector. It changes presentation state only.
