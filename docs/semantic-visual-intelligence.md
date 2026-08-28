@@ -225,8 +225,8 @@ context without changing the scene.
 
 ## 4. Generated legends
 
-**Implementation status:** Core vertical slice complete; prerelease and public
-gallery adoption pending.
+**Implementation status:** Complete in `0.2.0-alpha.9` and adopted by the public
+package-native gallery.
 
 ### Reader problem
 

@@ -221,7 +221,7 @@ tool, security, testing, and delivery scope.
 
 ## Phase 11 — Semantic visual intelligence
 
-**Status:** In progress — 11A–11C complete; 11D core complete
+**Status:** In progress — 11A–11D complete
 
 ### 11A — Semantic lenses
 
@@ -263,13 +263,13 @@ tool, security, testing, and delivery scope.
 
 ### 11D — Generated legends
 
-**Status:** Core vertical slice complete; prerelease and gallery adoption pending
+**Status:** Complete
 
 - [x] Derive a compact legend containing only vocabulary present in the
   rendered artifact.
 - [x] Include active lens, detail, and focused-path state where applicable.
 - [x] Support optional deterministic SVG legend output.
-- [ ] Publish the generated-legend API in the next v0.2 prerelease and adopt it
+- [x] Publish the generated-legend API in the next v0.2 prerelease and adopt it
   in the package-native public gallery.
 
 ### 11E — Architecture comparison
