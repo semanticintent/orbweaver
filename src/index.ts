@@ -1,4 +1,4 @@
-export { GraphValidationError, LayoutError, OrbweaverError } from './errors.js'
+export { ArtifactExportError, GraphValidationError, LayoutError, OrbweaverError } from './errors.js'
 export { renderHtmlArtifact } from './artifact/html.js'
 export { portableHtmlArtifactVersion } from './artifact/types.js'
 export type {
@@ -123,8 +123,24 @@ export type {
   Renderer,
   RenderGraphOptions,
   SvgArtifactFrameOptions,
+  SvgEmbeddedMetadata,
   SvgRenderOptions,
 } from './render/types.js'
+export { renderSvgArtifact } from './export/svg.js'
+export { createBrowserPngRasterizer } from './export/browser-png.js'
+export { renderPngArtifact } from './export/png.js'
+export { pngArtifactVersion, svgArtifactVersion } from './export/types.js'
+export type {
+  PngArtifact,
+  PngArtifactManifest,
+  PngArtifactOptions,
+  PngRasterizeInput,
+  PngRasterizer,
+  StaticArtifactGuarantees,
+  SvgArtifact,
+  SvgArtifactManifest,
+  SvgArtifactOptions,
+} from './export/types.js'
 export { darkTheme, lightTheme } from './theme/defaults.js'
 export type { OrbweaverTheme } from './theme/types.js'
 export type {

@@ -156,15 +156,17 @@ Each slice must pass the full package gate before the next public API is added.
 
 **10B status:** Complete in `0.2.0-alpha.12`
 
+**10C status:** Complete in `0.2.0-alpha.13`
+
 - [x] Define a versioned, self-contained Orbweaver HTML artifact containing
   the host-supplied semantic graph, rendered SVG, minimal interaction runtime,
   inspector, theme state, and provenance metadata.
 - [x] Add a supported export API and CLI path for self-contained HTML.
-- [ ] Make SVG export reliable across Node and supported browsers, with
+- [x] Make SVG export reliable across Node and supported browsers, with
   embedded accessibility and semantic identity metadata.
-- [ ] Add PNG export for social posts, presentations, and other environments
+- [x] Add PNG export for social posts, presentations, and other environments
   that do not accept SVG.
-- [ ] Document which guarantees survive in SVG, PNG, and interactive HTML.
+- [x] Document which guarantees survive in SVG, PNG, and interactive HTML.
 
 ### Interaction and browser resilience
 

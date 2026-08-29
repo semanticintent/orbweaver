@@ -1,4 +1,6 @@
+import { createBrowserPngRasterizer } from '../src/export/browser-png.js'
 import { mountSvgInteraction } from '../src/interaction/controller.js'
+import type { Graph } from '../src/model/types.js'
 
 const title = document.querySelector<HTMLElement>('#inspect-title')
 const hint = document.querySelector<HTMLElement>('#inspect-hint')
@@ -48,5 +50,40 @@ for (const panel of document.querySelectorAll<HTMLElement>('[data-showcase]')) {
   const svg = panel.querySelector<SVGSVGElement>('svg')
 
   if (!slug || !graphData || !svg) continue
-  mountSvgInteraction(svg, JSON.parse(graphData.textContent ?? ''), { onSelectionChange: show })
+  const graph = JSON.parse(graphData.textContent ?? '') as Graph
+  mountSvgInteraction(svg, graph, { onSelectionChange: show })
+
+  const pngButton = document.querySelector<HTMLButtonElement>(`[data-png="${slug}"]`)
+  pngButton?.addEventListener('click', async () => {
+    const idleLabel = pngButton.textContent
+    pngButton.disabled = true
+    pngButton.textContent = 'Rendering…'
+    try {
+      const viewBox = svg.viewBox.baseVal
+      const scale = 2
+      const data = await createBrowserPngRasterizer()({
+        svg: new XMLSerializer().serializeToString(svg),
+        width: viewBox.width,
+        height: viewBox.height,
+        scale,
+      })
+      const bytes = data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength) as ArrayBuffer
+      const url = URL.createObjectURL(new Blob([bytes], { type: 'image/png' }))
+      const link = document.createElement('a')
+      link.href = url
+      link.download = `${slug}.png`
+      link.hidden = true
+      document.body.append(link)
+      link.click()
+      link.remove()
+      setTimeout(() => URL.revokeObjectURL(url), 1_000)
+    } catch (error) {
+      pngButton.textContent = error instanceof Error ? 'PNG failed' : 'Export failed'
+      console.error(error)
+      return
+    } finally {
+      pngButton.disabled = false
+    }
+    pngButton.textContent = idleLabel
+  })
 }

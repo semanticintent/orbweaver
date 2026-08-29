@@ -19,3 +19,11 @@ export class LayoutError extends OrbweaverError {
     super(message, options)
   }
 }
+
+export class ArtifactExportError extends OrbweaverError {
+  override readonly name = 'ArtifactExportError'
+
+  constructor(message: string, options?: ErrorOptions) {
+    super(message, options)
+  }
+}

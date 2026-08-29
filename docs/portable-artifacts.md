@@ -73,9 +73,11 @@ signature.
 
 The version 1 file requires no package installation, server, external font,
 stylesheet, image, or JavaScript resource after creation. It can be archived,
-attached, and opened directly in a modern browser. Static print/PDF behavior,
-PNG export, browser support policy, compatibility migrations, and automated
-multi-browser verification are completed in later Phase 10 slices.
+attached, and opened directly in a modern browser. Static SVG and PNG export
+contracts are documented in [Static export reliability](export-reliability.md).
+Print/PDF behavior, the supported-browser policy, compatibility migrations,
+and automated multi-browser verification are completed in later Phase 10
+slices.
 
 The generated example gallery links to portable versions of every public
 fixture. Run `npm run examples:generate`, then open any

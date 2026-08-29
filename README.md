@@ -79,6 +79,12 @@ accessible SVG, semantic inspector, theme state, annotations, provenance, and a
 small dependency-free runtime. The `orbweaver-html` command provides the same
 path from a graph JSON file.
 
+Versioned static exports complete the sharing surface. `renderSvgArtifact`
+embeds the normalized graph, accessible text, semantic identity, and provenance
+inside a standalone SVG. `renderPngArtifact` produces presentation-ready pixels
+with explicit alt text and a companion manifest, using native browser APIs or a
+host-supplied Node rasterizer rather than adding image machinery to the core.
+
 ## WebMCP — agent-assisted semantic visualization
 
 Orbweaver implements a bounded WebMCP interface in its public semantic
@@ -152,7 +158,7 @@ import { writeFile } from 'node:fs/promises'
 import {
   createGraph,
   darkTheme,
-  renderGraph,
+  renderSvgArtifact,
   renderHtmlArtifact,
   validateGraph,
 } from '@semanticintent/orbweaver'
@@ -176,12 +182,12 @@ if (!validation.valid) {
   throw new Error(JSON.stringify(validation.errors, null, 2))
 }
 
-const svg = await renderGraph(graph, {
+const svg = await renderSvgArtifact(graph, {
   layout: { direction: 'LR' },
-  render: { theme: darkTheme },
+  render: { theme: darkTheme, includeLegend: true },
 })
 
-await writeFile('checkout.svg', svg)
+await writeFile('checkout.svg', svg.data)
 ```
 
 Run the example as an ES module with Node.js 20 or newer, then open
@@ -197,6 +203,12 @@ const html = await renderHtmlArtifact(graph, {
 })
 await writeFile('checkout.html', html)
 ```
+
+For PNG output in a browser, use `renderPngArtifact`. Node applications pass
+their approved rasterizer through the small `PngRasterizer` adapter instead of
+pulling a native image dependency into Orbweaver core. See
+[Static export reliability](docs/export-reliability.md) for the HTML, SVG, and
+PNG guarantee matrix.
 
 ## Development
 
@@ -236,6 +248,7 @@ or layout-engine-specific objects.
 - [Visual language](docs/visual-language.md)
 - [Interaction and inspection](docs/interaction.md)
 - [Portable HTML artifacts](docs/portable-artifacts.md)
+- [Static export reliability](docs/export-reliability.md)
 - [Semantic annotation layer](docs/semantic-annotations.md)
 - [Semantic visual intelligence](docs/semantic-visual-intelligence.md)
 - [Public API](docs/api.md)

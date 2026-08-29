@@ -384,6 +384,28 @@ operate only on the root SVG `viewBox`.
 `destroy()` restores the original `viewBox` and touch behavior, removes local
 and window listeners, and makes later viewport mutation calls inert.
 
+## Static export artifacts
+
+### `renderSvgArtifact(graph, options?)`
+
+Validates, normalizes, lays out, and renders a deterministic standalone SVG
+artifact. The result contains `data`, fixed `width` and `height`, MIME type,
+and a versioned manifest. The SVG embeds accessible text, normalized graph
+semantics, provenance, and stable entity identity without executable code.
+
+### `renderPngArtifact(graph, options?)`
+
+Projects the exact SVG artifact into a PNG. Browsers use the dependency-free
+native rasterizer returned by `createBrowserPngRasterizer`. Node.js callers
+must pass a `PngRasterizer` adapter. The result includes PNG bytes, dimensions,
+alt text, and a companion manifest. Scale is bounded to `0 < scale <= 4` and
+output is limited to 64 million pixels.
+
+Use `svgArtifactVersion` and `pngArtifactVersion` to inspect the current static
+manifest versions. Export failures use `ArtifactExportError`. See
+[Static export reliability](export-reliability.md) for examples and the exact
+guarantee matrix.
+
 ## Portable HTML artifacts
 
 ### `renderHtmlArtifact(graph, options?)`
@@ -414,5 +436,6 @@ security, trust, and portability guarantees.
 - `OrbweaverError`
 - `GraphValidationError`
 - `LayoutError`
+- `ArtifactExportError`
 
 No third-party layout types appear in public signatures.

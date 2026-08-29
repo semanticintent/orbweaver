@@ -14,6 +14,11 @@ export interface SvgArtifactFrameOptions {
   renderer?: string
 }
 
+export interface SvgEmbeddedMetadata {
+  className: string
+  content: string
+}
+
 export interface SvgRenderOptions {
   theme?: OrbweaverTheme
   className?: string
@@ -25,6 +30,7 @@ export interface SvgRenderOptions {
   narrative?: PathNarrativeProjection
   includeLegend?: boolean
   comparison?: ArchitectureComparison
+  embeddedMetadata?: readonly SvgEmbeddedMetadata[]
 }
 
 export interface RenderGraphOptions {
