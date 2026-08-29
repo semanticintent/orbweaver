@@ -283,6 +283,7 @@ or layout-engine-specific objects.
 - [Implementation roadmap](docs/roadmap.md)
 - [AI-assisted semantic visualization](docs/ai-assisted-semantic-visualization.md)
 - [AI-to-portable-artifact workflow](docs/ai-to-portable-artifact.md)
+- [Agentic workflow memory](docs/agentic-workflow-memory.md)
 - [WebMCP semantic playground and trust model](docs/webmcp-semantic-playground.md)
 - [WebMCP Challenge submission](docs/webmcp-challenge-submission.md)
 - [Reference proposal generator](docs/reference-generator.md)
