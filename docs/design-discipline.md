@@ -19,6 +19,17 @@ accessible, and dependable. A capability belongs in Orbweaver only when the
 core library is the correct owner and the result preserves the project's
 architectural invariants.
 
+### The semantic stream
+
+Systems continuously produce entities, decisions, evidence, and relationships.
+Orbweaver turns that semantic stream into a durable visual structure without
+making presentation the source of truth.
+
+“Semantic stream” is product language for meaning moving through systems. It is
+not a promise of event-stream processing, a transport protocol, or mutable
+layout state. Inputs remain explicit graph documents; outputs remain
+deterministic, inspectable artifacts.
+
 ## The discipline
 
 ### 1. Meaning precedes geometry

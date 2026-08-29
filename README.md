@@ -2,6 +2,9 @@
 
 > Semantic visual structures for declarative systems.
 
+[Explore Orbweaver](https://orbweaver.semanticintent.dev) ·
+[Enter through orbweaver.stream](https://orbweaver.stream)
+
 ![Orbweaver — Meaning, made visible](docs/assets/orbweaver-og.png)
 
 Orbweaver is a framework-independent TypeScript library for turning semantic
@@ -24,6 +27,12 @@ Orbweaver explores a different boundary: authors describe entities,
 relationships, and provenance; the library validates that semantic structure
 and derives its geometry. The resulting diagrams remain reproducible,
 inspectable, accessible, and connected to their source.
+
+Systems continuously produce entities, decisions, evidence, and relationships.
+Orbweaver gives that **semantic stream** a durable visual form people can
+inspect, explain, and verify. The phrase describes the movement of meaning
+through systems—not a requirement for streaming infrastructure or a change to
+Orbweaver's deterministic graph contract.
 
 The project is also an open engineering showcase. It brings together API and
 type-system design, deterministic transformation pipelines, graph layout,
