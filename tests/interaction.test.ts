@@ -8,6 +8,7 @@ import {
   getPathNarrativeRecipe,
   layoutGraph,
   mountSvgInteraction,
+  mountSvgViewport,
   renderSvg,
   type Graph,
   type Inspection,
@@ -28,13 +29,19 @@ const graph: Graph = {
   ],
 }
 
-async function setup(onSelectionChange = vi.fn<(inspection: Inspection | undefined) => void>()) {
+async function setup(
+  onSelectionChange = vi.fn<(inspection: Inspection | undefined) => void>(),
+  initialSelection?: { kind: 'node' | 'edge' | 'group'; id: string },
+) {
   const scene = await layoutGraph(graph)
   const parsed = new DOMParser().parseFromString(renderSvg(scene), 'image/svg+xml')
   const svg = document.importNode(parsed.documentElement, true)
   document.body.append(svg)
   if (!(svg instanceof SVGSVGElement)) throw new Error('Rendered SVG was not mounted.')
-  const controller = mountSvgInteraction(svg, scene.graph, { onSelectionChange })
+  const controller = mountSvgInteraction(svg, scene.graph, {
+    onSelectionChange,
+    ...(initialSelection === undefined ? {} : { initialSelection }),
+  })
   return { svg, controller, onSelectionChange }
 }
 
@@ -129,6 +136,65 @@ describe('SVG interaction controller', () => {
     const calls = onSelectionChange.mock.calls.length
     svg.querySelector('[data-node-id="b"]')?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
     expect(onSelectionChange).toHaveBeenCalledTimes(calls)
+    expect(controller.select({ kind: 'node', id: 'b' })).toBeUndefined()
+    expect(controller.selected).toBeUndefined()
+    controller.destroy()
+    expect(onSelectionChange).toHaveBeenCalledTimes(calls)
+  })
+
+  it('restores stable node, edge, and group selections and ignores a missing one', async () => {
+    const refs = [
+      { kind: 'node' as const, id: 'a' },
+      { kind: 'edge' as const, id: 'a-b' },
+      { kind: 'group' as const, id: 'application' },
+    ]
+    for (const ref of refs) {
+      const restored = await setup(vi.fn(), ref)
+      expect(restored.controller.selected).toEqual(ref)
+      expect(restored.svg.querySelector(`[data-${ref.kind}-id="${ref.id}"]`)?.hasAttribute('data-selected')).toBe(true)
+    }
+
+    const missing = await setup(vi.fn(), { kind: 'node', id: 'removed-node' })
+    expect(missing.controller.selected).toBeUndefined()
+    expect(missing.svg.classList.contains('ow-has-selection')).toBe(false)
+  })
+
+  it('preserves relationship selection and connected emphasis across zoom and fit', async () => {
+    const { svg, controller } = await setup()
+    Object.defineProperty(svg, 'getBoundingClientRect', {
+      value: () => ({ x: 0, y: 0, left: 0, top: 0, right: 320, bottom: 180, width: 320, height: 180 }),
+    })
+    const viewport = mountSvgViewport(svg)
+    viewport.setZoom(4, { x: 280, y: 90 })
+
+    svg.querySelector('[data-edge-id="a-b"] .ow-edge-hit')
+      ?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    expect(controller.selected).toEqual({ kind: 'edge', id: 'a-b' })
+    expect(svg.querySelector('[data-node-id="a"]')?.hasAttribute('data-related')).toBe(true)
+    expect(svg.querySelector('[data-node-id="b"]')?.hasAttribute('data-related')).toBe(true)
+
+    viewport.fit()
+    expect(controller.selected).toEqual({ kind: 'edge', id: 'a-b' })
+    expect(svg.querySelector('[data-edge-id="a-b"]')?.hasAttribute('data-selected')).toBe(true)
+    viewport.destroy()
+    expect(controller.selected).toEqual({ kind: 'edge', id: 'a-b' })
+  })
+
+  it('keeps independently mounted diagrams isolated', async () => {
+    const first = await setup()
+    const second = await setup()
+    first.controller.select({ kind: 'node', id: 'a' })
+    second.controller.select({ kind: 'edge', id: 'b-c' })
+
+    expect(first.controller.selected).toEqual({ kind: 'node', id: 'a' })
+    expect(second.controller.selected).toEqual({ kind: 'edge', id: 'b-c' })
+    expect(first.svg.querySelector('[data-node-id="a"]')?.hasAttribute('data-selected')).toBe(true)
+    expect(first.svg.querySelector('[data-edge-id="b-c"]')?.hasAttribute('data-selected')).toBe(false)
+    expect(second.svg.querySelector('[data-edge-id="b-c"]')?.hasAttribute('data-selected')).toBe(true)
+
+    first.controller.destroy()
+    expect(second.controller.selected).toEqual({ kind: 'edge', id: 'b-c' })
+    expect(second.svg.querySelector('[data-edge-id="b-c"]')?.hasAttribute('data-selected')).toBe(true)
   })
 
   it('can retain unrelated entities at full opacity', async () => {

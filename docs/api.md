@@ -363,7 +363,13 @@ Pass `narrativeProjection` when the SVG was rendered with a focused path.
 ordered result; Arrow Right and Arrow Left provide the same keyboard behavior.
 Escape clears the active selection without mutating the narrative projection.
 
-Call `destroy()` before the host permanently removes the diagram.
+Pass a stable node, edge, or group reference as `initialSelection` when a host
+has replaced or rerendered the SVG. Orbweaver restores the semantic selection
+when that entity still exists and otherwise leaves the new diagram clear.
+
+Call `destroy()` before the host permanently removes the diagram. Destruction
+is idempotent and terminal: listeners and visual selection state are removed,
+and later controller mutation calls are inert.
 
 ### `mountSvgViewport(svg, options?)`
 
@@ -375,6 +381,8 @@ Options configure `minZoom` (default `1`), `maxZoom` (default `4`),
 `zoomStep` (default `1.25`), and an `onViewChange` callback. Normal wheel
 scrolling is preserved; modified-wheel, keyboard, pointer, and pinch gestures
 operate only on the root SVG `viewBox`.
+`destroy()` restores the original `viewBox` and touch behavior, removes local
+and window listeners, and makes later viewport mutation calls inert.
 
 ## Errors
 

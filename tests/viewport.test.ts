@@ -130,6 +130,26 @@ describe('SVG viewport controller', () => {
     const calls = onViewChange.mock.calls.length
     svg.dispatchEvent(new KeyboardEvent('keydown', { key: '+', bubbles: true }))
     expect(onViewChange).toHaveBeenCalledTimes(calls)
+    controller.zoomIn()
+    controller.setZoom(3)
+    controller.fit()
+    expect(svg.getAttribute('viewBox')).toBe('10 20 800 400')
+    expect(controller.zoom).toBe(1.25)
+    controller.destroy()
+    expect(onViewChange).toHaveBeenCalledTimes(calls)
+  })
+
+  it('keeps independently mounted viewports isolated', () => {
+    const first = setup()
+    const second = setup()
+    first.controller.setZoom(2, { x: 0, y: 0 })
+    second.controller.setZoom(4, { x: 800, y: 400 })
+    expect(viewBox(first.svg)).toEqual([10, 20, 400, 200])
+    expect(viewBox(second.svg)).toEqual([610, 320, 200, 100])
+
+    first.controller.destroy()
+    expect(viewBox(first.svg)).toEqual([10, 20, 800, 400])
+    expect(viewBox(second.svg)).toEqual([610, 320, 200, 100])
   })
 
   it('rejects unusable SVG and zoom configuration', () => {

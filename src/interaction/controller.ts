@@ -9,6 +9,7 @@ export interface SvgInteractionOptions {
   muteUnrelated?: boolean
   lensProjection?: LensProjection
   narrativeProjection?: PathNarrativeProjection
+  initialSelection?: EntityRef
 }
 
 export interface SvgInteractionController {
@@ -134,6 +135,7 @@ export function mountSvgInteraction(
 ): SvgInteractionController {
   let selected: EntityRef | undefined
   let narrativeStep: number | undefined
+  let destroyed = false
   const muteUnrelated = options.muteUnrelated ?? true
 
   const controller: SvgInteractionController = {
@@ -144,6 +146,7 @@ export function mountSvgInteraction(
       return narrativeStep
     },
     select(ref) {
+      if (destroyed) return undefined
       const inspection = inspectEntity(graph, ref, options.lensProjection, options.narrativeProjection)
       if (inspection === undefined) return undefined
       selected = { ...ref }
@@ -154,6 +157,7 @@ export function mountSvgInteraction(
       return inspection
     },
     nextNarrativeStep() {
+      if (destroyed) return undefined
       const narrative = options.narrativeProjection
       if (narrative === undefined || narrative.steps.length === 0) return undefined
       const index = Math.min((narrativeStep ?? -1) + 1, narrative.steps.length - 1)
@@ -161,6 +165,7 @@ export function mountSvgInteraction(
       return controller.select({ kind: 'node', id: narrative.steps[index]!.to })
     },
     previousNarrativeStep() {
+      if (destroyed) return undefined
       const narrative = options.narrativeProjection
       if (narrative === undefined) return undefined
       const index = (narrativeStep ?? 0) - 1
@@ -172,6 +177,7 @@ export function mountSvgInteraction(
       return controller.select({ kind: 'node', id: narrative.steps[index]!.to })
     },
     clear() {
+      if (destroyed) return
       if (selected === undefined && !svg.classList.contains('ow-has-selection')) return
       selected = undefined
       narrativeStep = undefined
@@ -179,9 +185,11 @@ export function mountSvgInteraction(
       options.onSelectionChange?.(undefined)
     },
     destroy() {
+      if (destroyed) return
       svg.removeEventListener('click', onClick)
       svg.removeEventListener('keydown', onKeyDown)
       controller.clear()
+      destroyed = true
     },
   }
 
@@ -221,5 +229,6 @@ export function mountSvgInteraction(
 
   svg.addEventListener('click', onClick)
   svg.addEventListener('keydown', onKeyDown)
+  if (options.initialSelection !== undefined) controller.select(options.initialSelection)
   return controller
 }

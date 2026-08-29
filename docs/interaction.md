@@ -30,6 +30,7 @@ container.innerHTML = renderSvg(scene)
 const svg = container.querySelector('svg')
 if (svg) {
   const interaction = mountSvgInteraction(svg, scene.graph, {
+    initialSelection: previousSelection,
     onSelectionChange(inspection) {
       renderInspector(inspection)
     },
@@ -42,6 +43,10 @@ if (svg) {
 
 Nodes and groups support pointer selection and keyboard selection with Enter or
 Space. Escape clears the current selection. Background clicks also clear it.
+Hosts that replace a rendered SVG can pass the prior stable entity reference as
+`initialSelection`; Orbweaver restores the selection only when that semantic
+entity still exists. Once `destroy()` is called, the controller is terminal and
+all later mutation methods are inert.
 
 ## Inspection contract
 
@@ -78,6 +83,10 @@ viewport.fit()
 // When the host removes the diagram:
 viewport.destroy()
 ```
+
+Viewport destruction is likewise idempotent and terminal: it restores the
+original `viewBox` and touch behavior, removes every listener, and ignores later
+mutation calls.
 
 The default behavior preserves ordinary page scrolling. Users can zoom with
 host controls, `+`, `-`, `0`, `Ctrl/Command + wheel`, or a two-pointer pinch.

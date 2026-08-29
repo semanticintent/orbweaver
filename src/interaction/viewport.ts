@@ -76,6 +76,7 @@ export function mountSvgViewport(
   }
 
   let zoom = 1
+  let destroyed = false
   let viewBox = { ...original }
   let spacePressed = false
   let pointerInside = false
@@ -144,14 +145,16 @@ export function mountSvgViewport(
   const controller: SvgViewportController = {
     get zoom() { return zoom },
     get state() { return state() },
-    zoomIn(anchor) { setZoom(zoom * zoomStep, anchor) },
-    zoomOut(anchor) { setZoom(zoom / zoomStep, anchor) },
-    setZoom,
+    zoomIn(anchor) { if (!destroyed) setZoom(zoom * zoomStep, anchor) },
+    zoomOut(anchor) { if (!destroyed) setZoom(zoom / zoomStep, anchor) },
+    setZoom(zoom, anchor) { if (!destroyed) setZoom(zoom, anchor) },
     fit() {
+      if (destroyed) return
       if (same(zoom, 1) && viewBox.x === original.x && viewBox.y === original.y) return
       commit({ ...original }, 1)
     },
     destroy() {
+      if (destroyed) return
       svg.removeEventListener('wheel', onWheel)
       svg.removeEventListener('pointerdown', onPointerDown)
       svg.removeEventListener('pointermove', onPointerMove)
@@ -167,6 +170,7 @@ export function mountSvgViewport(
       svg.removeAttribute('data-ow-viewport-active')
       if (originalAttribute === null) svg.removeAttribute('viewBox')
       else svg.setAttribute('viewBox', originalAttribute)
+      destroyed = true
     },
   }
 

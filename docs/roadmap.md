@@ -118,6 +118,25 @@ for the complete scope and delivery gates.
 
 **Status:** In progress
 
+### Delivery sequence
+
+Phase 10 proceeds as bounded vertical slices so reliability work protects the
+portable runtime before new export surfaces are added:
+
+1. **10A — Interaction resilience:** persistent selection restoration,
+   zoom-sensitive relationship behavior, keyboard clearing and focus,
+   independently mounted diagrams, and terminal controller cleanup.
+2. **10B — Portable HTML artifact:** a versioned, self-contained semantic
+   graph, SVG, inspector, provenance record, theme state, and minimal runtime.
+3. **10C — Export reliability:** supported SVG and PNG APIs with an explicit
+   guarantee matrix.
+4. **10D — Contract and compatibility:** schema versions, prerelease migration
+   policy, compatibility fixtures, and actionable diagnostics.
+5. **10E — Quality and performance:** browser and accessibility CI, resilience
+   fixtures, visual regression, browser support, and measured budgets.
+
+Each slice must pass the full package gate before the next public API is added.
+
 ### Semantic annotation layer
 
 - [x] Activate the existing graph-level annotation contract for graph, node,
@@ -147,17 +166,22 @@ for the complete scope and delivery gates.
 
 ### Interaction and browser resilience
 
+**10A status:** Complete
+
 - [x] Add a dependency-free SVG viewport controller with deterministic fit,
   bounded zoom, pan, pinch, keyboard controls, and lifecycle cleanup.
-- [ ] Test persistent node, edge, and group selection across repeated changes.
-- [ ] Verify relationship hit targets and connected-entity emphasis at
+- [x] Test persistent node, edge, and group selection across repeated changes.
+- [x] Verify relationship hit targets and connected-entity emphasis at
   different zoom levels and viewport sizes.
-- [ ] Harden keyboard navigation, visible focus, Escape/background clearing,
+- [x] Harden keyboard navigation, visible focus, Escape/background clearing,
   and screen-reader summaries.
-- [ ] Support multiple independently interactive diagrams on one page.
-- [ ] Test mount, update, and destroy lifecycles for leaked listeners or stale
+- [x] Support multiple independently interactive diagrams on one page.
+- [x] Test mount, update, and destroy lifecycles for leaked listeners or stale
   interaction state.
 - [ ] Define and continuously verify the supported browser matrix.
+
+The supported-browser matrix is delivered with 10E so it can be continuously
+verified by the browser-level CI introduced in the same slice.
 
 ### Rendering resilience
 
@@ -280,7 +304,7 @@ tool, security, testing, and delivery scope.
 - [x] Derive unchanged, introduced, removed, and changed states by stable ID.
 - [x] Preserve removed semantics for inspection and accessible output.
 - [x] Demonstrate a current-state versus target-state architecture fixture.
-- [ ] Publish the comparison API in the next v0.2 prerelease and adopt it in the
+- [x] Publish the comparison API in the next v0.2 prerelease and adopt it in the
   package-native public gallery.
 
 **Non-goals:** Authored styling or breakpoints; manual geometry; decorative
