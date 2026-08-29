@@ -282,6 +282,7 @@ or layout-engine-specific objects.
 - [Release process](docs/releasing.md)
 - [Implementation roadmap](docs/roadmap.md)
 - [AI-assisted semantic visualization](docs/ai-assisted-semantic-visualization.md)
+- [AI-to-portable-artifact workflow](docs/ai-to-portable-artifact.md)
 - [WebMCP semantic playground and trust model](docs/webmcp-semantic-playground.md)
 - [WebMCP Challenge submission](docs/webmcp-challenge-submission.md)
 - [Reference proposal generator](docs/reference-generator.md)
