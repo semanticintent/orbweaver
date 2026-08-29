@@ -404,6 +404,10 @@ and later controller mutation calls are inert.
 
 ### `mountSvgViewport(svg, options?)`
 
+The returned controller provides bounded `zoomIn`, `zoomOut`, `setZoom`, and
+`fit` methods, plus `centerOn({ x, y })` for framing a known SVG viewBox point
+without introducing a second pan or zoom implementation.
+
 Adds dependency-free, bounded SVG navigation without changing rendered
 geometry. The returned controller exposes `zoomIn`, `zoomOut`, `setZoom`,
 `fit`, `destroy`, `zoom`, and `state`.

@@ -78,6 +78,7 @@ const viewport = mountSvgViewport(svg, {
 
 viewport.zoomIn()
 viewport.zoomOut()
+viewport.centerOn({ x: 640, y: 360 }) // SVG viewBox coordinates
 viewport.fit()
 
 // When the host removes the diagram:

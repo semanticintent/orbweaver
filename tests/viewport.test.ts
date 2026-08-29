@@ -89,6 +89,16 @@ describe('SVG viewport controller', () => {
     expect(viewBox(svg)).toEqual([260, 145, 400, 200])
   })
 
+  it('centers a zoomed viewport on SVG coordinates and keeps the view in bounds', () => {
+    const { svg, controller } = setup()
+    controller.setZoom(2)
+    controller.centerOn({ x: 700, y: 100 })
+    expect(viewBox(svg)).toEqual([410, 20, 400, 200])
+
+    controller.centerOn({ x: 0, y: 999 })
+    expect(viewBox(svg)).toEqual([10, 220, 400, 200])
+  })
+
   it('supports Space-drag while hovered without requiring SVG keyboard focus', () => {
     const { svg, controller } = setup()
     controller.setZoom(2)

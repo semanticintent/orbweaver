@@ -22,6 +22,8 @@ export interface SvgViewportController {
   zoomIn(anchor?: SvgViewportPoint): void
   zoomOut(anchor?: SvgViewportPoint): void
   setZoom(zoom: number, anchor?: SvgViewportPoint): void
+  /** Centers the current viewport on a point in SVG viewBox coordinates. */
+  centerOn(point: SvgViewportPoint): void
   fit(): void
   destroy(): void
 }
@@ -148,6 +150,14 @@ export function mountSvgViewport(
     zoomIn(anchor) { if (!destroyed) setZoom(zoom * zoomStep, anchor) },
     zoomOut(anchor) { if (!destroyed) setZoom(zoom / zoomStep, anchor) },
     setZoom(zoom, anchor) { if (!destroyed) setZoom(zoom, anchor) },
+    centerOn(point) {
+      if (destroyed || !Number.isFinite(point.x) || !Number.isFinite(point.y)) return
+      commit({
+        ...viewBox,
+        x: point.x - viewBox.width / 2,
+        y: point.y - viewBox.height / 2,
+      }, zoom)
+    },
     fit() {
       if (destroyed) return
       if (same(zoom, 1) && viewBox.x === original.x && viewBox.y === original.y) return
