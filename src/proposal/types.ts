@@ -1,5 +1,6 @@
 import type { Graph } from '../model/types.js'
 import type { ValidationEntityKind, ValidationSeverity } from '../validation/types.js'
+import type { graphProposalSchemaVersion } from '../compatibility/versions.js'
 
 export interface ProposalGeneration {
   provider?: string
@@ -27,7 +28,7 @@ export interface ProposalClaim {
 }
 
 export interface GraphProposal {
-  schemaVersion: '1'
+  schemaVersion: typeof graphProposalSchemaVersion
   graph: Graph
   generation: ProposalGeneration
   evidence?: EvidenceReference[]

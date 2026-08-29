@@ -16,7 +16,10 @@ function dimensions(svg: string): { width: number; height: number } {
   const width = Number(match?.[1])
   const height = Number(match?.[2])
   if (!Number.isFinite(width) || !Number.isFinite(height) || width <= 0 || height <= 0) {
-    throw new ArtifactExportError('Rendered SVG does not contain a valid positive viewBox.')
+    throw new ArtifactExportError('Rendered SVG does not contain a valid positive viewBox.', {
+      code: 'svg-viewbox-invalid',
+      action: 'Regenerate the scene with finite positive dimensions before exporting it.',
+    })
   }
   return { width, height }
 }

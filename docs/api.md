@@ -22,6 +22,37 @@ Validates and returns a `NormalizedGraph` with explicit graph defaults, stable
 edge IDs, and normalized edge direction. Throws `GraphValidationError` for
 structural errors.
 
+## Contract compatibility
+
+### `createGraphDocument(graph)` / `readGraphDocument(value)`
+
+Creates or reads a versioned `orbweaver-graph` transport document. Creation
+normalizes the graph. Reading accepts `unknown`, returns a discriminated
+`ContractReadResult`, and never throws for malformed external input.
+Unversioned v0.1 graphs are migrated losslessly with a
+`contract-version-assumed` warning.
+
+### `createSceneDocument(scene)` / `readSceneDocument(value)`
+
+Creates or reads a versioned `orbweaver-scene` document. Scene readers verify
+finite positive geometry, routed edge points, and the embedded semantic graph.
+`graphFromDocument` and `sceneFromDocument` return detached values.
+
+### `inspectContractVersion(kind, version, options?)`
+
+Compares an external version with the canonical `contractVersions` registry.
+Results include stable diagnostic codes, severity, message, recommended
+`action`, and JSON path. Future versions produce `contract-version-newer`;
+missing strict-envelope versions produce `contract-version-required`.
+
+### Schemas and versions
+
+`contractJsonSchemas` contains the graph, graph document, scene, scene
+document, graph proposal, portable HTML, SVG, and PNG schemas. Individual
+schemas and stable IDs are also exported through `graphJsonSchema`,
+`sceneJsonSchema`, `contractSchemaIds`, and the corresponding artifact names.
+See [Contract compatibility](compatibility.md) for the pre-1.0 migration policy.
+
 ### Semantic annotations
 
 `Graph.annotations` adds structured meaning to a graph, node, edge, or group
@@ -437,5 +468,9 @@ security, trust, and portability guarantees.
 - `GraphValidationError`
 - `LayoutError`
 - `ArtifactExportError`
+- `ContractCompatibilityError`
+
+`ArtifactExportError` includes stable `code` and recommended `action`
+properties in addition to its message.
 
 No third-party layout types appear in public signatures.

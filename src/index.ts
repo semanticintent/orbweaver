@@ -1,4 +1,4 @@
-export { ArtifactExportError, GraphValidationError, LayoutError, OrbweaverError } from './errors.js'
+export { ArtifactExportError, ContractCompatibilityError, GraphValidationError, LayoutError, OrbweaverError } from './errors.js'
 export { renderHtmlArtifact } from './artifact/html.js'
 export { portableHtmlArtifactVersion } from './artifact/types.js'
 export type {
@@ -7,6 +7,46 @@ export type {
   PortableArtifactTheme,
   PortableHtmlArtifactManifest,
 } from './artifact/types.js'
+export {
+  createGraphDocument,
+  createSceneDocument,
+  graphFromDocument,
+  readGraphDocument,
+  readSceneDocument,
+  sceneFromDocument,
+} from './compatibility/documents.js'
+export { inspectContractVersion } from './compatibility/inspect.js'
+export type { InspectContractVersionOptions } from './compatibility/inspect.js'
+export {
+  contractJsonSchemas,
+  graphDocumentJsonSchema,
+  graphJsonSchema,
+  pngArtifactManifestJsonSchema,
+  portableHtmlArtifactManifestJsonSchema,
+  sceneDocumentJsonSchema,
+  sceneJsonSchema,
+  svgArtifactManifestJsonSchema,
+} from './compatibility/schemas.js'
+export type { JsonSchema } from './compatibility/schemas.js'
+export {
+  contractSchemaIds,
+  contractVersions,
+  graphProposalSchemaVersion,
+  graphSchemaVersion,
+  sceneSchemaVersion,
+} from './compatibility/versions.js'
+export type {
+  CompatibilityDiagnostic,
+  CompatibilitySeverity,
+  ContractCompatibilityResult,
+  ContractKind,
+  ContractReadResult,
+  ContractVersion,
+  GraphDocument,
+  InvalidContractReadResult,
+  SceneDocument,
+  ValidContractReadResult,
+} from './compatibility/types.js'
 export { summarizeGraph } from './accessibility/summarize.js'
 export {
   getGroupNodes,

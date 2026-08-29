@@ -1,0 +1,22 @@
+{
+  "format": "orbweaver-graph",
+  "version": "1",
+  "graph": {
+    "id": "contract-flow",
+    "title": "Contract flow",
+    "nodes": [
+      { "id": "author", "type": "document", "label": "Author" },
+      { "id": "review", "type": "process", "label": "Review" }
+    ],
+    "edges": [
+      {
+        "id": "submit",
+        "from": "author",
+        "to": "review",
+        "type": "flow",
+        "direction": "forward"
+      }
+    ],
+    "options": { "directed": true }
+  }
+}

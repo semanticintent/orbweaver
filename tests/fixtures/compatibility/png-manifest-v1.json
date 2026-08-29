@@ -1,0 +1,18 @@
+{
+  "format": "orbweaver-png",
+  "version": "1",
+  "graphId": "artifact",
+  "summary": "Artifact. 1 node and 0 relationships.",
+  "theme": "orbweaver-dark",
+  "width": 1200,
+  "height": 630,
+  "scale": 2,
+  "guarantees": {
+    "accessibleText": false,
+    "semanticIdentity": false,
+    "semanticGraph": "companion",
+    "interaction": "none",
+    "inspector": "none",
+    "scalable": false
+  }
+}

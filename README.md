@@ -85,6 +85,11 @@ inside a standalone SVG. `renderPngArtifact` produces presentation-ready pixels
 with explicit alt text and a companion manifest, using native browser APIs or a
 host-supplied Node rasterizer rather than adding image machinery to the core.
 
+Versioned graph and scene documents now make those boundaries durable across
+releases. Orbweaver publishes one contract registry and JSON Schema collection,
+losslessly migrates unversioned v0.1 graph data, rejects unknown future formats,
+and returns stable diagnostics with a recommended action.
+
 ## WebMCP — agent-assisted semantic visualization
 
 Orbweaver implements a bounded WebMCP interface in its public semantic
@@ -249,6 +254,7 @@ or layout-engine-specific objects.
 - [Interaction and inspection](docs/interaction.md)
 - [Portable HTML artifacts](docs/portable-artifacts.md)
 - [Static export reliability](docs/export-reliability.md)
+- [Contract compatibility and migration](docs/compatibility.md)
 - [Semantic annotation layer](docs/semantic-annotations.md)
 - [Semantic visual intelligence](docs/semantic-visual-intelligence.md)
 - [Public API](docs/api.md)

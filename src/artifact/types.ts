@@ -1,8 +1,9 @@
 import type { LayoutGraphOptions } from '../layout/types.js'
 import type { Metadata, NormalizedGraph, Provenance } from '../model/types.js'
 import type { SvgRenderOptions } from '../render/types.js'
+import { contractVersions } from '../compatibility/versions.js'
 
-export const portableHtmlArtifactVersion = '1' as const
+export const portableHtmlArtifactVersion = contractVersions.portableHtml
 
 export type PortableArtifactTheme = 'dark' | 'light'
 

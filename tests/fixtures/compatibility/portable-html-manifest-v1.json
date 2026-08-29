@@ -1,0 +1,14 @@
+{
+  "format": "orbweaver-portable-html",
+  "version": "1",
+  "graph": {
+    "id": "artifact",
+    "nodes": [{ "id": "result", "label": "Result" }],
+    "edges": [],
+    "options": { "directed": true }
+  },
+  "summary": "Artifact. 1 node and 0 relationships.",
+  "theme": "dark",
+  "allowThemeSwitch": true,
+  "themes": { "dark": {}, "light": {} }
+}

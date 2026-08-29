@@ -7,6 +7,7 @@ import type {
   ProposalValidationOptions,
   ProposalValidationResult,
 } from './types.js'
+import { graphProposalSchemaVersion } from '../compatibility/versions.js'
 
 export const defaultProposalValidationLimits: ProposalValidationLimits = {
   maxBytes: 1024 * 1024,
@@ -246,8 +247,8 @@ function validateEnvelopeShape(value: unknown, errors: ProposalValidationIssue[]
     return false
   }
   rejectUnknownFields(value, new Set(['schemaVersion', 'graph', 'generation', 'evidence', 'claims', 'warnings']), '$', errors)
-  if (value.schemaVersion !== '1') {
-    addIssue(errors, 'proposal-schema-version-unsupported', 'Expected schemaVersion "1".', '$.schemaVersion')
+  if (value.schemaVersion !== graphProposalSchemaVersion) {
+    addIssue(errors, 'proposal-schema-version-unsupported', `Expected schemaVersion "${graphProposalSchemaVersion}".`, '$.schemaVersion')
   }
   const graphValid = validateGraphShape(value.graph, errors)
 

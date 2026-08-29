@@ -18,13 +18,13 @@ const provenance = {
 
 export const graphProposalJsonSchema = {
   $schema: 'https://json-schema.org/draft/2020-12/schema',
-  $id: 'https://orbweaver.semanticintent.dev/schema/graph-proposal-1.json',
+  $id: contractSchemaIds.graphProposal,
   title: 'Orbweaver GraphProposal',
   type: 'object',
   additionalProperties: false,
   required: ['schemaVersion', 'graph', 'generation'],
   properties: {
-    schemaVersion: { const: '1' },
+    schemaVersion: { const: graphProposalSchemaVersion },
     graph: {
       type: 'object',
       additionalProperties: false,
@@ -187,3 +187,4 @@ export const graphProposalJsonSchema = {
     warnings: { type: 'array', items: { type: 'string' } },
   },
 } as const
+import { contractSchemaIds, graphProposalSchemaVersion } from '../compatibility/versions.js'

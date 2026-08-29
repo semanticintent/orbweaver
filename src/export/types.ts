@@ -2,9 +2,10 @@ import type { LayoutGraphOptions } from '../layout/types.js'
 import type { NormalizedGraph } from '../model/types.js'
 import type { SvgRenderOptions } from '../render/types.js'
 import type { PortableArtifactProvenance } from '../artifact/types.js'
+import { contractVersions } from '../compatibility/versions.js'
 
-export const svgArtifactVersion = '1' as const
-export const pngArtifactVersion = '1' as const
+export const svgArtifactVersion = contractVersions.svg
+export const pngArtifactVersion = contractVersions.png
 
 export interface StaticArtifactGuarantees {
   accessibleText: boolean

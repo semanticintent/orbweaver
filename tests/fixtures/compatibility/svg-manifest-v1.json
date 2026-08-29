@@ -1,0 +1,20 @@
+{
+  "format": "orbweaver-svg",
+  "version": "1",
+  "graph": {
+    "id": "artifact",
+    "nodes": [{ "id": "result", "label": "Result" }],
+    "edges": [],
+    "options": { "directed": true }
+  },
+  "summary": "Artifact. 1 node and 0 relationships.",
+  "theme": "orbweaver-dark",
+  "guarantees": {
+    "accessibleText": true,
+    "semanticIdentity": true,
+    "semanticGraph": "embedded",
+    "interaction": "host-provided",
+    "inspector": "host-provided",
+    "scalable": true
+  }
+}

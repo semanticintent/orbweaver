@@ -158,6 +158,8 @@ Each slice must pass the full package gate before the next public API is added.
 
 **10C status:** Complete in `0.2.0-alpha.13`
 
+**10D status:** Complete in `0.2.0-alpha.14`
+
 - [x] Define a versioned, self-contained Orbweaver HTML artifact containing
   the host-supplied semantic graph, rendered SVG, minimal interaction runtime,
   inspector, theme state, and provenance metadata.
@@ -200,10 +202,10 @@ verified by the browser-level CI introduced in the same slice.
 
 ### Contract, quality, and performance
 
-- [ ] Formalize graph, scene, proposal, and portable-artifact schema versions.
-- [ ] Define compatibility and migration policy for pre-1.0 artifacts.
-- [ ] Add compatibility fixtures that can be opened by future releases.
-- [ ] Improve diagnostics for invalid graphs and failed export operations.
+- [x] Formalize graph, scene, proposal, and portable-artifact schema versions.
+- [x] Define compatibility and migration policy for pre-1.0 artifacts.
+- [x] Add compatibility fixtures that can be opened by future releases.
+- [x] Improve diagnostics for invalid graphs and failed export operations.
 - [ ] Add browser-level interaction and accessibility tests to CI.
 - [ ] Establish bundle-size, layout-time, and render-time budgets with
   representative benchmark graphs.

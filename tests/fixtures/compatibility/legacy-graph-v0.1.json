@@ -1,0 +1,11 @@
+{
+  "id": "legacy-publishing",
+  "title": "Legacy publishing flow",
+  "nodes": [
+    { "id": "source", "type": "document", "label": "Source" },
+    { "id": "publish", "type": "process", "label": "Publish" }
+  ],
+  "edges": [
+    { "from": "source", "to": "publish", "type": "flow" }
+  ]
+}

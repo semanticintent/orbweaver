@@ -12,7 +12,10 @@ const maximumPixels = 64_000_000
 
 function validateScale(scale: number): void {
   if (!Number.isFinite(scale) || scale <= 0 || scale > 4) {
-    throw new ArtifactExportError('PNG scale must be greater than 0 and no greater than 4.')
+    throw new ArtifactExportError('PNG scale must be greater than 0 and no greater than 4.', {
+      code: 'png-scale-invalid',
+      action: 'Choose a PNG scale in the range 0 < scale <= 4.',
+    })
   }
 }
 
@@ -23,7 +26,10 @@ export async function renderPngArtifact(graph: Graph, options: PngArtifactOption
   const outputWidth = Math.round(svg.width * scale)
   const outputHeight = Math.round(svg.height * scale)
   if (outputWidth * outputHeight > maximumPixels) {
-    throw new ArtifactExportError(`PNG output exceeds the ${maximumPixels.toLocaleString('en-US')} pixel safety limit.`)
+    throw new ArtifactExportError(`PNG output exceeds the ${maximumPixels.toLocaleString('en-US')} pixel safety limit.`, {
+      code: 'png-pixel-limit-exceeded',
+      action: 'Reduce the export scale or render a smaller graph.',
+    })
   }
   const rasterizer = options.rasterizer ?? createBrowserPngRasterizer()
   const data = await rasterizer({
@@ -34,7 +40,10 @@ export async function renderPngArtifact(graph: Graph, options: PngArtifactOption
     ...(options.background === undefined ? {} : { background: options.background }),
   })
   if (!(data instanceof Uint8Array) || data.byteLength === 0) {
-    throw new ArtifactExportError('PNG rasterizer returned no image bytes.')
+    throw new ArtifactExportError('PNG rasterizer returned no image bytes.', {
+      code: 'png-output-empty',
+      action: 'Verify that the rasterizer returns a non-empty Uint8Array containing PNG data.',
+    })
   }
   return {
     format: 'png',

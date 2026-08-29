@@ -93,10 +93,17 @@ describe('static artifact export', () => {
   })
 
   it('reports unsupported or unsafe PNG output actionably', async () => {
-    await expect(renderPngArtifact(graph)).rejects.toThrow(/In Node\.js, pass a PngRasterizer adapter explicitly/)
-    await expect(renderPngArtifact(graph, { scale: 0, rasterizer: async () => new Uint8Array([1]) })).rejects.toThrow(ArtifactExportError)
+    const browser = renderPngArtifact(graph)
+    await expect(browser).rejects.toThrow(/In Node\.js, pass a PngRasterizer adapter explicitly/)
+    await expect(browser).rejects.toMatchObject({
+      code: 'png-browser-apis-unavailable',
+      action: 'Run the export in a browser or pass an approved PngRasterizer adapter in Node.js.',
+    })
+    const scale = renderPngArtifact(graph, { scale: 0, rasterizer: async () => new Uint8Array([1]) })
+    await expect(scale).rejects.toThrow(ArtifactExportError)
+    await expect(scale).rejects.toMatchObject({ code: 'png-scale-invalid' })
     await expect(renderPngArtifact(graph, { scale: 5, rasterizer: async () => new Uint8Array([1]) })).rejects.toThrow(/no greater than 4/)
-    await expect(renderPngArtifact(graph, { rasterizer: async () => new Uint8Array() })).rejects.toThrow(/returned no image bytes/)
+    await expect(renderPngArtifact(graph, { rasterizer: async () => new Uint8Array() })).rejects.toMatchObject({ code: 'png-output-empty' })
   })
 
   it('uses native browser image and canvas APIs without leaking object URLs', async () => {
