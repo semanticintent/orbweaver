@@ -8,8 +8,8 @@ GraphInput
 NormalizedGraph
     ↓ layout adapter
 Scene
-    ↓ renderer
-SVG
+    ↓ renderers
+Accessible SVG / portable HTML artifact
 ```
 
 `GraphInput` is the public, JSON-compatible authoring contract.
@@ -31,6 +31,8 @@ absolute scene coordinates; renderers never consume ELK objects.
 5. Entity identity, metadata, and provenance survive every stage.
 6. Rendering never reconstructs meaning from geometry.
 7. Orbweaver core has no dependency on RECALL or a UI framework.
+8. Portable artifacts embed normalized semantics; their runtime never derives
+   meaning from SVG geometry.
 
 ## Package scope
 

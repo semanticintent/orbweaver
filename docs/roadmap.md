@@ -154,10 +154,12 @@ Each slice must pass the full package gate before the next public API is added.
 
 ### Portable artifact export
 
-- [ ] Define a versioned, self-contained Orbweaver HTML artifact containing
-  the accepted semantic graph, rendered SVG, minimal interaction runtime,
+**10B status:** Core vertical slice complete; prerelease pending
+
+- [x] Define a versioned, self-contained Orbweaver HTML artifact containing
+  the host-supplied semantic graph, rendered SVG, minimal interaction runtime,
   inspector, theme state, and provenance metadata.
-- [ ] Add a supported export API and CLI path for self-contained HTML.
+- [x] Add a supported export API and CLI path for self-contained HTML.
 - [ ] Make SVG export reliable across Node and supported browsers, with
   embedded accessibility and semantic identity metadata.
 - [ ] Add PNG export for social posts, presentations, and other environments

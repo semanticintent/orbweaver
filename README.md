@@ -73,6 +73,12 @@ stable-ID semantic diff. Target artifacts distinguish unchanged, introduced,
 and changed meaning while preserving removed entities and annotations as
 inspectable comparison data—without guessing renames or fabricating geometry.
 
+Portable HTML artifacts carry that same discipline outside an application.
+`renderHtmlArtifact` produces one offline file containing the normalized graph,
+accessible SVG, semantic inspector, theme state, annotations, provenance, and a
+small dependency-free runtime. The `orbweaver-html` command provides the same
+path from a graph JSON file.
+
 ## WebMCP — agent-assisted semantic visualization
 
 Orbweaver implements a bounded WebMCP interface in its public semantic
@@ -144,6 +150,7 @@ import {
   createGraph,
   darkTheme,
   renderGraph,
+  renderHtmlArtifact,
   validateGraph,
 } from '@semanticintent/orbweaver'
 
@@ -177,6 +184,16 @@ await writeFile('checkout.svg', svg)
 Run the example as an ES module with Node.js 20 or newer, then open
 `checkout.svg` in a browser. For separate layout and rendering stages, custom
 themes, semantic queries, and interaction, see the [Public API](docs/api.md).
+
+Create a self-contained interactive artifact from the same graph:
+
+```ts
+const html = await renderHtmlArtifact(graph, {
+  theme: 'dark',
+  provenance: { renderer: 'Architecture review' },
+})
+await writeFile('checkout.html', html)
+```
 
 ## Development
 
@@ -215,6 +232,7 @@ or layout-engine-specific objects.
 - [Design and engineering discipline](docs/design-discipline.md)
 - [Visual language](docs/visual-language.md)
 - [Interaction and inspection](docs/interaction.md)
+- [Portable HTML artifacts](docs/portable-artifacts.md)
 - [Semantic annotation layer](docs/semantic-annotations.md)
 - [Semantic visual intelligence](docs/semantic-visual-intelligence.md)
 - [Public API](docs/api.md)

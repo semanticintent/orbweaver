@@ -1,4 +1,12 @@
 export { GraphValidationError, LayoutError, OrbweaverError } from './errors.js'
+export { renderHtmlArtifact } from './artifact/html.js'
+export { portableHtmlArtifactVersion } from './artifact/types.js'
+export type {
+  HtmlArtifactOptions,
+  PortableArtifactProvenance,
+  PortableArtifactTheme,
+  PortableHtmlArtifactManifest,
+} from './artifact/types.js'
 export { summarizeGraph } from './accessibility/summarize.js'
 export {
   getGroupNodes,

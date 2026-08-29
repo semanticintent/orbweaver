@@ -5,6 +5,9 @@
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "bin": {
+    "orbweaver-html": "./dist/cli.js"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -51,6 +54,7 @@
     "node": ">=20"
   },
   "devDependencies": {
+    "@types/node": "^22.20.1",
     "esbuild": "^0.28.2",
     "happy-dom": "^20.11.6",
     "typescript": "^6.0.2",

@@ -384,6 +384,31 @@ operate only on the root SVG `viewBox`.
 `destroy()` restores the original `viewBox` and touch behavior, removes local
 and window listeners, and makes later viewport mutation calls inert.
 
+## Portable HTML artifacts
+
+### `renderHtmlArtifact(graph, options?)`
+
+Validates, normalizes, lays out, and renders a graph into one deterministic
+offline HTML document. The result contains an accessible SVG, versioned
+machine-readable manifest, semantic inspector, pointer and keyboard selection,
+targeted annotations, provenance, and optional built-in theme switching.
+
+Options include ordinary layout and bounded SVG render options plus `theme`,
+`allowThemeSwitch`, and caller-supplied `provenance`. The function never reads
+the clock or writes a file. `portableHtmlArtifactVersion` exposes the current
+manifest version (`1`).
+
+The package also installs `orbweaver-html`:
+
+```sh
+orbweaver-html graph.json --output graph.html --theme dark
+```
+
+Structural validation does not establish factual truth or proposal acceptance.
+Hosts must complete any human-review gate before exporting an accepted
+`GraphProposal`. See [Portable HTML artifacts](portable-artifacts.md) for the
+security, trust, and portability guarantees.
+
 ## Errors
 
 - `OrbweaverError`
