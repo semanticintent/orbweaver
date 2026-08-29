@@ -166,7 +166,7 @@ Each slice must pass the full package gate before the next public API is added.
 
 ### Interaction and browser resilience
 
-**10A status:** Complete
+**10A status:** Complete in `0.2.0-alpha.11`
 
 - [x] Add a dependency-free SVG viewport controller with deterministic fit,
   bounded zoom, pan, pinch, keyboard controls, and lifecycle cleanup.
