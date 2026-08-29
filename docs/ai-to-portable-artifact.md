@@ -89,16 +89,16 @@ are meaningful:
   "title": "Order recovery workflow",
   "description": "How a failed payment moves through review and recovery.",
   "nodes": [
-    { "id": "payment-failed", "label": "Payment failed", "type": "event" },
-    { "id": "review", "label": "Review recovery", "type": "process" },
-    { "id": "notify-customer", "label": "Notify customer", "type": "service" }
+    { "id": "payment-failed", "label": "Payment failed", "type": "event", "group": "recovery" },
+    { "id": "review", "label": "Review recovery", "type": "process", "group": "recovery" },
+    { "id": "notify-customer", "label": "Notify customer", "type": "service", "group": "recovery" }
   ],
   "edges": [
     { "id": "failure-review", "from": "payment-failed", "to": "review", "type": "event" },
     { "id": "review-notify", "from": "review", "to": "notify-customer", "type": "flow" }
   ],
   "groups": [
-    { "id": "recovery", "label": "Recovery workflow", "nodeIds": ["payment-failed", "review", "notify-customer"] }
+    { "id": "recovery", "label": "Recovery workflow" }
   ]
 }
 ```
