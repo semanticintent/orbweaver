@@ -12,6 +12,6 @@ const result = await build({
 })
 
 const bytes = result.outputFiles.reduce((total, file) => total + file.contents.byteLength, 0)
-const limit = 2_500_000
+const limit = 1_730_150
 console.log(`Browser bundle: ${(bytes / 1024).toFixed(1)} KiB minified`)
 if (bytes > limit) throw new Error(`Browser bundle exceeds ${(limit / 1024).toFixed(0)} KiB limit.`)

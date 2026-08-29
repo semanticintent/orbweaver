@@ -90,6 +90,12 @@ releases. Orbweaver publishes one contract registry and JSON Schema collection,
 losslessly migrates unversioned v0.1 graph data, rejects unknown future formats,
 and returns stable diagnostics with a recommended action.
 
+The active Phase 10E quality gate verifies adverse graph shapes, exact light
+and dark SVG output, real-browser interaction, automated accessibility,
+responsive and print behavior, supported Node.js releases, package size, and
+representative layout/render timing. See [Quality and performance](docs/quality-and-performance.md)
+for the matrix and measured budgets.
+
 ## WebMCP — agent-assisted semantic visualization
 
 Orbweaver implements a bounded WebMCP interface in its public semantic
@@ -220,7 +226,13 @@ PNG guarantee matrix.
 ```sh
 npm install
 npm run check
+npm run quality:check
 ```
+
+`npm run check` is the fast Node and bundle gate. `npm run quality:check` also
+launches the locally installed Playwright Chromium browser and runs performance
+budgets; install it once with `npx playwright install chromium` when developing
+from a fresh checkout. CI additionally covers Firefox and WebKit.
 
 Contributions are welcome. Read [Contributing](CONTRIBUTING.md), the
 [Code of Conduct](CODE_OF_CONDUCT.md), and the [Security Policy](SECURITY.md)

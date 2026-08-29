@@ -27,6 +27,7 @@ describe('SVG renderer', () => {
     expect(svg).toContain('<desc id="ow-decision-flow-description">')
     expect(svg).toContain('class="ow-summary"')
     expect(svg).toContain('class="ow-nodes" role="list"')
+    expect(svg).toContain('class="ow-edges" role="list" aria-label="Relationships"')
     expect(svg).toContain('data-node-type="decision"')
     expect(svg).toContain('tabindex="0" role="listitem"')
     expect(svg).toContain('marker-end="url(#ow-decision-flow-arrow-end)"')

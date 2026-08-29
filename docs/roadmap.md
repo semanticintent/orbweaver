@@ -94,7 +94,7 @@ semantic interaction state, and keeps the initial gallery UI lightweight.
 
 ## Phase 9 — AI-assisted semantic visualization
 
-**Status:** In progress
+**Status:** Complete — 10A–10E delivered across the v0.2 alpha line
 
 - [x] Specify a versioned `GraphProposal` envelope and JSON schema.
 - [x] Validate proposal structure, forbidden fields, and resource limits.
@@ -134,6 +134,11 @@ portable runtime before new export surfaces are added:
    policy, compatibility fixtures, and actionable diagnostics.
 5. **10E — Quality and performance:** browser and accessibility CI, resilience
    fixtures, visual regression, browser support, and measured budgets.
+
+**10E status:** Complete in `0.2.0-alpha.15`
+
+See [Quality and performance](quality-and-performance.md) for the scoped
+matrix, initial budgets, and release acceptance gate.
 
 Each slice must pass the full package gate before the next public API is added.
 
@@ -184,20 +189,20 @@ Each slice must pass the full package gate before the next public API is added.
 - [x] Support multiple independently interactive diagrams on one page.
 - [x] Test mount, update, and destroy lifecycles for leaked listeners or stale
   interaction state.
-- [ ] Define and continuously verify the supported browser matrix.
+- [x] Define and continuously verify the supported browser matrix.
 
 The supported-browser matrix is delivered with 10E so it can be continuously
 verified by the browser-level CI introduced in the same slice.
 
 ### Rendering resilience
 
-- [ ] Add fixtures for empty, disconnected, cyclic, deeply nested, and dense
+- [x] Add fixtures for empty, disconnected, cyclic, deeply nested, and dense
   graphs.
-- [ ] Exercise long labels, Unicode, unusual metadata, and missing optional
+- [x] Exercise long labels, Unicode, unusual metadata, and missing optional
   content.
-- [ ] Verify nested groups, edge routing, collision behavior, responsive
+- [x] Verify nested groups, edge routing, collision behavior, responsive
   resizing, and print output.
-- [ ] Establish deterministic visual-regression fixtures for light and dark
+- [x] Establish deterministic visual-regression fixtures for light and dark
   themes.
 
 ### Contract, quality, and performance
@@ -206,10 +211,10 @@ verified by the browser-level CI introduced in the same slice.
 - [x] Define compatibility and migration policy for pre-1.0 artifacts.
 - [x] Add compatibility fixtures that can be opened by future releases.
 - [x] Improve diagnostics for invalid graphs and failed export operations.
-- [ ] Add browser-level interaction and accessibility tests to CI.
-- [ ] Establish bundle-size, layout-time, and render-time budgets with
+- [x] Add browser-level interaction and accessibility tests to CI.
+- [x] Establish bundle-size, layout-time, and render-time budgets with
   representative benchmark graphs.
-- [ ] Document Node.js, browser, ESM, and bundler compatibility.
+- [x] Document Node.js, browser, ESM, and bundler compatibility.
 
 **Non-goals:** This phase does not add RECALL, CAL, Mere, `recall-ui`, or
 StratIQX integration; a hosted collaboration service; a freeform diagram

@@ -1,6 +1,6 @@
 {
   "name": "@semanticintent/orbweaver",
-  "version": "0.2.0-alpha.14",
+  "version": "0.2.0-alpha.15",
   "description": "Semantic visual structures for declarative systems.",
   "type": "module",
   "main": "./dist/index.js",
@@ -28,6 +28,9 @@
     "examples:generate": "npm run build && node examples/generate-showcase.mjs && node scripts/build-gallery-runtime.mjs",
     "examples:serve": "node scripts/serve-examples.mjs",
     "browser:check": "node scripts/check-browser-bundle.mjs",
+    "browser:test": "playwright test",
+    "performance:check": "npm run build && node scripts/check-performance.mjs",
+    "quality:check": "npm run check && npm run browser:test && npm run performance:check",
     "check": "npm run typecheck && npm test && npm run build && npm run browser:check"
   },
   "keywords": [
@@ -54,6 +57,8 @@
     "node": ">=20"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@playwright/test": "^1.62.1",
     "@types/node": "^22.20.1",
     "esbuild": "^0.28.2",
     "happy-dom": "^20.11.6",
