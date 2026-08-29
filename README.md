@@ -118,6 +118,9 @@ metadata, and source provenance—without authored coordinates.
 
 [Explore the interactive public gallery](https://orbweaver.semanticintent.dev/gallery)
 or inspect the [Northwind semantic graph](examples/showcases.mjs) in source.
+The repository also includes a
+[self-contained Northwind HTML artifact](examples/generated/northwind-schema.html)
+that can be downloaded and opened without a server.
 
 ### Enterprise architecture landscape
 

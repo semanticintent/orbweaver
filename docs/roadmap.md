@@ -154,7 +154,7 @@ Each slice must pass the full package gate before the next public API is added.
 
 ### Portable artifact export
 
-**10B status:** Core vertical slice complete; prerelease pending
+**10B status:** Complete in `0.2.0-alpha.12`
 
 - [x] Define a versioned, self-contained Orbweaver HTML artifact containing
   the host-supplied semantic graph, rendered SVG, minimal interaction runtime,

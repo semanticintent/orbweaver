@@ -1,7 +1,7 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
-import { darkTheme, layoutGraph, lightTheme, renderSvg, summarizeGraph } from '../dist/index.js'
+import { darkTheme, layoutGraph, lightTheme, renderHtmlArtifact, renderSvg, summarizeGraph } from '../dist/index.js'
 import { showcases } from './showcases.mjs'
 
 const here = dirname(fileURLToPath(import.meta.url))
@@ -19,8 +19,18 @@ for (const showcase of showcases) {
   const frame = { ...showcase.artifact, renderer: `Orbweaver ${packageVersion}` }
   const light = renderSvg(scene, { theme: lightTheme, responsive: false, frame })
   const dark = renderSvg(scene, { theme: darkTheme, responsive: false, frame })
+  const portable = await renderHtmlArtifact(showcase.graph, {
+    layout: showcase.layout,
+    theme: 'dark',
+    render: { includeLegend: true },
+    provenance: {
+      renderer: `Orbweaver ${packageVersion}`,
+      source: { file: 'examples/showcases.mjs', path: showcase.slug },
+    },
+  })
   writeFileSync(join(output, `${showcase.slug}-light.svg`), light)
   writeFileSync(join(output, `${showcase.slug}-dark.svg`), dark)
+  writeFileSync(join(output, `${showcase.slug}.html`), portable)
   rendered.push({ ...showcase, scene, light, dark, summary: summarizeGraph(scene.graph) })
 }
 
@@ -29,7 +39,7 @@ const cards = rendered.map((showcase, index) => {
   return `<article class="showcase" id="${showcase.slug}">
     <header class="showcase-header">
       <div><p class="eyebrow">0${index + 1} / ${escapeHtml(showcase.kicker)}</p><h2>${escapeHtml(showcase.graph.title)}</h2><p>${escapeHtml(showcase.description)}</p></div>
-      <div class="actions"><a href="${showcase.slug}-dark.svg" download>Dark SVG</a><a href="${showcase.slug}-light.svg" download>Light SVG</a></div>
+      <div class="actions"><a href="${showcase.slug}.html">Portable HTML</a><a href="${showcase.slug}-dark.svg" download>Dark SVG</a><a href="${showcase.slug}-light.svg" download>Light SVG</a></div>
     </header>
     <div class="diagram" data-showcase="${showcase.slug}">${showcase.dark}</div>
     <div class="details-row">
