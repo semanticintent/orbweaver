@@ -290,6 +290,7 @@ or layout-engine-specific objects.
 - [Reference proposal generator](docs/reference-generator.md)
 - [Optional model-backed proposal adapter](docs/model-proposal-adapter.md)
 - [v0.2 beta readiness](docs/v0.2-beta-readiness.md)
+- [0.2.0-beta.1 release notes](docs/releases/0.2.0-beta.1.md)
 - [Original prototype specification](ORBWEAVER_SPEC.md)
 - [Project philosophy and biomimicry](ORBWEAVER_BIOMIMICRY.md)
 - [Future RECALL integration](ORBWEAVER_RECALL_INTEGRATION.md)
