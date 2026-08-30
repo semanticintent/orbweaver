@@ -7,8 +7,16 @@ Run:
 ```sh
 npm ci
 npm run check
+npm run browser:test
 npm run examples:generate
 npm pack --dry-run
+```
+
+For a v0.2 beta or later release candidate, also run the documented
+cross-browser matrix:
+
+```sh
+ORBWEAVER_BROWSER_MATRIX=true npm run browser:test
 ```
 
 Then inspect all generated showcase SVGs in light and dark themes and exercise
@@ -33,3 +41,6 @@ public`.
 
 Publishing and remote Git operations are deliberately not part of the local
 release gate.
+
+For the v0.2 beta contract and alpha-line review evidence, see
+[v0.2 beta readiness](v0.2-beta-readiness.md).

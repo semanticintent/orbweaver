@@ -70,8 +70,12 @@ This enables reproducible tests for:
 
 ## Model-backed adapter gate
 
-A future provider adapter may replace the deterministic generator only after
-its prompt contract, structured-output schema, timeout, cancellation, cost
-disclosure, and secret handling are reviewable. It remains an optional website
-integration; `@semanticintent/orbweaver` stays provider-neutral and free of AI
-runtime dependencies.
+The website now includes a server-gated Cloudflare Workers AI reference
+adapter. It uses structured JSON output, server and browser validation, a
+declared cost ceiling, timeout/cancellation handling, and no browser-side
+credential. It remains disabled until the host deliberately enables it.
+
+See [Optional model-backed proposal adapter](model-proposal-adapter.md) for its
+prompt contract, enablement checklist, and reproducible test input. It remains
+an optional website integration; `@semanticintent/orbweaver` stays
+provider-neutral and free of AI runtime dependencies.

@@ -288,6 +288,8 @@ or layout-engine-specific objects.
 - [WebMCP semantic playground and trust model](docs/webmcp-semantic-playground.md)
 - [WebMCP Challenge submission](docs/webmcp-challenge-submission.md)
 - [Reference proposal generator](docs/reference-generator.md)
+- [Optional model-backed proposal adapter](docs/model-proposal-adapter.md)
+- [v0.2 beta readiness](docs/v0.2-beta-readiness.md)
 - [Original prototype specification](ORBWEAVER_SPEC.md)
 - [Project philosophy and biomimicry](ORBWEAVER_BIOMIMICRY.md)
 - [Future RECALL integration](ORBWEAVER_RECALL_INTEGRATION.md)

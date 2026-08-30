@@ -94,7 +94,8 @@ semantic interaction state, and keeps the initial gallery UI lightweight.
 
 ## Phase 9 — AI-assisted semantic visualization
 
-**Status:** Complete — 10A–10E delivered across the v0.2 alpha line
+**Status:** In progress — proposal review is complete; optional model-backed
+reference adapter remains outside core
 
 - [x] Specify a versioned `GraphProposal` envelope and JSON schema.
 - [x] Validate proposal structure, forbidden fields, and resource limits.
@@ -116,7 +117,7 @@ for the complete scope and delivery gates.
 
 ## Phase 10 — Portable artifacts and hardening
 
-**Status:** In progress
+**Status:** Complete — 10A–10E delivered across the v0.2 alpha line
 
 ### Delivery sequence
 
@@ -225,6 +226,10 @@ reopened, and verified as a self-contained artifact with equivalent meaning
 and interaction across supported browsers. Static SVG and PNG exports clearly
 document the smaller set of guarantees they preserve, and the complete quality
 suite passes within its published compatibility and performance budgets.
+
+**Release review:** The alpha-line quality review passed on 2026-08-30. See
+[v0.2 beta readiness](v0.2-beta-readiness.md) for the evidence and beta
+compatibility policy.
 
 ## WebMCP semantic playground — Website track
 

@@ -217,9 +217,14 @@ Hosts may choose lower limits. Raising limits requires performance evidence.
   core.
 - [x] Require adapter output conforming to the proposal schema.
 - [x] Add cost, timeout, cancellation, and failure UX.
-- [ ] Add one optional model-backed reference adapter in the website, not core.
-- [ ] Publish the prompt contract and a reproducible example without publishing
+- [x] Add a server-gated optional model-backed reference adapter in the
+  website, not core. Public inference stays disabled until the host enables its
+  Cloudflare Workers AI binding and spending boundary.
+- [x] Publish the prompt contract and a reproducible example without publishing
   secrets or private source material.
+
+See [Optional model-backed proposal adapter](model-proposal-adapter.md) for the
+prompt, limits, cost disclosure, enablement checklist, and test case.
 
 ## Acceptance gate
 
