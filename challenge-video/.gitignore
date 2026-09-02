@@ -1,0 +1,19 @@
+# Local recording and editing files
+recordings/screen/*
+recordings/voice/*
+imovie/*
+exports/*
+
+# Keep temporary iMovie import copies local
+assets/*-USE-THIS-1920x1080.png
+assets/YOUTUBE-THUMBNAIL-USE-THIS.png
+assets/*.svg.png
+
+# Preserve the folder structure
+!recordings/screen/.gitkeep
+!recordings/voice/.gitkeep
+!imovie/.gitkeep
+!exports/.gitkeep
+
+# macOS metadata
+.DS_Store

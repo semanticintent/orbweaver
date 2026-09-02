@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-labelledby="title desc">
+  <title id="title">Orbweaver WebMCP Challenge Demo</title>
+  <desc id="desc">Center-safe video thumbnail for YouTube and the Devpost embedded player.</desc>
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="48%" r="48%">
+      <stop offset="0" stop-color="#123341"/>
+      <stop offset="0.48" stop-color="#071923"/>
+      <stop offset="1" stop-color="#020b12"/>
+    </radialGradient>
+    <filter id="softGlow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="18"/>
+    </filter>
+  </defs>
+
+  <rect width="1920" height="1080" fill="#020b12"/>
+  <rect width="1920" height="1080" fill="url(#glow)"/>
+
+  <text x="960" y="245" text-anchor="middle" fill="#f4f7f8"
+        font-family="Arial, Helvetica, sans-serif" font-size="142" font-weight="700"
+        letter-spacing="-6">Orbweaver</text>
+  <text x="960" y="342" text-anchor="middle" fill="#66deea"
+        font-family="Arial, Helvetica, sans-serif" font-size="36" font-weight="700"
+        letter-spacing="11">WEBMCP CHALLENGE DEMO</text>
+
+  <circle cx="960" cy="570" r="112" fill="#42dceb" opacity="0.16" filter="url(#softGlow)"/>
+  <g fill="none" stroke="#2b8290" stroke-width="3">
+    <path d="M960 458V414"/>
+    <path d="M848 570H690"/>
+    <path d="M1072 570H1230"/>
+    <path d="M880 650L780 735"/>
+    <path d="M1040 650L1140 735"/>
+    <path d="M880 490L780 405" stroke-dasharray="12 13"/>
+    <path d="M1040 490L1140 405" stroke-dasharray="12 13"/>
+  </g>
+  <g fill="#06151d" stroke="#55c4cf" stroke-width="4">
+    <circle cx="960" cy="570" r="112" stroke="#72edf4"/>
+    <circle cx="960" cy="385" r="39"/>
+    <circle cx="650" cy="570" r="39"/>
+    <circle cx="1270" cy="570" r="39"/>
+    <circle cx="748" cy="762" r="39"/>
+    <circle cx="1172" cy="762" r="39"/>
+    <circle cx="748" cy="378" r="34"/>
+    <circle cx="1172" cy="378" r="34"/>
+  </g>
+  <text x="960" y="557" text-anchor="middle" fill="#c5fbf2"
+        font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700">semantic</text>
+  <text x="960" y="599" text-anchor="middle" fill="#c5fbf2"
+        font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700">proposal</text>
+
+  <text x="960" y="916" text-anchor="middle" fill="#f1f5f6"
+        font-family="Arial, Helvetica, sans-serif" font-size="58" font-weight="650">
+    Agent proposes. <tspan fill="#66deea">Human decides.</tspan>
+  </text>
+  <line x1="690" y1="968" x2="1230" y2="968" stroke="#2d8996" stroke-width="3"/>
+</svg>

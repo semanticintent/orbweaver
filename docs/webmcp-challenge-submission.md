@@ -11,6 +11,8 @@ diagram on the same live page—without giving the agent authority to accept it.
 
 **Public source:** <https://github.com/semanticintent/orbweaver>
 
+**Demo video:** <https://youtu.be/vEsgjJGgSOw>
+
 ## Submission description
 
 Orbweaver is a semantic visualization library and live design workspace for
@@ -167,12 +169,12 @@ Show the gallery briefly, then return to the WebMCP guide:
 - [x] WebMCP documentation and privacy disclosure published.
 - [x] Judging-criteria narrative drafted.
 - [x] Three-minute demo script drafted.
-- [ ] Confirm Devpost registration and participant eligibility.
-- [ ] Record and upload the demo video.
-- [ ] Capture a final hero screenshot for the submission gallery.
-- [ ] Complete every required Devpost field and attribution.
-- [ ] Re-run the production smoke test immediately before submission.
-- [ ] Submit before September 3, 2026 at 5:00 p.m. Pacific Time.
+- [x] Confirm Devpost registration and participant eligibility.
+- [x] Record and upload the demo video: <https://youtu.be/vEsgjJGgSOw>.
+- [x] Create and publish a center-safe hero thumbnail.
+- [x] Complete every required Devpost field and attribution.
+- [x] Re-run the production smoke test immediately before submission.
+- [x] Submit before September 3, 2026 at 1:00 p.m. Pacific Time.
 
 ## Domain decision
 

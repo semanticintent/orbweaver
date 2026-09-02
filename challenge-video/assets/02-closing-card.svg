@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-labelledby="title desc">
+  <title id="title">Orbweaver — Meaning, made visible.</title>
+  <desc id="desc">Closing title card for the Orbweaver WebMCP challenge video.</desc>
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="43%" r="58%">
+      <stop offset="0" stop-color="#123847" stop-opacity=".68"/>
+      <stop offset=".45" stop-color="#071820" stop-opacity=".32"/>
+      <stop offset="1" stop-color="#030a10" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#9ff3dc"/>
+      <stop offset="1" stop-color="#52d7ea"/>
+    </linearGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="#030a10"/>
+  <rect width="1920" height="1080" fill="url(#glow)"/>
+
+  <g fill="none" stroke="#5bdde7" stroke-width="2" opacity=".4">
+    <path d="M430 360H700M1220 360H1490M700 360L960 540M1220 360L960 540M430 720H700M1220 720H1490M700 720L960 540M1220 720L960 540"/>
+  </g>
+  <g fill="#07151c" stroke="#72e2e7" stroke-width="3">
+    <circle cx="960" cy="540" r="66"/>
+    <circle cx="390" cy="360" r="30" opacity=".65"/>
+    <circle cx="1530" cy="360" r="30" opacity=".65"/>
+    <circle cx="390" cy="720" r="30" opacity=".65"/>
+    <circle cx="1530" cy="720" r="30" opacity=".65"/>
+  </g>
+
+  <g font-family="Inter, SF Pro Display, Helvetica Neue, Arial, sans-serif" text-anchor="middle">
+    <text x="960" y="270" fill="#f4f7f6" font-size="108" font-weight="680" letter-spacing="-4">Orbweaver</text>
+    <text x="960" y="570" fill="#c9fbf4" font-size="25" font-weight="650">meaning</text>
+    <text x="960" y="855" fill="#eef5f4" font-size="54" font-weight="500">Meaning, <tspan fill="url(#accent)">made visible.</tspan></text>
+    <text x="960" y="930" fill="#7fa3ad" font-size="28" font-weight="500" letter-spacing="2">orbweaver.semanticintent.dev/playground</text>
+  </g>
+</svg>
