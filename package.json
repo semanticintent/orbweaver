@@ -61,7 +61,7 @@
     "@playwright/test": "^1.63.0",
     "@types/node": "^26.4.1",
     "esbuild": "^0.28.2",
-    "happy-dom": "^20.14.0",
+    "happy-dom": "^21.0.4",
     "typescript": "^7.0.2",
     "vitest": "^4.1.2"
   },
